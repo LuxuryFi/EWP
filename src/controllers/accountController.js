@@ -2,6 +2,8 @@ const logger = require('../services/loggerService');
 const { User, Role } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { response } = require('../app');
+const { generateHashPassword } = require('../services/generateBcrypt');
 
 exports.login = async (req, res) => {
   try {
@@ -30,10 +32,26 @@ exports.login = async (req, res) => {
         const token = jwt.sign(userData ,'test', {
           expiresIn: getTimeNow.getSeconds() + 60000
         })
+
+        const refreshToken = jwt.sign(userData ,'test', {
+          expiresIn: getTimeNow.getSeconds() + 600000
+        })
         // res.set('Authorization', token);
         // res.cookie('jwt',token, { httpOnly: true, secure: false, maxAge: 3600000 })
-        res.send({token});
+
+        const updateToken = await User.update({
+          refreshToken
+        }, {
+          where: {
+            username
+          }
+        });
+
+        console.log(updateToken)
+
+        res.send({token, refreshToken});
       }
+
       console.log('Test')
     }
   } catch (err) {
@@ -52,3 +70,22 @@ exports.createRole = async (req ,res) => {
   logger.info('Role created success', { is_insert });
   res.send(is_insert)
 };
+
+exports.createUser = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const hashedPassword = await generateHashPassword(data.password);
+    console.log(hashedPassword)
+
+    data.password = hashedPassword;
+    const user = await User.create(data);
+    if (user) {
+      logger.info('Account created', {user: data});
+      res.send(user);
+    }
+    res.send(false);
+  } catch (err) {
+    logger.error('Account create failed', {err});
+  }
+}

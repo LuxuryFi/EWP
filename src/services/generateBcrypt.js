@@ -1,13 +1,13 @@
-// const bcrypt = require('bcrypt');
-// const saltRounds = 10;
-// const myPlaintextPassword = '123456789';
-// const someOtherPlaintextPassword = '123';
+const bcrypt = require('bcrypt');
+const logger = require('./loggerService');
+const saltRounds = 10;
+const myPlaintextPassword = '123456789';
+const someOtherPlaintextPassword = '123';
 
-// const app = async () => {
-//   const salt = bcrypt.genSalt(5);
-//   const result = await bcrypt.hash(myPlaintextPassword, 10);
+exports.generateHashPassword = async (password) => {
+  const salt = bcrypt.genSalt(5);
+  const result = await bcrypt.hash(password, 10);
 
-//   console.log('bcrypt', result);
-// };
-
-// app();
+  logger.info('Password generated', { result });
+  return result;
+};

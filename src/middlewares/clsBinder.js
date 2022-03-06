@@ -1,5 +1,3 @@
-// https://clakech.github.io/cls-hooked-sample/
-// https://github.com/jeff-lewis/cls-hooked
 const uuid = require('uuid');
 const cls = require('cls-hooked');
 const messages = require('../configs/customMessages');

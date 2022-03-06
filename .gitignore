@@ -4,12 +4,23 @@ node_modules/
 # IDE files
 .idea
 .vscode/
-.editorconfig
 
 # Logs
 logs/
 *.log
 npm-debug.log*
 
+# dotenv environment variables file
+.env
+
+# encryption keys
+*.key
+/*.pem
+
 # MacOs system file
 .DS_Store
+*.mongo
+.editorconfig
+.prettierrc
+
+.werf_secret_key
