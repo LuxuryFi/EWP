@@ -1,0 +1,58 @@
+{
+	"info": {
+		"_postman_id": "418cf3b4-28da-460b-b0a3-55413d6323f1",
+		"name": "EWP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3002/service1/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"service1",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"gaconbibenh2@gmail.com\",\r\n    \"full_name\": \"Nguyen Quoc Anh\",\r\n    \"last_name\": \"full_name\",\r\n    \"first_name\": \"full_name\",\r\n    \"phone\": \"0966141598\",\r\n    \"role_id\": 2,\r\n    \"password\": \"123456789\",\r\n    \"avatar\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3002/service1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"service1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

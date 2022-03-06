@@ -71,7 +71,65 @@ exports.createRole = async (req ,res) => {
   res.send(is_insert)
 };
 
+exports.getUser = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const hashedPassword = await generateHashPassword(data.password);
+    console.log(hashedPassword)
+
+    data.password = hashedPassword;
+    const user = await User.create(data);
+    if (user) {
+      logger.info('Account created', {user: data});
+      res.send(user);
+    }
+    res.send(false);
+  } catch (err) {
+    logger.error('Account create failed', {err});
+  }
+}
+
+
 exports.createUser = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const hashedPassword = await generateHashPassword(data.password);
+    console.log(hashedPassword)
+
+    data.password = hashedPassword;
+    const user = await User.create(data);
+    if (user) {
+      logger.info('Account created', {user: data});
+      res.send(user);
+    }
+    res.send(false);
+  } catch (err) {
+    logger.error('Account create failed', {err});
+  }
+}
+
+exports.updateUser = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const hashedPassword = await generateHashPassword(data.password);
+    console.log(hashedPassword)
+
+    data.password = hashedPassword;
+    const user = await User.create(data);
+    if (user) {
+      logger.info('Account created', {user: data});
+      res.send(user);
+    }
+    res.send(false);
+  } catch (err) {
+    logger.error('Account create failed', {err});
+  }
+}
+
+exports.deleteUser = async (req, res) => {
   try {
     const data = req.body;
 
