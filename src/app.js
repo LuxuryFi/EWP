@@ -5,7 +5,7 @@ const cls = require('cls-hooked');
 const clsBinder = require('./middlewares/clsBinder');
 const routeLogger = require('./middlewares/routeLogger');
 const config = require('./configs/config');
-// const db = require('./boostraps/mongodbConnection');
+//const db = require('./boostraps/mongodbConnection');
 
 const ns = cls.createNamespace(config.cls.correlationIdNamespace);
 
@@ -19,9 +19,9 @@ app.use(routeLogger);
 
 app.use(routes);
 
-// db();
+//db();
 
-require('./boostraps/consumer')();
+// require('./boostraps/consumer')();
 
 require('./boostraps/mysqlConnection');
 
