@@ -5,11 +5,14 @@ const cls = require('cls-hooked');
 const clsBinder = require('./middlewares/clsBinder');
 const routeLogger = require('./middlewares/routeLogger');
 const config = require('./configs/config');
+const cors = require('cors');
 //const db = require('./boostraps/mongodbConnection');
 
 const ns = cls.createNamespace(config.cls.correlationIdNamespace);
 
 app.use(clsBinder(ns));
+
+app.use(cors());
 
 app.use(express.json());
 
