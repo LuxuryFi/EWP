@@ -2,8 +2,9 @@ const logger = require('../services/loggerService');
 const { User, Role } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { response } = require('../app');
+const response = require('../services/responseService');
 const { generateHashPassword } = require('../services/generateBcrypt');
+const customMessages = require('../configs/customMessages');
 
 exports.login = async (req, res) => {
   try {
@@ -23,8 +24,6 @@ exports.login = async (req, res) => {
         full_name: userInDB.full_name,
         avatar: userInDB.avatar
       }
-
-      console.log("passwordHash", passwordHash  );
       const getTimeNow = new Date();
       logger.info('User data', { userData });
       if (bcrypt.compareSync(password,passwordHash)) {
@@ -36,9 +35,6 @@ exports.login = async (req, res) => {
         const refreshToken = jwt.sign(userData ,'test', {
           expiresIn: getTimeNow.getSeconds() + 600000
         })
-        // res.set('Authorization', token);
-        // res.cookie('jwt',token, { httpOnly: true, secure: false, maxAge: 3600000 })
-
         const updateToken = await User.update({
           refreshToken
         }, {
@@ -46,13 +42,8 @@ exports.login = async (req, res) => {
             username
           }
         });
-
-        console.log(updateToken)
-
         res.send({token, refreshToken});
       }
-
-      console.log('Test')
     }
   } catch (err) {
     logger.error('Login failed', {err});
@@ -73,8 +64,20 @@ exports.createRole = async (req ,res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const data = req.body;
+    const result = await User.findAll();
+    if (result) {
+      logger.info('Account list', {user: result});
+      return response.respondOk(res, result);
+    }
+  } catch (err) {
+    logger.error('Cannot get account list', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
 
+exports.getOneUser = async (req, res) => {
+  try {
+    const data = req.body;
     const hashedPassword = await generateHashPassword(data.password);
     console.log(hashedPassword)
 
@@ -86,10 +89,9 @@ exports.getUser = async (req, res) => {
     }
     res.send(false);
   } catch (err) {
-    logger.error('Account create failed', {err});
+    logger.error('Account create failed', err);
   }
 }
-
 
 exports.createUser = async (req, res) => {
   try {
@@ -99,51 +101,83 @@ exports.createUser = async (req, res) => {
     console.log(hashedPassword)
 
     data.password = hashedPassword;
-    const user = await User.create(data);
-    if (user) {
-      logger.info('Account created', {user: data});
-      res.send(user);
+    const result = await User.create(data);
+    if (result) {
+      logger.info('Account created', {user: result});
+      return response.respondOk(res, result);
     }
-    res.send(false);
   } catch (err) {
-    logger.error('Account create failed', {err});
+    logger.error('Account create failed', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
 exports.updateUser = async (req, res) => {
   try {
     const data = req.body;
-
-    const hashedPassword = await generateHashPassword(data.password);
-    console.log(hashedPassword)
-
-    data.password = hashedPassword;
-    const user = await User.create(data);
-    if (user) {
-      logger.info('Account created', {user: data});
-      res.send(user);
+    const updateData = {
+      full_name: data.full_name,
+      last_name: data.last_name,
+      first_name: data.first_name,
+      phone: data.phone,
+      role_id: data.role_id,
+      avatar: data.avatar
     }
-    res.send(false);
+
+    const updateCondition = {
+      username: data.username,
+    }
+
+    const result = await User.update(updateData, {
+      where: {
+        username: data.username
+      }
+    });
+    if (result) {
+      logger.info('Account updated', {user: data});
+      return response.respondOk(res, result);
+    }
   } catch (err) {
-    logger.error('Account create failed', {err});
+    logger.error('Account update failed', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.updateUserPassword = async (req, res) => {
+  try {
+    const data = req.body;
+    const hashedPassword = await generateHashPassword(data.password);
+
+    const updateData = {
+      password: hashedPassword,
+    }
+
+    const result = await User.update(updateData, {
+      where: {
+        username: data.username
+      }
+    });
+    if (result) {
+      logger.info('Account password updated', {user: data});
+      return response.respondOk(res, result);
+    }
+  } catch (err) {
+    logger.error('Account update failed', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
 exports.deleteUser = async (req, res) => {
   try {
     const data = req.body;
+    const result = await User.destroy({ where: data });
 
-    const hashedPassword = await generateHashPassword(data.password);
-    console.log(hashedPassword)
-
-    data.password = hashedPassword;
-    const user = await User.create(data);
-    if (user) {
-      logger.info('Account created', {user: data});
-      res.send(user);
+    if (isDeleted) {
+      logger.info('User deleted', { isDeleted });
+      return response.respondOk(res, result);
     }
-    res.send(false);
   } catch (err) {
-    logger.error('Account create failed', {err});
+    logger.error('Account delete failed', err);
+    res.send(err)
   }
 }

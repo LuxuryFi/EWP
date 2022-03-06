@@ -4,6 +4,10 @@ const router = express.Router();
 const service1Controller = require('../controllers/service1');
 const accountController = require('../controllers/accountController');
 const { isAuthenticated } = require('../middlewares/authentication');
+const { validator, paramsValidator, paramsBodyValidator } = require('../middlewares/validator');
+const {
+  userPasswordSchema, userCreateSchema, userDeleteSchema, userUpdateSchema
+} = require('../middlewares/schemas/accountSchemas');
 
 router.post('/service1/login', accountController.login)
 
@@ -15,14 +19,14 @@ router.post('/service1/role',isAuthenticated, accountController.createRole);
 // user routes
 router.get('/service1/user', accountController.getUser);
 
-// router.get('/service1/user', accountController.getUser);
+// router.get('/service1/user/:username', accountController.getOneUser);
 
-router.post('/service1/user', accountController.updateUser);
+router.put('/service1/user', validator(userUpdateSchema), accountController.updateUser);
 
-router.post('/service1/user', accountController.createUser);
+router.put('/service1/user/password', validator(userPasswordSchema), accountController.updateUserPassword);
 
-router.post('/service1/user', accountController.deleteUser);
+router.post('/service1/user', validator(userCreateSchema), accountController.createUser);
 
-
+router.delete('/service1/user', validator(userDeleteSchema), accountController.deleteUser);
 
 module.exports = router;

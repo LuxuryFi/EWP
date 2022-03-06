@@ -55,4 +55,3 @@ module.exports = {
       ctraderDetailDescription: 'success',
     },
   };
-  
