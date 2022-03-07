@@ -6,53 +6,174 @@
 	},
 	"item": [
 		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3002/service1/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3002",
-					"path": [
-						"service1",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create User",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"gaconbibenh2@gmail.com\",\r\n    \"full_name\": \"Nguyen Quoc Anh\",\r\n    \"last_name\": \"full_name\",\r\n    \"first_name\": \"full_name\",\r\n    \"phone\": \"0966141598\",\r\n    \"role_id\": 2,\r\n    \"password\": \"123456789\",\r\n    \"avatar\": \"test\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "User",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"gaconbibenh4@gmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://103.107.182.190/service1/login",
+							"protocol": "http",
+							"host": [
+								"103",
+								"107",
+								"182",
+								"190"
+							],
+							"path": [
+								"service1",
+								"login"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3002/service1/user",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3002",
-					"path": [
-						"service1",
-						"user"
-					]
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"gaconbibenh2@gmail.com\",\r\n    \"full_name\": \"Nguyen Quoc Anh\",\r\n    \"last_name\": \"full_name\",\r\n    \"first_name\": \"full_name\",\r\n    \"phone\": \"0966141598\",\r\n    \"role_id\": 2,\r\n    \"password\": \"123456789\",\r\n    \"avatar\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://103.107.182.190/service1/user",
+							"protocol": "http",
+							"host": [
+								"103",
+								"107",
+								"182",
+								"190"
+							],
+							"path": [
+								"service1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"gaconbibenh2@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://103.107.182.190/service1/user",
+							"protocol": "http",
+							"host": [
+								"103",
+								"107",
+								"182",
+								"190"
+							],
+							"path": [
+								"service1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"gaconbibenh2@gmail.com\",\r\n    \"full_name\": \"Nguyen Quoc Anh\",\r\n    \"last_name\": \"31231231\",\r\n    \"first_name\": \"full_name2\",\r\n    \"phone\": \"0966141598\",\r\n    \"role_id\": 2,\r\n    \"avatar\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://103.107.182.190/service1/user",
+							"protocol": "http",
+							"host": [
+								"103",
+								"107",
+								"182",
+								"190"
+							],
+							"path": [
+								"service1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"gaconbibenh11@gmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://103.107.182.190/service1/user/password",
+							"protocol": "http",
+							"host": [
+								"103",
+								"107",
+								"182",
+								"190"
+							],
+							"path": [
+								"service1",
+								"user",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }
