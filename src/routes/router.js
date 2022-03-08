@@ -19,7 +19,7 @@ router.post('/service1/role',isAuthenticated, accountController.createRole);
 // user routes
 router.get('/service1/user', accountController.getUser);
 
-// router.get('/service1/user/:username', accountController.getOneUser);
+router.get('/service1/user/:username', accountController.getOneUser);
 
 router.put('/service1/user', validator(userUpdateSchema), accountController.updateUser);
 
