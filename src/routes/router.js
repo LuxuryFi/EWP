@@ -29,4 +29,6 @@ router.post('/service1/user', validator(userCreateSchema), accountController.cre
 
 router.delete('/service1/user', validator(userDeleteSchema), accountController.deleteUser);
 
+router.post('/service1/password-reset/:username', accountController.resetPassword);
+
 module.exports = router;

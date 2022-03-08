@@ -15,6 +15,7 @@
     "amqplib": "^0.8.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
@@ -23,6 +24,7 @@
     "logger": "git+https://github.com/LuxuryFi/anh-logger.git",
     "mongoose": "^6.1.7",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.2",
     "sequelize": "^7.0.0-alpha.4"
   },
   "devDependencies": {

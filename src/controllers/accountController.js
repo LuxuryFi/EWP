@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const response = require('../services/responseService');
 const { generateHashPassword } = require('../services/generateBcrypt');
 const customMessages = require('../configs/customMessages');
+const { generatePassword } = require('../services/generatePassword');
 
 exports.login = async (req, res) => {
   try {
@@ -180,5 +181,26 @@ exports.deleteUser = async (req, res) => {
   } catch (err) {
     logger.error('Account delete failed', err);
     res.send(err)
+  }
+}
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const username = req.params.username;
+
+    const newPassword = await generatePassword();
+
+    const hashedPassword = await generateHashPassword(newPassword);
+
+    const user = await User.update({
+      password: hashedPassword,
+    }, {
+      where: {
+        username,
+      }
+    })
+
+  } catch (err) {
+
   }
 }
