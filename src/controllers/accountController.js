@@ -6,6 +6,9 @@ const response = require('../services/responseService');
 const { generateHashPassword } = require('../services/generateBcrypt');
 const customMessages = require('../configs/customMessages');
 const { generatePassword } = require('../services/generatePassword');
+const emailService = require('../services/emailService.js');
+const { email } = require('../configs/config');
+const { EMAIL_SLUGS } = require('../configs/emailSlugs');
 
 exports.login = async (req, res) => {
   try {
@@ -100,11 +103,26 @@ exports.createUser = async (req, res) => {
     const data = req.body;
 
     const hashedPassword = await generateHashPassword(data.password);
-    console.log(hashedPassword)
+    const payload = {
+      username: data.username,
+      full_name: data.full_name,
+      last_name:  data.last_name,
+      first_name: data.first_name,
+      phone: data.phone,
+      role_id: data.role_id,
+      password: hashedPassword,
+      avatar: data.avatar
+    }
 
-    data.password = hashedPassword;
+    logger.debug('Payload for create', { payload });
     const result = await User.create(data);
     if (result) {
+      const sendEmail = await emailService.sendEmail({
+        password: data.password,
+        username: data.username,
+        email_slug: EMAIL_SLUGS.ACCOUNT_CREATED,
+      });
+
       logger.info('Account created', {user: result});
       return response.respondOk(res, result);
     }

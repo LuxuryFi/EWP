@@ -34,5 +34,10 @@ module.exports = {
     ws: {
         port: 2021,
 
-    }
+    },
+    email: {
+        user: process.env.EMAIL_USER_AUTH || 'gaconbibenh@gmail.com',
+        password: process.env.EMAIL_PASSWORD_AUTH  || 'hwnzibrilvmsynzp',
+        service: process.env.EMAIL_SERVICE || 'gmail',
+    },
 }
