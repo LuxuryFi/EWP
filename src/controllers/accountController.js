@@ -1,5 +1,6 @@
 const logger = require('../services/loggerService');
 const { User, Role } = require('../models');
+const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const response = require('../services/responseService');
@@ -117,7 +118,7 @@ exports.createUser = async (req, res) => {
     }
 
     logger.debug('Payload for create', { payload });
-    const result = await User.create(data);
+    const result = await User.create(payload);
     if (result) {
       const sendEmail = await emailService.sendEmail({
         password: data.password,
@@ -206,22 +207,42 @@ exports.deleteUser = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   try {
-    const username = req.params.username;
+    const { new_password: newPassword, confirm_password: confirmPassword } = req.body;
+    const { } = req.params.username;
+    if (!newPassword || !confirmPassword || newPassword !== confirmPassword) {
+      // if the password is missing or new and confirm passwords are not matching, return an error
+      logger.debug(customMessages.errors.passwordMissingOrNotMatching);
+      return response.respondBadRequest({ errors: [customMessages.errors.passwordMissingOrNotMatching] });
+    }
 
-    const newPassword = await generatePassword();
+    if (!req.params.token) {
+      logger.debug(customMessages.errors.noTokenInParam);
+      return res.status(400).json({ errors: [customMessages.errors.tokenMissingOrExpired] });
+    }
 
-    const hashedPassword = await generateHashPassword(newPassword);
-
-    const user = await User.update({
-      password: hashedPassword,
-    }, {
+    const user = await User.findOne({
       where: {
-        username,
+        reset_password_token: token,
+        reset_token_expires: {
+          [Op.gt]: Date.now(),
+        }
       }
     })
 
-  } catch (err) {
+    if (user) {
+      user.password = await generateHashPassword(newPassword);
+      user.reset_password_token = undefined;
+      user.reset_token_expires = undefined;
 
+      await user.save();
+      logger.info(`Password reset for user: ${user.username}`);
+      return response.respondOk(res, [customMessages.success.passwordHasBeenReset])
+    }
+    logger.debug(customMessages.errors.noTokenInParam);
+    return res.status(400).json({ errors: [customMessages.errors.tokenMissingOrExpired] });
+  } catch (err) {
+    logger.error('Account password reset failed', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 

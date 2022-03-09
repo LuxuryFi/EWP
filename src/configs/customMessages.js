@@ -45,6 +45,8 @@ module.exports = {
       failToPublishCTRADERTransferDeposit: 'Fail to Publish to CTRADER API Transfer Deposit',
       notAllowedDueToPlatformConfig: 'Account unable to be created due to platform configuration',
       referralNotFound: 'Referral not found',
+      noTokenInParam: 'Reset password route was called without a token',
+      tokenMissingOrExpired: 'The provided token is missing or it has expired',
     },
     success: {
       forgotPasswordMailSent: 'An email will be sent to your email address',
