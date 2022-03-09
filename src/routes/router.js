@@ -29,6 +29,14 @@ router.post('/service1/user', validator(userCreateSchema), accountController.cre
 
 router.delete('/service1/user', validator(userDeleteSchema), accountController.deleteUser);
 
-router.post('/service1/password-reset/:username', accountController.resetPassword);
+router.post('/service1/reset-password/:token', accountController.resetPassword);
+
+router.post('/service1/forgot-password', accountController.forgotPassword);
+
+// category route
+
+
+
+
 
 module.exports = router;

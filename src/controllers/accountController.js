@@ -9,6 +9,7 @@ const { generatePassword } = require('../services/generatePassword');
 const emailService = require('../services/emailService.js');
 const { email } = require('../configs/config');
 const { EMAIL_SLUGS } = require('../configs/emailSlugs');
+const crypto = require('crypto');
 
 exports.login = async (req, res) => {
   try {
@@ -221,4 +222,31 @@ exports.resetPassword = async (req, res) => {
   } catch (err) {
 
   }
+}
+
+exports.forgotPassword = async (req, res) => {
+    try {
+      const { username } = req.body;
+      const user = await User.findOne({
+        where: {
+          username,
+        }
+      });
+
+      if (user) {
+        const buffer = crypto.randomBytes(48);
+        user.reset_password_token = buffer.toString('hex');
+        user.reset_token_expires = Date.now() + config.general.resetTokenExpiration * 60 * 1000;
+        
+        const savedUser = await user.save();
+        logger.info('User reset token created and saved.', { username: savedUser.username, reset_password_token: savedUser.reset_password_token, expires: savedUser.reset_token_expires });
+        const sendEmail = await emailService.sendEmail({
+          username: data.username,
+          reset_password_token: savedUser.reset_password_token,
+          email_slug: EMAIL_SLUGS.PASSWORD_RESET,
+        });
+      }
+    } catch (err) {
+      
+    }
 }

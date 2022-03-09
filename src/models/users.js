@@ -13,7 +13,9 @@ module.exports = (sequelize, type) => sequelize.define('users', {
   profile_status: { type: type.BOOLEAN, allowNull: false, defaultValue: 0 },
   created_date: { type: type.DATE, allowNull: true, defaultValue: new Date()   },
   updated_date: { type: type.DATE, allowNull: true,  },
-  refreshToken: { type: type.TEXT, allowNull: true },
+  refresh_token: { type: type.TEXT, allowNull: true },
+  reset_password_token: { type: type.TEXT, allowNull: true },
+  reset_token_expires: { type: type.DATE, allowNull: true },
 }, {
   timestamps: false,
   // hooks: {

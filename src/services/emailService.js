@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const config = require('../configs/config');
-const { accountCreatedTemplate } = require('../utils/emailTemplate');
+const { accountCreatedTemplate, resetPasswordTemplate } = require('../utils/emailTemplate');
 const emailSlugConstants = require('../configs/emailSlugs');
 const logger = require('./loggerService');
 
@@ -24,9 +24,6 @@ exports.sendEmail = async (data) => {
         html: accountCreatedTemplate('Account created', data.username, data.password),
       }
 
-      console.log(config.email.user);
-      console.log(config.email.password);
-
       email = transporter.sendMail(mailOption, function(error, info){
         if (error) {
           logger.error('Email send failed', error);
@@ -34,6 +31,14 @@ exports.sendEmail = async (data) => {
          logger.info('Email sent: ' + info.response);
         }
       });
+    } else if (data.email_slug === emailSlugConstants.EMAIL_SLUGS.PASSWORD_RESET) {
+      const mailOption = {
+        from: config.email.user,
+        to: data.username,
+        subject: 'Your Account password reset link',
+        text: 'Welcome',
+        html: resetPasswordTemplate('Your Account password reset lin', data.username, data.reset_password_token),
+      }
     }
   } catch (err) {
     logger.error('Email send failed', error);
