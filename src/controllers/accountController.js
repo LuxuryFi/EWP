@@ -10,6 +10,7 @@ const emailService = require('../services/emailService.js');
 const { email } = require('../configs/config');
 const { EMAIL_SLUGS } = require('../configs/emailSlugs');
 const crypto = require('crypto');
+const config = require('../configs/config');
 
 exports.login = async (req, res) => {
   try {

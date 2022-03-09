@@ -40,4 +40,10 @@ module.exports = {
         password: process.env.EMAIL_PASSWORD_AUTH  || 'hwnzibrilvmsynzp',
         service: process.env.EMAIL_SERVICE || 'gmail',
     },
+    general: {
+        // Number of minutes after which a reset password token is considered invalid
+        resetTokenExpiration: 1 * 60 * 24,
+        // Number of minutes after which a reset password token is considered invalid
+        verificationTokenExpiration: 1 * 60 * 24,
+    },
 }
