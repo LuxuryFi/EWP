@@ -208,7 +208,6 @@ exports.deleteUser = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   try {
     const { new_password: newPassword, confirm_password: confirmPassword } = req.body;
-    const { } = req.params.username;
     if (!newPassword || !confirmPassword || newPassword !== confirmPassword) {
       // if the password is missing or new and confirm passwords are not matching, return an error
       logger.debug(customMessages.errors.passwordMissingOrNotMatching);
