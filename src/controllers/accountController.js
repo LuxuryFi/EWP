@@ -241,7 +241,7 @@ exports.forgotPassword = async (req, res) => {
         const savedUser = await user.save();
         logger.info('User reset token created and saved.', { username: savedUser.username, reset_password_token: savedUser.reset_password_token, expires: savedUser.reset_token_expires });
         const sendEmail = await emailService.sendEmail({
-          username: data.username,
+          username: savedUser.username,
           reset_password_token: savedUser.reset_password_token,
           email_slug: EMAIL_SLUGS.PASSWORD_RESET,
         });
