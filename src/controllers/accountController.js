@@ -213,8 +213,8 @@ exports.resetPassword = async (req, res) => {
       logger.debug(customMessages.errors.passwordMissingOrNotMatching);
       return response.respondBadRequest({ errors: [customMessages.errors.passwordMissingOrNotMatching] });
     }
-
-    if (!req.params.token) {
+    const token = req.params.token;
+    if (!token) {
       logger.debug(customMessages.errors.noTokenInParam);
       return res.status(400).json({ errors: [customMessages.errors.tokenMissingOrExpired] });
     }
