@@ -199,7 +199,7 @@ exports.deleteUser = async (req, res) => {
     }
   } catch (err) {
     logger.error('Account delete failed', err);
-    res.send(err)
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
@@ -232,7 +232,7 @@ exports.forgotPassword = async (req, res) => {
           username,
         }
       });
-
+      logger.info('User found', {user});
       if (user) {
         const buffer = crypto.randomBytes(48);
         user.reset_password_token = buffer.toString('hex');
@@ -245,8 +245,11 @@ exports.forgotPassword = async (req, res) => {
           reset_password_token: savedUser.reset_password_token,
           email_slug: EMAIL_SLUGS.PASSWORD_RESET,
         });
+        return response.respondOk(res, {savedUser});
       }
+
     } catch (err) {
-      
+      logger.info('User reset password failed.', err);
+      return response.respondInternalServerError(res, [customMessages.errors.internalError]);
     }
 }
