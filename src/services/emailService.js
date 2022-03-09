@@ -39,6 +39,14 @@ exports.sendEmail = async (data) => {
         text: 'Welcome',
         html: resetPasswordTemplate('Your Account password reset lin', data.username, data.reset_password_token),
       }
+
+      email = transporter.sendMail(mailOption, function(error, info){
+        if (error) {
+          logger.error('Email send failed', error);
+        } else {
+         logger.info('Email sent: ' + info.response);
+        }
+      });
     }
   } catch (err) {
     logger.error('Email send failed', error);
