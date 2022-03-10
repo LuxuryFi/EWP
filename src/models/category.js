@@ -1,8 +1,13 @@
-module.exports = (sequelize, type) => sequelize.define('roles', {
-  role_id: {
+module.exports = (sequelize, type) => sequelize.define('departments', {
+  department_id: {
     type: type.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false,
   },
-  role_name: { type: type.STRING(15), allowNull: true },
+  description: {
+    type: type.TEXT, allowNull: false,
+  },
+  staff_id: {
+    type: type.INTEGER, allowNull: false,
+  },
   created_date: { type: type.DATE, allowNull: true, defaultValue: new Date()   },
   updated_date: { type: type.DATE, allowNull: true,  },
 }, {

@@ -3,6 +3,8 @@ const express = require("express");
 const router = express.Router();
 const service1Controller = require('../controllers/service1');
 const accountController = require('../controllers/accountController');
+const departmentController = require('../controllers/departmentController');
+const categoryController = require('../controllers/categoryController')
 const { isAuthenticated } = require('../middlewares/authentication');
 const { validator, paramsValidator, paramsBodyValidator } = require('../middlewares/validator');
 const {
@@ -33,9 +35,30 @@ router.post('/service1/reset-password/:token', accountController.resetPassword);
 
 router.post('/service1/forgot-password', accountController.forgotPassword);
 
+// department route
+
+router.get('/service1/department', departmentController.getDepartment);
+
+router.get('/service1/department/:department_id', departmentController.getOneDepartment);
+
+router.put('/service1/department', departmentController.updateDepartment);
+
+router.post('/service1/department', departmentController.createDepartment);
+
+router.delete('/service1/department', departmentController.deleteDepartment);
+
+
 // category route
 
+router.get('/service1/department', categoryController.getCategory);
 
+router.get('/service1/department/:department_id', categoryController.getOneCategory);
+
+router.put('/service1/department', categoryController.updateCategory);
+
+router.post('/service1/department', categoryController.createCategory);
+
+router.delete('/service1/department', categoryController.deleteCategory);
 
 
 
