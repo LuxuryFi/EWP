@@ -2,6 +2,9 @@ module.exports = (sequelize, type) => sequelize.define('departments', {
   department_id: {
     type: type.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false,
   },
+  department_name: {
+    type: type.TEXT, allowNull: false,
+  },
   description: {
     type: type.TEXT, allowNull: false,
   },
