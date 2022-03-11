@@ -15,7 +15,16 @@ const config = require('../configs/config');
 const { ROLES } = require('../configs/ms-constants');
 
 exports.getCategory = async (req, res) => {
-
+  try {
+    const result = await Category.findAll();
+    if (result) {
+      logger.info('Category list', {category: result});
+      return response.respondOk(res, result);
+    }
+  } catch (err) {
+    logger.error('Cannot get category list', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
 }
 
 exports.createCategory = async (req, res) => {
@@ -23,7 +32,7 @@ exports.createCategory = async (req, res) => {
     const data = req.body;
     const checkUserExist = await User.findOne({
       where: {
-        user_id: data.staff_id, 
+        user_id: data.staff_id,
         role_id: ROLES.QA_COORDINATOR
       }
     });
@@ -32,7 +41,7 @@ exports.createCategory = async (req, res) => {
       logger.error('Staff is not existed', { user: checkUserExist});
       return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
     }
-    
+
     const category = await Category.create(data);
     if (category) {
       logger.info('Category created success', { category });
