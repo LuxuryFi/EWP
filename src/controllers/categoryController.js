@@ -48,7 +48,7 @@ exports.createCategory = async (req, res) => {
       return response.respondOk(res, category);
     }
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
-  } catch {
+  } catch (err) {
     logger.error('Categogy create failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
