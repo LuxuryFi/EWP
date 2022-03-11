@@ -29,7 +29,7 @@ router.put('/service1/user/password', validator(userPasswordSchema), accountCont
 
 router.post('/service1/user', validator(userCreateSchema), accountController.createUser);
 
-router.delete('/service1/user/user_id', validator(userDeleteSchema), accountController.deleteUser);
+router.delete('/service1/user/:user_id', validator(userDeleteSchema), accountController.deleteUser);
 
 router.post('/service1/reset-password/:token', accountController.resetPassword);
 
