@@ -203,10 +203,8 @@ exports.updateUserPassword = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const user_id = req.params.user_id;
-    const result = await User.destroy({ where: {
-      user_id,
-    } });
+    const data = req.body;
+    const result = await User.destroy({ where: data});
 
     if (isDeleted) {
       logger.info('User deleted', { isDeleted });
@@ -272,7 +270,7 @@ exports.forgotPassword = async (req, res) => {
         const buffer = crypto.randomBytes(48);
         user.reset_password_token = buffer.toString('hex');
         user.reset_token_expires = Date.now() + config.general.resetTokenExpiration * 60 * 1000;
-        
+
         const savedUser = await user.save();
         logger.info('User reset token created and saved.', { username: savedUser.username, reset_password_token: savedUser.reset_password_token, expires: savedUser.reset_token_expires });
         const sendEmail = await emailService.sendEmail({
