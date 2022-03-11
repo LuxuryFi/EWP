@@ -203,11 +203,13 @@ exports.updateUserPassword = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const data = req.body;
-    const result = await User.destroy({ where: data});
+    const user_id = req.params.user_id;
+    const result = await User.destroy({ where: {
+      user_id,
+    } });
 
-    if (isDeleted) {
-      logger.info('User deleted', { isDeleted });
+    if (result) {
+      logger.info('User deleted', { result });
       return response.respondOk(res, result);
     }
     return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
