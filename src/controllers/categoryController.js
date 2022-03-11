@@ -75,18 +75,19 @@ exports.getOneCategory = async (req, res, next) => {
 
 exports.updateCategory = async (req, res) => {
   try {
-    // const category_id = req.params.category_id;
     const data = req.body;
     const category = await Category.findOne({
       where: {
-        category_id: data.category_id,
+        category_id: data.category_id
       },
     });
+
     if (category) {
+      // console.log('Test')
       const staff = await User.findOne({
         where: {
           user_id: data.staff_id,
-          role: ROLES.QA_COORDINATOR
+          role_id: ROLES.QA_COORDINATOR
         },
       });
 
@@ -94,10 +95,17 @@ exports.updateCategory = async (req, res) => {
         logger.error('Staff is not existed', data.staff_id);
         return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
       }
-      logger.info('Category found', { category });
-      return response.respondOk(res, category);
+
+      const updateCategory = await Category.update(data, {
+        where: {
+          category_id: data.category_id,
+        }
+      });
+
+      logger.info('Category found', { updateCategory });
+      return response.respondOk(res, updateCategory);
     };
-    return next(marginInfo);
+    return next(category);
   } catch (err) {
     logger.error('Failed to update category', category_id);
     return response.respondInternalServerError(err, [customMessages.errors.internalError]);
@@ -107,7 +115,7 @@ exports.updateCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
   try {
     const category_id = req.params.category_id;
-    const result = await User.destroy({ where: {
+    const result = await Category.destroy({ where: {
       category_id,
     } });
 

@@ -1,12 +1,15 @@
-module.exports = (sequelize, type) => sequelize.define('departments', {
-  department_id: {
+module.exports = (sequelize, type) => sequelize.define('categories', {
+  category_id: {
     type: type.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false,
   },
-  department_name: {
+  category_name: {
     type: type.TEXT, allowNull: false,
   },
   description: {
     type: type.TEXT, allowNull: false,
+  },
+  department_id: {
+    type: type.INTEGER, allowNull: false,
   },
   staff_id: {
     type: type.INTEGER, allowNull: false,

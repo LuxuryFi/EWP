@@ -4,9 +4,14 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const response = require('../services/responseService');
+const { generateHashPassword } = require('../services/generateBcrypt');
 const customMessages = require('../configs/customMessages');
 const { generatePassword } = require('../services/generatePassword');
+const emailService = require('../services/emailService.js');
+const { email } = require('../configs/config');
+const { EMAIL_SLUGS } = require('../configs/emailSlugs');
 const crypto = require('crypto');
+const config = require('../configs/config');
 const { ROLES } = require('../configs/ms-constants');
 
 exports.getDepartment = async (req, res) => {
@@ -33,7 +38,7 @@ exports.createDepartment = async (req, res) => {
     });
 
     if (!checkUserExist) {
-      logger.error('Manager is not existed', { user: checkUserExist});
+      logger.error('Staff is not existed', { user: checkUserExist});
       return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
     }
 
@@ -70,18 +75,19 @@ exports.getOneDepartment = async (req, res, next) => {
 
 exports.updateDepartment = async (req, res) => {
   try {
-    // const department_id = req.params.department_id;
     const data = req.body;
     const department = await Department.findOne({
       where: {
-        department_id: data.department_id,
+        department_id: data.department_id
       },
     });
+
     if (department) {
+      // console.log('Test')
       const staff = await User.findOne({
         where: {
-          user_id: data.staff_id,
-          role: ROLES.QA_COORDINATOR
+          user_id: data.manager_id,
+          role_id: ROLES.QA_MANAGER
         },
       });
 
@@ -89,10 +95,17 @@ exports.updateDepartment = async (req, res) => {
         logger.error('Staff is not existed', data.staff_id);
         return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
       }
-      logger.info('Department found', { department });
-      return response.respondOk(res, department);
+
+      const updateDepartment = await Department.update(data, {
+        where: {
+          department_id: data.department_id,
+        }
+      });
+
+      logger.info('Department found', { updateDepartment });
+      return response.respondOk(res, updateDepartment);
     };
-    return next(marginInfo);
+    return next(department);
   } catch (err) {
     logger.error('Failed to update department', department_id);
     return response.respondInternalServerError(err, [customMessages.errors.internalError]);
@@ -102,7 +115,7 @@ exports.updateDepartment = async (req, res) => {
 exports.deleteDepartment = async (req, res) => {
   try {
     const department_id = req.params.department_id;
-    const result = await User.destroy({ where: {
+    const result = await Department.destroy({ where: {
       department_id,
     } });
 
