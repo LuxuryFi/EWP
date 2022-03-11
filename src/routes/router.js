@@ -29,7 +29,7 @@ router.put('/service1/user/password', validator(userPasswordSchema), accountCont
 
 router.post('/service1/user', validator(userCreateSchema), accountController.createUser);
 
-router.delete('/service1/user', validator(userDeleteSchema), accountController.deleteUser);
+router.delete('/service1/user/user_id', validator(userDeleteSchema), accountController.deleteUser);
 
 router.post('/service1/reset-password/:token', accountController.resetPassword);
 
@@ -45,20 +45,20 @@ router.put('/service1/department', departmentController.updateDepartment);
 
 router.post('/service1/department', departmentController.createDepartment);
 
-router.delete('/service1/department', departmentController.deleteDepartment);
+router.delete('/service1/department/:department_id', departmentController.deleteDepartment);
 
 
 // category route
 
-router.get('/service1/department', categoryController.getCategory);
+router.get('/service1/category', categoryController.getCategory);
 
-router.get('/service1/department/:department_id', categoryController.getOneCategory);
+router.get('/service1/category/:category_id', categoryController.getOneCategory);
 
-router.put('/service1/department', categoryController.updateCategory);
+router.put('/service1/category', categoryController.updateCategory);
 
-router.post('/service1/department', categoryController.createCategory);
+router.post('/service1/category', categoryController.createCategory);
 
-router.delete('/service1/department', categoryController.deleteCategory);
+router.delete('/service1/category/:category_id', categoryController.deleteCategory);
 
 
 

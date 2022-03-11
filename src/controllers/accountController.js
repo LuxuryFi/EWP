@@ -117,6 +117,17 @@ exports.createUser = async (req, res) => {
       avatar: data.avatar
     }
 
+    const checkUsernameExist = await User.findOne({
+      where: {
+        username,
+      }
+    })
+
+    if (checkUsernameExist) {
+      logger.error('Username existed in the system', { username: checkUsernameExist });
+      return response.respondInternalServerError(res, [customMessages.errors.userNameExisted]);
+    }
+
     logger.debug('Payload for create', { payload });
     const result = await User.create(payload);
     if (result) {
@@ -192,13 +203,16 @@ exports.updateUserPassword = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const data = req.body;
-    const result = await User.destroy({ where: data });
+    const user_id = req.params.user_id;
+    const result = await User.destroy({ where: {
+      user_id,
+    } });
 
     if (isDeleted) {
       logger.info('User deleted', { isDeleted });
       return response.respondOk(res, result);
     }
+    return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
   } catch (err) {
     logger.error('Account delete failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
