@@ -119,7 +119,7 @@ exports.createUser = async (req, res) => {
 
     const checkUsernameExist = await User.findOne({
       where: {
-        username,
+        username: data.username,
       }
     })
 
