@@ -1,10 +1,9 @@
 const logger = require('../services/loggerService');
-const { User, Role, Category } = require('../models');
+const { User, Role, AcademicYear } = require('../models');
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const response = require('../services/responseService');
-const { generateHashPassword } = require('../services/generateBcrypt');
 const customMessages = require('../configs/customMessages');
 const { generatePassword } = require('../services/generatePassword');
 const emailService = require('../services/emailService.js');
@@ -14,101 +13,94 @@ const crypto = require('crypto');
 const config = require('../configs/config');
 const { ROLES } = require('../configs/ms-constants');
 
-exports.getCategory = async (req, res) => {
-
-}
-
-exports.createCategory = async (req, res) => {
+exports.getAcademicYear = async (req, res) => {
   try {
-    const data = req.body;
-    const checkUserExist = await User.findOne({
-      where: {
-        user_id: data.staff_id, 
-        role_id: ROLES.QA_COORDINATOR
-      }
-    });
-
-    if (!checkUserExist) {
-      logger.error('Staff is not existed', { user: checkUserExist});
-      return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
+    const result = await AcademicYear.findAll();
+    if (result) {
+      logger.info('Term list', {term: result});
+      return response.respondOk(res, result);
     }
-    
-    const category = await Category.create(data);
-    if (category) {
-      logger.info('Category created success', { category });
-      return response.respondOk(res, category);
-    }
-    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
-  } catch {
-    logger.error('Categogy create failed', err);
+  } catch (err) {
+    logger.error('Cannot get term list', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
-exports.getOneCategory = async (req, res, next) => {
+exports.createAcademicYear = async (req, res) => {
   try {
-    const category_id = req.params.category_id;
-    const category = await Category.findOne({
+    const data = req.body;
+
+    const term = await AcademicYear.create(data);
+    if (term) {
+      logger.info('Term created success', { term });
+      return response.respondOk(res, term);
+    }
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  } catch (err) {
+    logger.error('Term create failed', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.getOneAcademicYear = async (req, res, next) => {
+  try {
+    const term_id = req.params.term_id;
+    const term = await AcademicYear.findOne({
       where: {
-        category_id,
+        term_id,
       }
     });
-    if (category) {
-      logger.info('Category found', { category });
-      return response.respondOk(res, category);
+    if (term) {
+      logger.info('Term found', { term });
+      return response.respondOk(res, term);
     };
     return next(marginInfo);
   } catch (err) {
-    logger.error('Failed to get category', category_id);
+    logger.error('Failed to get term', term_id);
     return response.respondInternalServerError(err, [customMessages.errors.internalError]);
   }
 }
 
-exports.updateCategory = async (req, res) => {
+exports.updateAcademicYear = async (req, res) => {
   try {
-    // const category_id = req.params.category_id;
     const data = req.body;
-    const category = await Category.findOne({
+    const term = await AcademicYear.findOne({
       where: {
-        category_id: data.category_id,
+        term_id: data.term_id
       },
     });
-    if (category) {
-      const staff = await User.findOne({
+
+    if (term) {
+      const updateAcademicYear = await AcademicYear.update(data, {
         where: {
-          user_id: data.staff_id,
-          role: ROLES.QA_COORDINATOR
-        },
+          term_id: data.term_id,
+        }
       });
 
-      if (!staff) {
-        logger.error('Staff is not existed', data.staff_id);
-        return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
-      }
-      logger.info('Category found', { category });
-      return response.respondOk(res, category);
+      logger.info('AcademicYear found', { updateAcademicYear });
+      return response.respondOk(res, updateAcademicYear);
     };
-    return next(marginInfo);
+    return next(term);
   } catch (err) {
-    logger.error('Failed to update category', category_id);
+    logger.error('Failed to update term', term_id);
     return response.respondInternalServerError(err, [customMessages.errors.internalError]);
   }
 }
 
-exports.deleteCategory = async (req, res) => {
+exports.deleteAcademicYear = async (req, res) => {
   try {
-    const category_id = req.params.category_id;
-    const result = await User.destroy({ where: {
-      category_id,
+    const term_id = req.params.term_id;
+    const result = await AcademicYear.destroy({ where: {
+      term_id,
     } });
 
     if (result) {
-      logger.info('Category deleted', { result });
+      logger.info('AcademicYear deleted', { result });
       return response.respondOk(res, result);
     }
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
-    logger.error('Category delete failed', err);
+    logger.error('AcademicYear delete failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }

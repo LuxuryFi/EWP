@@ -4,7 +4,6 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const response = require('../services/responseService');
-const { generateHashPassword } = require('../services/generateBcrypt');
 const customMessages = require('../configs/customMessages');
 const { generatePassword } = require('../services/generatePassword');
 const emailService = require('../services/emailService.js');

@@ -4,7 +4,8 @@ const router = express.Router();
 const service1Controller = require('../controllers/service1');
 const accountController = require('../controllers/accountController');
 const departmentController = require('../controllers/departmentController');
-const categoryController = require('../controllers/categoryController')
+const categoryController = require('../controllers/categoryController');
+const academicYearController = require('../controllers/academicYearController');
 const { isAuthenticated } = require('../middlewares/authentication');
 const { validator, paramsValidator, paramsBodyValidator } = require('../middlewares/validator');
 const {
@@ -60,6 +61,17 @@ router.post('/service1/category', categoryController.createCategory);
 
 router.delete('/service1/category/:category_id', categoryController.deleteCategory);
 
+// Academic route
+
+router.get('/service1/academic', academicYearController.getAcademicYear);
+
+router.get('/service1/academic/:category_id', academicYearController.getOneAcademicYear);
+
+router.put('/service1/academic', academicYearController.updateAcademicYear);
+
+router.post('/service1/academic', academicYearController.createAcademicYear);
+
+router.delete('/service1/academic/:category_id', academicYearController.deleteAcademicYear);
 
 
 module.exports = router;
