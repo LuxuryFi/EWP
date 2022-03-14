@@ -16,6 +16,7 @@ const userCreateSchema = Joi.object().keys({
   phone: Joi.string().required(),
   role_id: Joi.number().required(),
   avatar: Joi.string().required(),
+  department_id: Joi.number().required(),
 });
 
 const userUpdateSchema = Joi.object().keys({
@@ -27,6 +28,7 @@ const userUpdateSchema = Joi.object().keys({
   phone: Joi.string().required(),
   role_id: Joi.number().required(),
   avatar: Joi.string().required(),
+  department_id: Joi.number().required(),
 });
 
 const userDeleteSchema = Joi.object().keys({

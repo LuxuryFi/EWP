@@ -1,5 +1,5 @@
 const logger = require('../services/loggerService');
-const { User, Role } = require('../models');
+const { User, Role, Department } = require('../models');
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -114,18 +114,30 @@ exports.createUser = async (req, res) => {
       phone: data.phone,
       role_id: data.role_id,
       password: hashedPassword,
+      department_id: data.department_id,
       avatar: data.avatar
     }
 
     const checkUsernameExist = await User.findOne({
       where: {
-        username,
+        username: data.username,
       }
     })
 
     if (checkUsernameExist) {
       logger.error('Username existed in the system', { username: checkUsernameExist });
       return response.respondInternalServerError(res, [customMessages.errors.userNameExisted]);
+    }
+
+    const checkDepartmentExist = await Department.findOne({
+      where: {
+        department_id: data.department_id
+      },
+    });
+
+    if (!checkDepartmentExist) {
+      logger.error('Deparment is not exist in the system', { department_id: data.department_id});
+      return response.respondInternalServerError(res, [customMessages.errors.departmentNotExisted])
     }
 
     logger.debug('Payload for create', { payload });
@@ -157,9 +169,26 @@ exports.updateUser = async (req, res) => {
       role_id: data.role_id,
       avatar: data.avatar
     }
+    const checkUsernameExist = await User.findOne({
+      where: {
+        username: data.username,
+      }
+    })
 
-    const updateCondition = {
-      username: data.username,
+    if (checkUsernameExist) {
+      logger.error('Username existed in the system', { username: checkUsernameExist });
+      return response.respondInternalServerError(res, [customMessages.errors.userNameExisted]);
+    }
+
+    const checkDepartmentExist = await Department.findOne({
+      where: {
+        department_id: data.department_id
+      },
+    });
+
+    if (!checkDepartmentExist) {
+      logger.error('Deparment is not exist in the system', { department_id: data.department_id});
+      return response.respondInternalServerError(res, [customMessages.errors.departmentNotExisted])
     }
 
     const result = await User.update(updateData, {

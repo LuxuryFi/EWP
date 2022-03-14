@@ -48,6 +48,7 @@ module.exports = {
       noTokenInParam: 'Reset password route was called without a token',
       tokenMissingOrExpired: 'The provided token is missing or it has expired',
       userNameExisted: 'Username existed in the system',
+      departmentNotExisted: 'Deparment not existed in the system'
     },
     success: {
       forgotPasswordMailSent: 'An email will be sent to your email address',
