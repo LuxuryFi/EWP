@@ -1,158 +1,476 @@
 exports.accountCreatedTemplate = (name, username, password) => {
-    return `<html>
+    return `<html lang="en">
+
     <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <style>
-    .container {
-      padding: 0 auto;
-      width: 100%;
-    }
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <style>
+        * {
+          margin: 0;
+          padding: 0;
+        }
 
-    .box {
-      border: 1px solid #000;
-      width: 45%;
-      margin: 0 auto;
-    }
+        body {
+          width: 100%;
+          background-color: #E5E5E5;
+          height: 100%;
 
-    .header {
-      padding: 25px;
-      text-align: center;
-      background-color: #0D6EFD;
-      color: #fff;
-      font-size: 20px;
-    }
 
-    .main {
-      padding: 25px 40px 25px 40px;
-      height: auto;
-      text-align: center;
-      font-size: 18px;
-    }
+        }
 
-    .footer {
-      padding: 25px;
-      text-align: center;
-      color: #fff;
-      background-color: #DC3545;
-      font-size: 18px;
-    }
+        .ova {
+          width: 40%;
+          background-color: #fff;
+          margin: 0 auto;
 
-    @media only screen and (max-width: 600px) {
-      .box {
-        border: 1px solid #000;
-        width: 100%;
-      }
-    }
+        }
 
-  </style>
-    <title>Document</title>
-  </head>
-  <body>
-    <div class="box">
-      <div class="bg-primary text-light header" width="200">
-        ${name}
+
+        header {
+          height: 155px;
+          background-color: #F2EDF3;
+        }
+
+        .brand {
+          height: 224px;
+          text-align: center;
+        }
+
+
+        .welcome {
+          height: 55px;
+          background-color: #fff;
+          align-items: center;
+          line-height: 50px;
+          margin: 50px 0px 25px 0;
+        }
+
+        .content {
+          height: 120%;
+          margin: 0 10%;
+        }
+
+        .welcome p {
+          font-size: 22px;
+          color: #000;
+          font-family: Open Sans;
+        }
+
+        .text-content p {
+          font-size: 16px;
+          color: #000;
+          font-family: Open Sans;
+        }
+
+        .ew-f {
+          margin: 20px 0;
+        }
+
+        .ew-f p {
+          font-size: 16px;
+          color: #000;
+        }
+
+        .btn-content {
+          background: linear-gradient(180deg, #DA8CFF 0%, rgba(154, 85, 255, 0.93) 100%);
+          padding: 8px 30px;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+        }
+
+
+        footer {
+          position: relative;
+          height: 80px;
+          background-color: #F2EDF3;
+          margin-top: 150px;
+
+        }
+
+        .text-footer {
+          text-align: center;
+          line-height: 32px;
+
+        }
+
+        .text-footer-container {
+          margin-top: 10px
+        }
+
+        .text-footer p {
+          font-size: 16px;
+          color: #000;
+          font-family: Open Sans;
+          opacity: 0.7;
+
+        }
+
+        .btn-content:hover {
+          cursor: pointer;
+          background-color: #000;
+          border: solid 1px rgba(89, 3, 218, 0.93);
+        }
+
+        /* ipad pro */
+        @media all and (max-width: 1024px) {
+          .welcome {
+            height: 80px;
+            line-height: 30px;
+            margin: 50px 0 0 0;
+          }
+
+          .brand img {
+            width: 200px;
+            height: auto;
+          }
+
+          header {
+            height: 140px;
+          }
+
+          .ova {
+            width: 60%;
+          }
+
+
+        }
+
+        /* small tablet */
+        @media all and (max-width: 600px) {
+          .text-footer p {
+            font-size: 14px;
+          }
+
+
+          .ova {
+            width: 100%;
+          }
+
+        }
+
+        /* iPhone 6/7/8 Plus */
+
+        @media all and (max-width: 414px) {
+          .text-footer p {
+            font-size: 12px;
+          }
+
+          .brand img {
+            width: 160px;
+            height: auto;
+          }
+
+          header {
+            height: 110px;
+          }
+
+          .text-footer {
+            line-height: 30px;
+          }
+
+        }
+
+      </style>
+      <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+      <div class="ova">
+
+
+        <!-- header -->
+        <header>
+          <div class="container-header">
+            <div class="brand">
+
+              <img class="img-responsive" src="https://i.imgur.com/IM8jRzq.png" />
+            </div>
+          </div>
+
+        </header>
+
+        <!-- content -->
+
+        <section class="content">
+          <div class="welcome">
+            <p>Welcome to ABC!</p>
+          </div>
+          <div class="container-content">
+            <div class="first-text-content">
+
+              <div class="text-content">
+                <p>ABC has invited you to access as a member.</p>
+                <div class="ew-f">
+                  <p>Email: ${username}</p>
+                  <p>Password: ${password}</p>
+                </div>
+
+                <button class="btn-content">Log in here</button>
+
+                <div class="ew-f">
+                  <p>If you weren't expecting this invitation, you can decline.</p>
+                  <p>If you have any questions, contact us.</p>
+                </div>
+
+                <div class="ew-f">
+                  <p>Best regards,</p>
+                  <p>ABC</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+        <!-- footer -->
+        <footer>
+          <div class="text-footer">
+            <p>+84 (0) 456 - 789 - 123</p>
+            <p>2021 ABC Company. All Rights Reserved</p>
+          </div>
+        </footer>
+
       </div>
-      <div class="main">
-        Trong một khu rừng nọ, có một cô Vịt mẹ đang ấp trứng, hồi hộp mong chờ đến ngày được gặp mặt những đứa con yêu quý của mình.
-  Cuối cùng ngày đó cũng đến, từng quả trứng nở ra, những chú vịt con xinh xắn và đáng yêu lần lượt nhảy ra ngoài, kêu “Cạc cạc”, Vịt mẹ vui lắm. Nhưng vẫn còn một quả trứng lớn nhất ở trong ổ vẫn chưa nở, thế là nó lại nằm xuống ấp tiếp. Bác Vịt già đi ngang qua, hỏi Vịt mẹ: “Này, cô đang làm gì ở đấy thế? Con của cô đã nở hết chưa?” Vịt mẹ nói: “Vẫn còn một trứng chưa nở chị ạ
-  Bác Vịt già bèn đi tới xem quả trứng và nói: “Quả trứng to thế này, chắc chắn không phải là trứng của cô đâu. Không chừng lại là trứng Gà tây đấy!” Vịt mẹ nghe lời bác Vịt già nói thì đâm bán tin bán nghi. Bác Vịt già lại nói: “Tốt nhất là cô cứ mặc kệ nó, mau đi dạy lũ con của mình bơi lội đi!” “Không! Tôi nhất định phải ở đây.” Nói xong, Vịt mẹ lại nằm xuống cái ổ của mình.
-        Username: ${username},
-        Password: ${password}
-  </div>
-      <div class="footer bg-danger text-light">
-        Em ngồi đây và em khóc huhu
-      </div>
-    </div>
-  </body>
-  </html>`
+    </body>
+
+    </html>`
 }
 
 exports.resetPasswordTemplate = (name, username, password) => {
-  return `<html>
+  return `<html lang="en">
   <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  <style>
-  .container {
-    padding: 0 auto;
-    width: 100%;
-  }
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
 
-  .box {
-    border: 1px solid #000;
-    width: 45%;
-    margin: 0 auto;
-  }
+      body {
+        width: 100%;
+        background-color: #E5E5E5;
+        height: 100%;
 
-  .header {
-    padding: 25px;
-    text-align: center;
-    background-color: #0D6EFD;
-    color: #fff;
-    font-size: 20px;
-  }
 
-  .main {
-    padding: 25px 40px 25px 40px;
-    height: auto;
-    text-align: center;
-    font-size: 18px;
-  }
+      }
 
-  .footer {
-    padding: 25px;
-    text-align: center;
-    color: #fff;
-    background-color: #DC3545;
-    font-size: 18px;
-  }
+      .ova {
+        width: 40%;
+        background-color: #fff;
+        margin: 0 auto;
 
-  .csw-btn-button {
-    cursor: pointer;
-    font-size: 16px;
-    padding: 10px 35px;
-    color: #ffffff !important;
-    border-radius: 5px;
-    background: #9B6A1D;
-    border: 1px solid #9B6A1D;
-    transition: 0.4s;
-    }
-    .csw-btn-button:hover {
-    background: #292929;
-    }
+      }
 
-  @media only screen and (max-width: 600px) {
-    .box {
-      border: 1px solid #000;
-      width: 100%;
-    }
-  }
 
-</style>
-  <title>Document</title>
-</head>
-<body>
-  <div class="box">
-    <div class="bg-primary text-light header" width="200">
-      ${name}
-    </div>
-    <div class="main">
-      Trong một khu rừng nọ, có một cô Vịt mẹ đang ấp trứng, hồi hộp mong chờ đến ngày được gặp mặt những đứa con yêu quý của mình.
-Cuối cùng ngày đó cũng đến, từng quả trứng nở ra, những chú vịt con xinh xắn và đáng yêu lần lượt nhảy ra ngoài, kêu “Cạc cạc”, Vịt mẹ vui lắm. Nhưng vẫn còn một quả trứng lớn nhất ở trong ổ vẫn chưa nở, thế là nó lại nằm xuống ấp tiếp. Bác Vịt già đi ngang qua, hỏi Vịt mẹ: “Này, cô đang làm gì ở đấy thế? Con của cô đã nở hết chưa?” Vịt mẹ nói: “Vẫn còn một trứng chưa nở chị ạ
-Bác Vịt già bèn đi tới xem quả trứng và nói: “Quả trứng to thế này, chắc chắn không phải là trứng của cô đâu. Không chừng lại là trứng Gà tây đấy!” Vịt mẹ nghe lời bác Vịt già nói thì đâm bán tin bán nghi. Bác Vịt già lại nói: “Tốt nhất là cô cứ mặc kệ nó, mau đi dạy lũ con của mình bơi lội đi!” “Không! Tôi nhất định phải ở đây.” Nói xong, Vịt mẹ lại nằm xuống cái ổ của mình.
-      
-    <a href="https://chuanseoweb.com/" class="csw-btn-button" rel="nofollow" target="_blank" >Reset your password</a>
+      header {
+        height: 155px;
+        background-color: #F2EDF3;
+      }
 
-</div>
-    <div class="footer bg-danger text-light">
-      Em ngồi đây và em khóc huhu
-    </div>
+      .brand {
+        height: 224px;
+        text-align: center;
+      }
+
+
+      .welcome {
+        height: 55px;
+        background-color: #fff;
+        align-items: center;
+        line-height: 50px;
+        margin: 50px 0px 25px 0;
+      }
+
+      .content {
+        height: 120%;
+        margin: 0 10%;
+      }
+
+      .welcome p {
+        font-size: 22px;
+        color: #000;
+        font-family: Open Sans;
+      }
+
+      .text-content p {
+        font-size: 16px;
+        color: #000;
+        font-family: Open Sans;
+      }
+
+      .ew-f {
+        margin: 20px 0;
+      }
+
+      .ew-f p {
+        font-size: 16px;
+        color: #000;
+      }
+
+      .btn-content {
+        background: linear-gradient(180deg, #DA8CFF 0%, rgba(154, 85, 255, 0.93) 100%);
+        padding: 8px 30px;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+      }
+
+
+      footer {
+        position: relative;
+        height: 80px;
+        background-color: #F2EDF3;
+        margin-top: 150px;
+
+      }
+
+      .text-footer {
+        text-align: center;
+        line-height: 32px;
+
+      }
+
+      .text-footer-container {
+        margin-top: 10px
+      }
+
+      .text-footer p {
+        font-size: 16px;
+        color: #000;
+        font-family: Open Sans;
+        opacity: 0.7;
+
+      }
+
+      .btn-content:hover {
+        cursor: pointer;
+        background-color: #000;
+        border: solid 1px rgba(89, 3, 218, 0.93);
+      }
+
+      /* ipad pro */
+      @media all and (max-width: 1024px) {
+        .welcome {
+          height: 80px;
+          line-height: 30px;
+          margin: 50px 0 0 0;
+        }
+
+        .brand img {
+          width: 200px;
+          height: auto;
+        }
+
+        header {
+          height: 140px;
+        }
+
+        .ova {
+          width: 60%;
+        }
+
+
+      }
+
+      /* small tablet */
+      @media all and (max-width: 600px) {
+        .text-footer p {
+          font-size: 14px;
+        }
+
+
+        .ova {
+          width: 100%;
+        }
+
+      }
+
+      /* iPhone 6/7/8 Plus */
+
+      @media all and (max-width: 414px) {
+        .text-footer p {
+          font-size: 12px;
+        }
+
+        .brand img {
+          width: 160px;
+          height: auto;
+        }
+
+        header {
+          height: 110px;
+        }
+
+        .text-footer {
+          line-height: 30px;
+        }
+
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="ova">
+
+
+    <!-- header -->
+    <header>
+      <div class="container-header">
+        <div class="brand">
+
+          <img class="img-responsive" src="https://i.imgur.com/IM8jRzq.png" />
+        </div>
+      </div>
+
+    </header>
+
+    <!-- content -->
+
+    <section class="content">
+      <div class="welcome">
+        <p>Hello!</p>
+      </div>
+      <div class="container-content">
+        <div class="first-text-content">
+
+          <div class="text-content">
+            <p>This email is to confirm your request for a new password.</p>
+            <div class="ew-f">
+
+                <p>Simply click on the button below to set your new password. Please note this link is only valid for 24 hours.</p>
+            </div>
+
+            <button class="btn-content">Change Password</button>
+
+            <div class="ew-f">
+
+                <p>If you have any questions, contact us.</p>
+            </div>
+
+            <div class="ew-f">
+                <p>Best regards,</p>
+                <p>ABC</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <!-- footer -->
+    <footer>
+      <div class="text-footer">
+          <p>+84 (0) 456 - 789 - 123</p>
+            <p>2021 ABC Company. All Rights Reserved</p>
+      </div>
+  </footer>
+
   </div>
-</body>
+  </body>
 </html>`
 }

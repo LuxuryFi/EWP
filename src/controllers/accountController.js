@@ -237,8 +237,8 @@ exports.deleteUser = async (req, res) => {
       user_id,
     } });
 
-    if (isDeleted) {
-      logger.info('User deleted', { isDeleted });
+    if (result) {
+      logger.info('User deleted', { result });
       return response.respondOk(res, result);
     }
     return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
@@ -301,7 +301,7 @@ exports.forgotPassword = async (req, res) => {
         const buffer = crypto.randomBytes(48);
         user.reset_password_token = buffer.toString('hex');
         user.reset_token_expires = Date.now() + config.general.resetTokenExpiration * 60 * 1000;
-        
+
         const savedUser = await user.save();
         logger.info('User reset token created and saved.', { username: savedUser.username, reset_password_token: savedUser.reset_password_token, expires: savedUser.reset_token_expires });
         const sendEmail = await emailService.sendEmail({
