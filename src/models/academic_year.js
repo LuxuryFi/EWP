@@ -9,5 +9,5 @@ module.exports = (sequelize, type) => sequelize.define('academic_years', {
     end_date: { type: type.DATE, allowNull: true,  },
     first_closure_date: { type: type.DATE, allowNull: true,  },
     final_closure_date: { type: type.DATE, allowNull: true,  },
-    status: { type: type.BOOL, allowNull: false },
+    status: { type: type.BOOLEAN, allowNull: false },
 });

@@ -23,6 +23,7 @@
     "jsonwebtoken": "^8.5.1",
     "logger": "git+https://github.com/LuxuryFi/anh-logger.git",
     "mongoose": "^6.1.7",
+    "multer": "^1.4.4",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.2",
     "sequelize": "^7.0.0-alpha.4"
