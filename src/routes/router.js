@@ -27,7 +27,7 @@ router.get('/service1/user', accountController.getUser);
 
 router.get('/service1/user/:username', accountController.getOneUser);
 
-router.put('/service1/user/:user_id', validator(userUpdateSchema), accountController.updateUser);
+router.put('/service1/user/:user_id', accountController.updateUser);
 
 router.put('/service1/user/password', validator(userPasswordSchema), accountController.updateUserPassword);
 
