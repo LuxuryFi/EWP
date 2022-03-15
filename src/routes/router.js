@@ -31,7 +31,7 @@ router.put('/service1/user', validator(userUpdateSchema), accountController.upda
 
 router.put('/service1/user/password', validator(userPasswordSchema), accountController.updateUserPassword);
 
-router.post('/service1/user', uploadAvatar.single('avatar'), accountController.createUser);
+router.post('/service1/user', validator(userCreateSchema), uploadAvatar.single('avatar'), accountController.createUser);
 
 router.delete('/service1/user/:user_id', accountController.deleteUser);
 
