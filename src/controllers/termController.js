@@ -1,5 +1,5 @@
 const logger = require('../services/loggerService');
-const { User, Role, AcademicYear } = require('../models');
+const { User, Role, Term } = require('../models');
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -13,9 +13,9 @@ const crypto = require('crypto');
 const config = require('../configs/config');
 const { ROLES } = require('../configs/ms-constants');
 
-exports.getAcademicYear = async (req, res) => {
+exports.getTerm = async (req, res) => {
   try {
-    const result = await AcademicYear.findAll();
+    const result = await Term.findAll();
     if (result) {
       logger.info('Term list', {term: result});
       return response.respondOk(res, result);
@@ -26,11 +26,11 @@ exports.getAcademicYear = async (req, res) => {
   }
 }
 
-exports.createAcademicYear = async (req, res) => {
+exports.createTerm = async (req, res) => {
   try {
     const data = req.body;
 
-    const term = await AcademicYear.create(data);
+    const term = await Term.create(data);
     if (term) {
       logger.info('Term created success', { term });
       return response.respondOk(res, term);
@@ -42,10 +42,10 @@ exports.createAcademicYear = async (req, res) => {
   }
 }
 
-exports.getOneAcademicYear = async (req, res, next) => {
+exports.getOneTerm = async (req, res, next) => {
   try {
     const term_id = req.params.term_id;
-    const term = await AcademicYear.findOne({
+    const term = await Term.findOne({
       where: {
         term_id,
       }
@@ -61,24 +61,24 @@ exports.getOneAcademicYear = async (req, res, next) => {
   }
 }
 
-exports.updateAcademicYear = async (req, res) => {
+exports.updateTerm = async (req, res) => {
   try {
     const data = req.body;
-    const term = await AcademicYear.findOne({
+    const term = await Term.findOne({
       where: {
         term_id: data.term_id
       },
     });
 
     if (term) {
-      const updateAcademicYear = await AcademicYear.update(data, {
+      const updateTerm = await Term.update(data, {
         where: {
           term_id: data.term_id,
         }
       });
 
-      logger.info('AcademicYear found', { updateAcademicYear });
-      return response.respondOk(res, updateAcademicYear);
+      logger.info('Term found', { updateTerm });
+      return response.respondOk(res, updateTerm);
     };
     return next(term);
   } catch (err) {
@@ -87,20 +87,20 @@ exports.updateAcademicYear = async (req, res) => {
   }
 }
 
-exports.deleteAcademicYear = async (req, res) => {
+exports.deleteTerm = async (req, res) => {
   try {
     const term_id = req.params.term_id;
-    const result = await AcademicYear.destroy({ where: {
+    const result = await Term.destroy({ where: {
       term_id,
     } });
 
     if (result) {
-      logger.info('AcademicYear deleted', { result });
+      logger.info('Term deleted', { result });
       return response.respondOk(res, result);
     }
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
-    logger.error('AcademicYear delete failed', err);
+    logger.error('Term delete failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }

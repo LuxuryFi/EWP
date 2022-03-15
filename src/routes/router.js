@@ -5,14 +5,14 @@ const service1Controller = require('../controllers/service1');
 const accountController = require('../controllers/accountController');
 const departmentController = require('../controllers/departmentController');
 const categoryController = require('../controllers/categoryController');
-const academicYearController = require('../controllers/academicYearController');
+const termController = require('../controllers/termController');
 const { isAuthenticated } = require('../middlewares/authentication');
 const { validator, paramsValidator, paramsBodyValidator } = require('../middlewares/validator');
 const {
   userPasswordSchema, userCreateSchema, userDeleteSchema, userUpdateSchema
 } = require('../middlewares/schemas/accountSchemas');
 
-const { uploadAvatar } = require('../services/uploadFileService');
+const { uploadAvatar, uploadDocument } = require('../services/uploadFileService');
 
 
 router.post('/service1/login', accountController.login)
@@ -66,18 +66,21 @@ router.delete('/service1/category/:category_id', categoryController.deleteCatego
 
 // Academic route
 
-router.get('/service1/academic', academicYearController.getAcademicYear);
+router.get('/service1/term', termController.getTerm);
 
-router.get('/service1/academic/:category_id', academicYearController.getOneAcademicYear);
+router.get('/service1/term/:category_id', termController.getOneTerm);
 
-router.put('/service1/academic', academicYearController.updateAcademicYear);
+router.put('/service1/term', termController.updateTerm);
 
-router.post('/service1/academic', academicYearController.createAcademicYear);
+router.post('/service1/term', termController.createTerm);
 
-router.delete('/service1/academic/:category_id', academicYearController.deleteAcademicYear);
+router.delete('/service1/term/:category_id', termController.deleteTerm);
 
 
 router.post('/user-profile', uploadAvatar.single('profileImg'), service1Controller.service1Test) 
+
+router.post('/user-profile-multiple', uploadDocument.array('imgCollection', 6), service1Controller.service2Test) 
+
 
 
 router.get("/", (req, res, next) => {

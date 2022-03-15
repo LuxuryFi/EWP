@@ -28,3 +28,13 @@ exports.service1Test = (req, res, next) => {
   //         });
   // })
 }
+
+exports.service2Test = (req, res, next) => {
+  const reqFiles = [];
+  const url = req.protocol + '://' + req.get('host')
+  for (var i = 0; i < req.files.length; i++) {
+      reqFiles.push(url + '/public/' + req.files[i].filename)
+  }
+
+  console.log(reqFiles);
+}

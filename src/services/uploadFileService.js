@@ -24,6 +24,19 @@ const uploadAvatar = multer({
     }
 });
 
+const uploadDocument = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype) {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
+
 module.exports = {
-    uploadAvatar,
+    uploadAvatar, 
+    uploadDocument,
 }   
