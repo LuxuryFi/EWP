@@ -5,8 +5,10 @@ const cls = require('cls-hooked');
 const clsBinder = require('./middlewares/clsBinder');
 const routeLogger = require('./middlewares/routeLogger');
 const config = require('./configs/config');
+const path = require('path');
 const cors = require('cors');
 //const db = require('./boostraps/mongodbConnection');
+const dir = path.join(__dirname, '../public');
 
 const ns = cls.createNamespace(config.cls.correlationIdNamespace);
 
@@ -23,6 +25,7 @@ app.use(routeLogger);
 app.use(routes);
 
 //db();
+app.use(express.static('public'));
 
 // require('./boostraps/consumer')();
 

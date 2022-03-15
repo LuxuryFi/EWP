@@ -104,6 +104,7 @@ exports.getOneUser = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const data = req.body;
+    const url = req.protocol + '://' + req.get('host')
 
     const hashedPassword = await generateHashPassword(data.password);
     const payload = {
@@ -115,7 +116,7 @@ exports.createUser = async (req, res) => {
       role_id: data.role_id,
       password: hashedPassword,
       department_id: data.department_id,
-      avatar: data.avatar
+      avatar: url + '/public/' + req.file.filename
     }
 
     const checkUsernameExist = await User.findOne({

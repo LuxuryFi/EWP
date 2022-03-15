@@ -7,6 +7,7 @@ const logger = require('../services/loggerService');
  */
 const validator = (schema) => (req, res, next) => {
   const { error } = schema.validate(req.body);
+  console.log(req.body)
   if (error) {
     const errorMessages = error.details.map((detail) => detail.message);
     logger.error('validation error', { errorMessages });

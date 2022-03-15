@@ -12,6 +12,9 @@ const {
   userPasswordSchema, userCreateSchema, userDeleteSchema, userUpdateSchema
 } = require('../middlewares/schemas/accountSchemas');
 
+const { uploadAvatar } = require('../services/uploadFileService');
+
+
 router.post('/service1/login', accountController.login)
 
 router.get('/service1/test',isAuthenticated, service1Controller.service1Test);
@@ -28,7 +31,7 @@ router.put('/service1/user', validator(userUpdateSchema), accountController.upda
 
 router.put('/service1/user/password', validator(userPasswordSchema), accountController.updateUserPassword);
 
-router.post('/service1/user', validator(userCreateSchema), accountController.createUser);
+router.post('/service1/user', uploadAvatar.single('avatar'), accountController.createUser);
 
 router.delete('/service1/user/:user_id', accountController.deleteUser);
 
@@ -73,5 +76,17 @@ router.post('/service1/academic', academicYearController.createAcademicYear);
 
 router.delete('/service1/academic/:category_id', academicYearController.deleteAcademicYear);
 
+
+router.post('/user-profile', uploadAvatar.single('profileImg'), service1Controller.service1Test) 
+
+
+router.get("/", (req, res, next) => {
+  User.find().then(data => {
+      res.status(200).json({
+          message: "User list retrieved successfully!",
+          users: data
+      });
+  });
+});
 
 module.exports = router;
