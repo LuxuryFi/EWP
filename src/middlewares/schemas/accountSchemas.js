@@ -8,7 +8,7 @@ const userPasswordSchema = Joi.object().keys({
 });
 
 const userCreateSchema = Joi.object().keys({
-  password: Joi.string().required(),
+  password: Joi.string().optional(),
   username: Joi.string().required(),
   full_name: Joi.string().required(),
   last_name: Joi.string().required(),
