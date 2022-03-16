@@ -27,7 +27,7 @@ router.get('/service1/user', accountController.getUser);
 
 router.get('/service1/user/:username', accountController.getOneUser);
 
-router.put('/service1/user', validator(userUpdateSchema), accountController.updateUser);
+router.put('/service1/user/:user_id', accountController.updateUser);
 
 router.put('/service1/user/password', validator(userPasswordSchema), accountController.updateUserPassword);
 
@@ -77,9 +77,9 @@ router.post('/service1/term', termController.createTerm);
 router.delete('/service1/term/:category_id', termController.deleteTerm);
 
 
-router.post('/user-profile', uploadAvatar.single('profileImg'), service1Controller.service1Test) 
+router.post('/user-profile', uploadAvatar.single('profileImg'), service1Controller.service1Test)
 
-router.post('/user-profile-multiple', uploadDocument.array('imgCollection', 6), service1Controller.service2Test) 
+router.post('/user-profile-multiple', uploadDocument.array('imgCollection', 6), service1Controller.service2Test)
 
 
 

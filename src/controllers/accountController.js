@@ -161,6 +161,7 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
+    const userId = req.params.user_id;
     const data = req.body;
     const updateData = {
       full_name: data.full_name,
@@ -170,16 +171,16 @@ exports.updateUser = async (req, res) => {
       role_id: data.role_id,
       avatar: data.avatar
     }
-    const checkUsernameExist = await User.findOne({
-      where: {
-        username: data.username,
-      }
-    })
+    // const checkUsernameExist = await User.findOne({
+    //   where: {
+    //     username: data.username,
+    //   }
+    // })
 
-    if (checkUsernameExist) {
-      logger.error('Username existed in the system', { username: checkUsernameExist });
-      return response.respondInternalServerError(res, [customMessages.errors.userNameExisted]);
-    }
+    // if (checkUsernameExist) {
+    //   logger.error('Username existed in the system', { username: checkUsernameExist });
+    //   return response.respondInternalServerError(res, [customMessages.errors.userNameExisted]);
+    // }
 
     const checkDepartmentExist = await Department.findOne({
       where: {
@@ -194,7 +195,7 @@ exports.updateUser = async (req, res) => {
 
     const result = await User.update(updateData, {
       where: {
-        username: data.username
+        user_id: userId
       }
     });
     if (result) {
