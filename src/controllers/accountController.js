@@ -12,6 +12,7 @@ const { email } = require('../configs/config');
 const { EMAIL_SLUGS } = require('../configs/emailSlugs');
 const crypto = require('crypto');
 const config = require('../configs/config');
+const fs = require('fs');
 
 exports.login = async (req, res) => {
   try {
@@ -245,8 +246,9 @@ exports.deleteUser = async (req, res) => {
     } });
 
     if (result) {
-
-
+      const avatarDelete = await fs.unlinkSync(user.avatar);
+      
+      logger.info('Avatar deleted', { avatarDelete });
       logger.info('User deleted', { result });
       return response.respondOk(res, result);
     }
