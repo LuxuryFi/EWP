@@ -246,7 +246,9 @@ exports.deleteUser = async (req, res) => {
     } });
 
     if (result) {
-      const avatarDelete = await fs.unlinkSync(user.avatar);
+      const dir = path.join(__dirname, user.avatar);
+
+      const avatarDelete = await fs.unlinkSync(dir);
       
       logger.info('Avatar deleted', { avatarDelete });
       logger.info('User deleted', { result });
