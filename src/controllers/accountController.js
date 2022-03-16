@@ -104,8 +104,6 @@ exports.getOneUser = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const data = req.body;
-    const url = req.protocol + '://' + req.get('host')
-
     const hashedPassword = await generateHashPassword(data.password);
     const payload = {
       username: data.username,
@@ -116,7 +114,7 @@ exports.createUser = async (req, res) => {
       role_id: data.role_id,
       password: hashedPassword,
       department_id: data.department_id,
-      avatar: url + '/img/' + req.file.filename || ''
+      avatar: 'img/' + req.file.filename || ''
     }
 
     const checkUsernameExist = await User.findOne({
@@ -235,11 +233,20 @@ exports.updateUserPassword = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const user_id = req.params.user_id;
+
+    const user = await User.find({
+      where: {
+        user_id,
+      }
+    })
+
     const result = await User.destroy({ where: {
       user_id,
     } });
 
     if (result) {
+
+
       logger.info('User deleted', { result });
       return response.respondOk(res, result);
     }
