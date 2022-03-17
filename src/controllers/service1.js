@@ -7,7 +7,6 @@ exports.service1Test = (req, res, next) => {
   const url = req.protocol + '://' + req.get('host')
   console.log(url);
   console.log(req.body.name);
-  console.log(url + '/public/' + req.file.filename);
   // const user = new User({
   //     _id: new mongoose.Types.ObjectId(),
   //     name: req.body.name,
@@ -27,6 +26,7 @@ exports.service1Test = (req, res, next) => {
   //             error: err
   //         });
   // })
+  res.send('Success');
 }
 
 exports.service2Test = (req, res, next) => {
