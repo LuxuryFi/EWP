@@ -68,13 +68,13 @@ router.delete('/service1/category/:category_id', categoryController.deleteCatego
 
 router.get('/service1/term', termController.getTerm);
 
-router.get('/service1/term/:category_id', termController.getOneTerm);
+router.get('/service1/term/:term_id', termController.getOneTerm);
 
 router.put('/service1/term', termController.updateTerm);
 
 router.post('/service1/term', termController.createTerm);
 
-router.delete('/service1/term/:category_id', termController.deleteTerm);
+router.delete('/service1/term/:term_id', termController.deleteTerm);
 
 
 router.post('/user-profile', uploadAvatar.single('profileImg'), service1Controller.service1Test)

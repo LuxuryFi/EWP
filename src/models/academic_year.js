@@ -1,4 +1,4 @@
-module.exports = (sequelize, type) => sequelize.define('academic_years', {
+module.exports = (sequelize, type) => sequelize.define('terms', {
     term_id: {
         type: type.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false,
       },
@@ -10,4 +10,14 @@ module.exports = (sequelize, type) => sequelize.define('academic_years', {
     first_closure_date: { type: type.DATE, allowNull: true,  },
     final_closure_date: { type: type.DATE, allowNull: true,  },
     status: { type: type.BOOLEAN, allowNull: false },
+},{
+  timestamps: false,
+  // hooks: {
+  //   beforeBulkCreate: beforeBulkCreateHandler,
+  //   beforeBulkUpdate: beforeBulkOtherHookHandler,
+  //   beforeBulkDestroy: beforeBulkOtherHookHandler,
+  //   afterCreate: afterHookHandler(HOOK_TYPE.CREATE),
+  //   afterDestroy: afterHookHandler(HOOK_TYPE.DESTROY),
+  //   afterUpdate: afterHookHandler(HOOK_TYPE.UPDATE),
+  // },
 });

@@ -13,6 +13,7 @@ const { EMAIL_SLUGS } = require('../configs/emailSlugs');
 const crypto = require('crypto');
 const config = require('../configs/config');
 const fs = require('fs');
+const path = require('path');
 
 exports.login = async (req, res) => {
   try {
@@ -246,7 +247,7 @@ exports.deleteUser = async (req, res) => {
     } });
 
     if (result) {
-      const dir = path.join(__dirname, user.avatar);
+      const dir = path.join(__dirname, 'public/',user.avatar);
 
       const avatarDelete = await fs.unlinkSync(dir);
       

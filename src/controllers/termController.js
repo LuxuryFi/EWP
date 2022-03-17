@@ -69,6 +69,7 @@ exports.updateTerm = async (req, res) => {
         term_id: data.term_id
       },
     });
+    logger.info('Term found', { term });
 
     if (term) {
       const updateTerm = await Term.update(data, {
@@ -77,12 +78,12 @@ exports.updateTerm = async (req, res) => {
         }
       });
 
-      logger.info('Term found', { updateTerm });
+      logger.info('Term updated', { updateTerm });
       return response.respondOk(res, updateTerm);
     };
     return next(term);
   } catch (err) {
-    logger.error('Failed to update term', term_id);
+    logger.error('Failed to update term', err);
     return response.respondInternalServerError(err, [customMessages.errors.internalError]);
   }
 }
