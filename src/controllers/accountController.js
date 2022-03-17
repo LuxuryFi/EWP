@@ -180,7 +180,8 @@ exports.updateUser = async (req, res) => {
       first_name: data.first_name,
       phone: data.phone,
       role_id: data.role_id,
-      avatar: data.avatar
+      avatar: data.avatar,
+      department_id: data.department_id
     }
     // const checkUsernameExist = await User.findOne({
     //   where: {

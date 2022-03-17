@@ -94,5 +94,5 @@ exports.respondInternalServerError = (res, errorMessages) => respondWithErrors(
  * @returns {Object}
  */
 exports.respondNotAuthorized = (res, errorMessages) => respondWithErrors(
-  res, errorMessages, HTTP_RESPONSE.NOT_AUTHORIZED,
+  res, errorMessages, HTTP_RESPONSE.UNAUTHORIZED,
 );
