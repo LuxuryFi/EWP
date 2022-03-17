@@ -258,11 +258,14 @@ exports.deleteUser = async (req, res) => {
     } });
 
     if (result) {
-      const dir = path.join(__dirname, 'public/',user.avatar);
-
-      const avatarDelete = await fs.unlinkSync(dir);
+      let dir;
       
-      logger.info('Avatar deleted', { avatarDelete });
+      if (user.avatar && user.avatar != 'img/female.jpg' && user.avatar != 'img/male.jpg') {
+        dir = path.join(__dirname, '/../../public/',user.avatar);      
+        console.log(dir);
+        const avatarDelete = await fs.unlinkSync(dir);
+        logger.info('Avatar deleted', { avatarDelete });
+      }
       logger.info('User deleted', { result });
       return response.respondOk(res, result);
     }
