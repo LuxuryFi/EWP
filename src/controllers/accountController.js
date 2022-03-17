@@ -116,9 +116,13 @@ exports.createUser = async (req, res) => {
       role_id: data.role_id,
       password: hashedPassword,
       department_id: data.department_id,
-      avatar: 'img/' + req.file.filename || ''
+      // avatar: 'img/' + req.file.filename || ''
     }
-
+    
+    if (req.file) {
+      payload.avatar = 'img/' + req.file.filename || ''
+    }
+    
     const checkUsernameExist = await User.findOne({
       where: {
         username: data.username,

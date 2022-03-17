@@ -16,6 +16,7 @@ module.exports = (sequelize, type) => sequelize.define('users', {
   refresh_token: { type: type.TEXT, allowNull: true },
   reset_password_token: { type: type.TEXT, allowNull: true },
   reset_token_expires: { type: type.DATE, allowNull: true },
+  department_id: { type: type.INTEGER, allowNull: true },
 }, {
   timestamps: false,
   // hooks: {
