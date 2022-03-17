@@ -14,6 +14,7 @@ const crypto = require('crypto');
 const config = require('../configs/config');
 const fs = require('fs');
 const path = require('path');
+const e = require('cors');
 
 exports.login = async (req, res) => {
   try {
@@ -121,6 +122,12 @@ exports.createUser = async (req, res) => {
     
     if (req.file) {
       payload.avatar = 'img/' + req.file.filename || ''
+    } else {
+      if (data.gender && data.gender === 'female') {
+        payload.avatar = 'img/female.jpg';
+      } else {
+        payload.avatar = 'img/male.jpg';
+      }
     }
     
     const checkUsernameExist = await User.findOne({
