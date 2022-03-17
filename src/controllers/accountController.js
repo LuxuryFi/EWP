@@ -194,7 +194,7 @@ exports.updateUser = async (req, res) => {
     //   return response.respondInternalServerError(res, [customMessages.errors.userNameExisted]);
     // }
 
-    if (req.file || !old_image) {
+    if (req.file || !data.old_image) {
       updateData.avatar = 'img/' + req.file.filename || ''
     } else {
       if (data.gender && data.gender === 'female') {
