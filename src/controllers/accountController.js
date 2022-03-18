@@ -196,14 +196,8 @@ exports.updateUser = async (req, res) => {
     //   return response.respondInternalServerError(res, [customMessages.errors.userNameExisted]);
     // }
 
-    if (req.file || !data.old_image) {
+    if (req.file) {
       updateData.avatar = 'img/' + req.file.filename || ''
-    } else {
-      if (data.gender && data.gender === 'female') {
-        updateData.avatar = 'img/female.jpg';
-      } else {
-        updateData.avatar = 'img/male.jpg';
-      }
     }
 
     const checkDepartmentExist = await Department.findOne({
