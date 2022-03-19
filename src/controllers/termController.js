@@ -30,25 +30,6 @@ exports.createTerm = async (req, res) => {
   try {
     const data = req.body;
 
-    const existedTerm = await Term.findOne({
-      where: {
-        $or: [
-          {
-            start_date: {
-              [Op.gt]: data.start_date,
-              [Op.lt]: data.end_date,
-            }
-          },
-          {
-            end_date: {
-              [Op.gt]: data.start_date,
-              [Op.lt]: data.end_date,
-            }
-          },
-        ]
-      }
-    })
-
     const term = await Term.create(data);
     if (term) {
       logger.info('Term created success', { term });
