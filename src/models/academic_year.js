@@ -3,13 +3,13 @@ module.exports = (sequelize, type) => sequelize.define('terms', {
         type: type.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false,
       },
     term_name: {
-      type: type.STRING, allowNull: false,
+      type: type.STRING(20), allowNull: false,
     },
     start_date: { type: type.DATE, allowNull: true,  },
     end_date: { type: type.DATE, allowNull: true,  },
     first_closure_date: { type: type.DATE, allowNull: true,  },
     final_closure_date: { type: type.DATE, allowNull: true,  },
-    status: { type: type.BOOLEAN, allowNull: false },
+    status: { type: type.STRING(20), allowNull: false },
 },{
   timestamps: false,
   // hooks: {

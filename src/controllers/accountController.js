@@ -117,9 +117,10 @@ exports.createUser = async (req, res) => {
       role_id: data.role_id,
       password: hashedPassword,
       department_id: data.department_id,
+      gender: data.gender,
       // avatar: 'img/' + req.file.filename || ''
     }
-    
+
     if (req.file) {
       payload.avatar = 'img/' + req.file.filename || ''
     } else {
@@ -129,7 +130,7 @@ exports.createUser = async (req, res) => {
         payload.avatar = 'img/male.jpg';
       }
     }
-    
+
     const checkUsernameExist = await User.findOne({
       where: {
         username: data.username,
@@ -181,17 +182,12 @@ exports.updateUser = async (req, res) => {
       phone: data.phone,
       role_id: data.role_id,
       avatar: data.avatar,
-      department_id: data.department_id
+      department_id: data.department_id,
+      gender: data.gender,
     }
 
-    if (req.file || !data.old_image) {
+    if (req.file) {
       updateData.avatar = 'img/' + req.file.filename || ''
-    } else {
-      if (data.gender && data.gender === 'female') {
-        updateData.avatar = 'img/female.jpg';
-      } else {
-        updateData.avatar = 'img/male.jpg';
-      }
     }
 
     const checkDepartmentExist = await Department.findOne({
@@ -260,9 +256,9 @@ exports.deleteUser = async (req, res) => {
 
     if (result) {
       let dir;
-      
+
       if (user.avatar && user.avatar != 'img/female.jpg' && user.avatar != 'img/male.jpg') {
-        dir = path.join(__dirname, '/../../public/',user.avatar);      
+        dir = path.join(__dirname, '/../../public/',user.avatar);
         console.log(dir);
         const avatarDelete = await fs.unlinkSync(dir);
         logger.info('Avatar deleted', { avatarDelete });
