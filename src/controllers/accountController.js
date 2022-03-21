@@ -32,7 +32,8 @@ exports.login = async (req, res) => {
         user_id: userInDB.user_id,
         username: userInDB.username,
         full_name: userInDB.full_name,
-        avatar: userInDB.avatar
+        avatar: userInDB.avatar,
+        department_id: userInDB.department_id,
       }
       const getTimeNow = new Date();
       logger.info('User data', { userData });

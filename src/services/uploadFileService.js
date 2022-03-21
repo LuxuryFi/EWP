@@ -8,12 +8,12 @@ const storage = multer.diskStorage({
         cb(null, DIR);
     },
     filename: (req, file, cb) => {
-        console.log(file);
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
         cb(null, Math.floor(new Date().getTime() / 1000)
         + '-' + fileName)
     }
 });
+
 const uploadAvatar = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
@@ -27,8 +27,21 @@ const uploadAvatar = multer({
     }
 });
 
+
+const DIRFILE = './public/documents';
+const storageFile = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, DIRFILE);
+    },
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, Math.floor(new Date().getTime() / 1000)
+        + '-' + fileName)
+    }
+});
+
 const uploadDocument = multer({
-    storage: storage,
+    storage: storageFile,
     fileFilter: (req, file, cb) => {
         if (file.mimetype) {
             cb(null, true);
