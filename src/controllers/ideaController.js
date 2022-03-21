@@ -18,7 +18,7 @@ const e = require('cors');
 const { TERM_STATUS } = require('../configs/ms-constants');
 
 exports.createIdea = async (req, res) => {
-  try {   
+  try {
 		const data = req.body;
     const payload = {
       user_id: req.user.user_id,
@@ -34,7 +34,7 @@ exports.createIdea = async (req, res) => {
         status: TERM_STATUS.ONGOING
       }
     });
-    
+
     if (term) {
       payload.term_id = term.term_id;
     } else {
@@ -43,7 +43,7 @@ exports.createIdea = async (req, res) => {
     }
 
     const idea = await Idea.create(payload);
-    if (idea) {    
+    if (idea) {
       logger.info('Idead added successfully', { idea });
       const reqFiles = [];
       for (let i = 0; i < req.files.length; i++) {
@@ -60,7 +60,29 @@ exports.createIdea = async (req, res) => {
 
 exports.getIdea = async (req, res) => {
   try {
+    const where = {};
+    const pageNumber = req.query.page;
 
+    if (req.query.department_id) {
+      where.department_id = req.query.department_id;
+    }
+
+    if (req.query.user_id) {
+      where.user_id = req.query.user_id;
+    }
+
+    if (req.query.term_id) {
+      where.term_id = req.query.term_id;
+    }
+
+    if (req.query.idea_id) {
+      where.idea_id = idea_id;
+    }
+
+    const idea = await Idea.findAll({
+      where,
+    });
+    return response.respondOk(res, idea);
   } catch (err) {
 
   }
@@ -68,7 +90,7 @@ exports.getIdea = async (req, res) => {
 
 exports.getOneIdea = async (req, res) => {
   try {
-    
+
   } catch (err) {
 
   }

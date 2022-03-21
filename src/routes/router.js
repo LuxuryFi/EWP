@@ -79,6 +79,7 @@ router.delete('/service1/term/:term_id',isAuthenticated, termController.deleteTe
 
 
 // Idea route
+router.get('/service1/idea', ideaController.getIdea);
 
 router.post('/service1/idea', isAuthenticated, uploadDocument.array('imgCollection', 6), ideaController.createIdea);
 
