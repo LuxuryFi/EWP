@@ -33,7 +33,7 @@ exports.service2Test = (req, res, next) => {
   const reqFiles = [];
   const url = req.protocol + '://' + req.get('host')
   for (var i = 0; i < req.files.length; i++) {
-      reqFiles.push(url + '/public/' + req.files[i].filename)
+      reqFiles.push({ document: req.files[i].filename, idea_id: 1})
   }
 
   console.log(reqFiles);

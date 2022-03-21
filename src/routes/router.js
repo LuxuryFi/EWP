@@ -81,8 +81,6 @@ router.post('/user-profile', uploadAvatar.single('profileImg'), service1Controll
 
 router.post('/user-profile-multiple', uploadDocument.array('imgCollection', 6), service1Controller.service2Test)
 
-
-
 router.get("/", (req, res, next) => {
   User.find().then(data => {
       res.status(200).json({

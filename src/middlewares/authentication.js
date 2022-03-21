@@ -9,7 +9,7 @@ exports.isAuthenticated = async (req ,res, next) => {
     if (req.headers.authorization) {
       const token = req.headers.authorization;
       req.user = jwt.verify(token, 'test');
-      logger.info(`Authenticated client: ${req.user.username}`);
+      logger.info(`Authenticated : `, { ...req.user });
     } else {
       return response.respondNotAuthorized(res, ['Missing data in token payload']);
     }

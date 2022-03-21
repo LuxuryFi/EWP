@@ -183,16 +183,6 @@ exports.updateUser = async (req, res) => {
       avatar: data.avatar,
       department_id: data.department_id
     }
-    // const checkUsernameExist = await User.findOne({
-    //   where: {
-    //     username: data.username,
-    //   }
-    // })
-
-    // if (checkUsernameExist) {
-    //   logger.error('Username existed in the system', { username: checkUsernameExist });
-    //   return response.respondInternalServerError(res, [customMessages.errors.userNameExisted]);
-    // }
 
     if (req.file || !data.old_image) {
       updateData.avatar = 'img/' + req.file.filename || ''
