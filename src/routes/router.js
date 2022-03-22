@@ -130,13 +130,13 @@ router.post('/service1/aggrement', isAuthenticated, aggrementController.createAg
 router.delete('/service1/aggrement/:aggrement_id', isAuthenticated, aggrementController.deleteAggrement);
 
 
-router.get("/", (req, res, next) => {
-  User.find().then(data => {
-      res.status(200).json({
-          message: "User list retrieved successfully!",
-          users: data
-      });
-  });
-});
+// router.get("/", (req, res, next) => {
+//   User.find().then(data => {
+//       res.status(200).json({
+//           message: "User list retrieved successfully!",
+//           users: data
+//       });
+//   });
+// });
 
 module.exports = router;
