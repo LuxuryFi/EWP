@@ -20,6 +20,7 @@
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
     "geoip-lite": "^1.4.3",
+    "json2csv": "^5.0.7",
     "jsonwebtoken": "^8.5.1",
     "logger": "git+https://github.com/LuxuryFi/anh-logger.git",
     "mongoose": "^6.1.7",

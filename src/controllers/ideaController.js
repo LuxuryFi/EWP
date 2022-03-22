@@ -13,6 +13,7 @@ const config = require('../configs/config');
 const fs = require('fs');
 const path = require('path');
 const { TERM_STATUS } = require('../configs/ms-constants');
+const { Parser } = require('json2csv');
 
 exports.createIdea = async (req, res) => {
   try {
@@ -78,7 +79,7 @@ exports.getIdea = async (req, res) => {
       where.idea_id = req.query.idea_id;
     }
 
-    const idea = await Idea.findAll({
+    const ideas = await Idea.findAll({
         where, 
         include: [
           {
@@ -96,7 +97,96 @@ exports.getIdea = async (req, res) => {
         ]
       },
     );
-    return response.respondOk(res, idea);
+    const finalResult = [];
+
+    ideas.forEach( idea => {
+      finalResult.push({
+        idea_id: idea.idea_id,
+        department_name: idea.department.department_id,
+        category_name: idea.category.category_name,
+        term_name: idea.term.term_name,
+        full_name: idea.user.full_name,
+        title: idea.title,
+        description: idea.description,
+        status: idea.status,
+        created_date: idea.created_date,
+        updated_date: idea.updated_date,
+      });
+    })
+    return response.respondOk(res, finalResult);
+  } catch (err) {
+    logger.error('Failed to get idea list', err)
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.exportIdea = async (req, res) => {
+  try {
+
+    console.log('yes')
+    const where = {};
+    const pageNumber = req.query.page;
+
+    if (req.query.department_id) {
+      where.department_id = req.query.department_id;
+    }
+
+    if (req.query.user_id) {
+      where.user_id = req.query.user_id;
+    }
+
+    if (req.query.term_id) {
+      where.term_id = req.query.term_id;
+    }
+
+    if (req.query.idea_id) {
+      where.idea_id = req.query.idea_id;
+    }
+
+    const ideas = await Idea.findAll({
+        where, 
+        include: [
+          {
+            model: Department, as: 'department', attributes: ['department_name']
+          },
+          {
+            model: Category, as: 'category', attributes: ['category_name']
+          },
+          {
+            model: Term, as: 'term', attributes: ['term_name']
+          },
+          {
+            model: User, as: 'user', attributes: ['full_name']
+          }
+        ]
+      },
+    );
+    const finalResult = [];
+
+    ideas.forEach( idea => {
+      finalResult.push({
+        idea_id: idea.idea_id,
+        department_name: idea.department.department_id,
+        category_name: idea.category.category_name,
+        term_name: idea.term.term_name,
+        full_name: idea.user.full_name,
+        title: idea.title,
+        description: idea.description,
+        status: idea.status,
+        created_date: idea.created_date,
+        updated_date: idea.updated_date,
+      });
+    })
+
+    const opts = {
+      fields: ['idea_id','title','full_name','description','status','department_name','category_name','created_date','updated_date'],
+    }
+
+    console.log(opts)
+    const parser = new Parser(opts);
+    const csv = parser.parse(finalResult);
+
+    console.log(csv)
   } catch (err) {
     logger.error('Failed to get idea list', err)
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);

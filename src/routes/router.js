@@ -89,6 +89,8 @@ router.delete('/service1/idea/:idea_id', ideaController.deleteIdea);
 
 router.put('/service1/idea/:idea_id', ideaController.updateIdea);
 
+router.get('/service/idea/exports', ideaController.exportIdea);
+
 // router.put('/service1/idea')
 
 
