@@ -1,5 +1,5 @@
 const logger = require('../services/loggerService');
-const { User, Role, Term, Idea, IdeaDocument, IdeaComment, IdeaVote } = require('../models');
+const { User, Role, Term, Idea, IdeaDocument, IdeaComment, IdeaVote, Department } = require('../models');
 const { Op, where } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -80,8 +80,9 @@ exports.getIdea = async (req, res) => {
 
     const idea = await Idea.findAll({
         where, 
-        include: [{
-          model: IdeaDocument, as: 'documents'
+        include: [
+          {
+            model: Department, as: 'department'
           }
         ]
       },
@@ -309,10 +310,3 @@ exports.vote = async (req, res) => {
   }
 }
 
-exports.unvote = async (req, res) => {
-  try {
-
-  } catch (err) {
-
-  }
-}
