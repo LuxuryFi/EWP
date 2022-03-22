@@ -95,6 +95,7 @@ exports.updateDepartment = async (req, res) => {
         return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
       }
 
+      data.updated_date = new Date();
       const updateDepartment = await Department.update(data, {
         where: {
           department_id: data.department_id,

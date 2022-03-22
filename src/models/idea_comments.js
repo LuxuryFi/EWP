@@ -11,6 +11,9 @@ module.exports = (sequelize, type) => sequelize.define('idea_comments', {
 	idea_id: {
 		type: type.INTEGER, allowNull: true,
 	},
+	anonymous: {
+		type: type.BOOLEAN, allowNull: false, defaultValue:  false,
+	},
 	created_date: { type: type.DATE, allowNull: true, defaultValue: new Date()   },
   updated_date: { type: type.DATE, allowNull: true,  },
 }, {

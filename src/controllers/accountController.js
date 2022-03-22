@@ -75,7 +75,7 @@ exports.createRole = async (req ,res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const result = await User.findAll();
+    const result = await User.findAndCountAll();
     if (result) {
       logger.info('Account list', {user: result});
       return response.respondOk(res, result);
@@ -185,6 +185,7 @@ exports.updateUser = async (req, res) => {
       avatar: data.avatar,
       department_id: data.department_id,
       gender: data.gender,
+      updated_date: new Date(),
     }
 
     if (req.file) {

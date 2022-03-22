@@ -1,20 +1,17 @@
 const logger = require('../services/loggerService');
-const { User, Role, Term, Idea, ideaDocument } = require('../models');
-const { Op } = require('sequelize');
+const { User, Role, Term, Idea, IdeaDocument, IdeaComment, IdeaVote } = require('../models');
+const { Op, where } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const response = require('../services/responseService');
-const { generateHashPassword } = require('../services/generateBcrypt');
 const customMessages = require('../configs/customMessages');
 const { generatePassword } = require('../services/generatePassword');
 const emailService = require('../services/emailService.js');
 const { email } = require('../configs/config');
 const { EMAIL_SLUGS } = require('../configs/emailSlugs');
-const crypto = require('crypto');
 const config = require('../configs/config');
 const fs = require('fs');
 const path = require('path');
-const e = require('cors');
 const { TERM_STATUS } = require('../configs/ms-constants');
 
 exports.createIdea = async (req, res) => {
@@ -49,9 +46,11 @@ exports.createIdea = async (req, res) => {
       for (let i = 0; i < req.files.length; i++) {
         reqFiles.push({ document: req.files[i].filename, idea_id: idea.idea_id});
       }
-      const documents = await ideaDocument.bulkCreate(reqFiles);
+      const documents = await IdeaDocument.bulkCreate(reqFiles);
       logger.info('Documents added successfully', { documents });
+      return response.respondOk(res, idea);
     }
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
     logger.error('Failed to add idea', err);
     return response.respondInternalServerError(res, [err]);
@@ -76,19 +75,241 @@ exports.getIdea = async (req, res) => {
     }
 
     if (req.query.idea_id) {
-      where.idea_id = idea_id;
+      where.idea_id = req.query.idea_id;
     }
 
     const idea = await Idea.findAll({
-      where,
-    });
+        where, 
+        include: [{
+          model: IdeaDocument, as: 'documents'
+          }
+        ]
+      },
+    );
     return response.respondOk(res, idea);
   } catch (err) {
-
+    logger.error('Failed to get idea list', err)
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
 exports.getOneIdea = async (req, res) => {
+  try {
+    const ideaId = req.params.idea_id;
+    const idea = await Idea.findOne({
+        where: {
+          idea_id: ideaId,
+        },  
+        include: [{
+          model: IdeaDocument, as: 'documents',
+          }
+        ]
+      },
+    );
+    if (idea) {
+      logger.info('Idea found', { idea });
+      return response.respondOk(res, idea);
+    }
+    return response.respondOk(res, idea);
+  } catch (err) {
+    logger.error('Failed to idea', err)
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.updateIdea = async (req, res) => {
+  try {
+    const ideaId = req.params.idea_id;
+    const data = req.body;
+
+    const updatePayload = {
+      description: data.description,
+      title: data.title,
+      category_id: data.category_id,
+      status: data.status,
+    }
+
+    const updatedIdea = await Idea.update(updatePayload, {
+      where: {
+        idea_id: ideaId,
+      }
+    });
+
+    if (updatedIdea) {
+      logger.info('Idea updated success', updatedIdea);
+      return response.respondOk(res, updatedIdea);
+    }
+  } catch (err) {
+    logger.info('Failed to update idea', err);
+    return response.respondOk(res, updatedIdea);
+  }
+};
+
+exports.deleteIdea = async (req, res) => {
+  try {
+    const ideaId = req.params.idea_id;
+    const result = await Idea.destroy({ where: {
+      idea_id: ideaId,
+    } });
+
+    if (result) {
+      logger.info('Idea deleted success', { result });
+      return response.respondOk(res, result);
+    }
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  } catch (err) {
+    logger.error('Failed to delete idea', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.createComment = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const payload = {
+      user_id: req.user.user_id,
+      comment: data.comment,
+    }
+    if (data.anonymous) payload.anonymous = data.anonymous;
+
+    const comment = await IdeaComment.create(payload);
+    
+    if (comment) {
+      logger.info('Commented', { comment });
+      return response.respondOk(res, comment);
+    }
+  } catch (err) {
+    logger.info('Failed to comment', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.getComment = async (req, res) => {
+  try {
+    const commentId = req.params.comment_id;
+
+    const comment = await IdeaComment.findOne({
+      where: {
+        comment_id: commentId,
+      }
+    })
+
+    if (comment) {
+      logger.info('Comment found', { comment });
+      return response.respondOk(res, comment);
+    }
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  } catch (err) {
+    logger.info('Failed to get comment', { comment });
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.updateComment = async (req, res) => {
+  try {
+    const commentId = req.params.comment_id;
+    const data = req.body;
+
+    const updatePayload = {
+      comment: data.comment,
+      updated_date: new Date(),
+    }
+
+    if (data.anonymous) payload.anonymous = data.anonymous;
+    const comment = await IdeaComment.create(updatePayload, {
+      where: {
+        comment_id: commentId,
+      },
+    });
+    
+    if (comment) {
+      logger.info('Comment updated', { comment });
+      return response.respondOk(res, comment);
+    }
+  } catch (err) {
+    logger.info('Failed to updated comment', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.deleteComment = async (req, res) => {
+  try {
+    const commentId = req.params.comment_id;
+    const result = await IdeaComment.destroy({
+      where: {
+        comment_id: commentId,
+      }
+    });
+
+    if (result) {
+      logger.info('Comment deleted', { result });
+      return response.respondOk(res, result);
+    }
+  } catch (err) {
+    logger.error('Faled to delete comment', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.vote = async (req, res) => {
+  try {
+    const data = req.body;
+    const payload = {
+      user_id: req.user.user_id,
+      vote: data.vote,
+      idea_id: data.idea_id,
+    }
+
+    const checkVoteExisted = await IdeaVote.findOne({
+      where: {
+        user_id: payload.user_id,
+        idea_id: payload.idea_id,
+      },
+    });
+
+    if (checkVoteExisted.vote === payload.vote) {
+      const result = await IdeaVote.destroy({
+        where: {
+          vote_id: checkVoteExisted.vote_id,
+        }
+      })
+
+      if (result) {
+        logger.info('Unvoted', result);
+        return response.respondOk(res, result);
+      }
+    }
+
+    if (checkVoteExisted) {
+      const updatedVote = await checkVoteExisted.update({
+        vote: payload.vote,
+        updated_date: new Date(),
+      }, {
+        where: {
+          vote_id: checkVoteExisted.vote_id,
+        },
+      })
+
+      if (updatedVote) {
+        logger.info('Voted', { updatedVote });
+        return response.respondOk(res, updatedVote);
+      }
+    }
+
+    const vote = await IdeaVote.create(payload);
+    if (vote) {
+      logger.info('Voted', { updatedVote });
+      return response.respondOk(res, updatedVote);
+    }
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  } catch (err) {
+    logger.error('Failed to vote', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.unvote = async (req, res) => {
   try {
 
   } catch (err) {

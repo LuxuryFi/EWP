@@ -17,8 +17,8 @@ const Department = departmentModel(sequelize, Sequelize);
 const Term = termModel(sequelize, Sequelize);
 const Idea = ideaModel(sequelize, Sequelize);
 const IdeaComment = ideaCommentModel(sequelize, Sequelize);
-const ideaVote = ideaVoteModel(sequelize, Sequelize);
-const ideaDocument = ideaDocumentModel(sequelize, Sequelize);
+const IdeaVote = ideaVoteModel(sequelize, Sequelize);
+const IdeaDocument = ideaDocumentModel(sequelize, Sequelize);
 
 User.hasMany(Department, { as: 'departments', foreignKey: 'manager_id', sourceKey: 'user_id'});
 User.hasMany(Category, { as: 'categories', foreignKey: 'staff_id', sourceKey: 'user_id'});
@@ -26,8 +26,8 @@ User.hasMany(Category, { as: 'categories', foreignKey: 'staff_id', sourceKey: 'u
 Department.hasMany(Category, { as: 'department_categories', foreignKey: 'department_id', sourceKey: 'department_id'});
 Role.hasMany(User, { as: 'users', foreignKey: 'role_id', sourceKey: 'role_id' });
 Idea.hasMany(IdeaComment, { as: 'comments',  foreignKey: 'idea_id', sourceKey: 'idea_id'});
-Idea.hasMany(ideaVote, { as: 'votes',  foreignKey: 'idea_id', sourceKey: 'idea_id'});
-Idea.hasMany(ideaDocument, { as: 'documents',  foreignKey: 'idea_id', sourceKey: 'idea_id'});
+Idea.hasMany(IdeaVote, { as: 'votes',  foreignKey: 'idea_id', sourceKey: 'idea_id'});
+Idea.hasMany(IdeaDocument, { as: 'documents',  foreignKey: 'idea_id', sourceKey: 'idea_id'});
 
 module.exports = {
   Role,
@@ -37,6 +37,6 @@ module.exports = {
   Term,
   Idea,
   IdeaComment,
-  ideaDocument,
-  ideaVote,
+  IdeaDocument,
+  IdeaVote,
 }

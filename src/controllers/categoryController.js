@@ -96,6 +96,7 @@ exports.updateCategory = async (req, res) => {
         return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
       }
 
+      data.updated_date = new Date();
       const updateCategory = await Category.update(data, {
         where: {
           category_id: data.category_id,

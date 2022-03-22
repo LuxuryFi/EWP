@@ -81,11 +81,35 @@ router.delete('/service1/term/:term_id',isAuthenticated, termController.deleteTe
 // Idea route
 router.get('/service1/idea', ideaController.getIdea);
 
-router.post('/service1/idea', isAuthenticated, uploadDocument.array('imgCollection', 6), ideaController.createIdea);
+router.get('/service1/idea/:idea_id', ideaController.getOneIdea);
+
+router.post('/service1/idea', uploadDocument.array('imgCollection', 6), ideaController.createIdea);
+
+router.delete('/service1/idea/:idea_id', ideaController.deleteIdea);
+
+router.put('/service1/idea/:idea_id', ideaController.updateIdea);
+
+// router.put('/service1/idea')
+
 
 router.post('/user-profile', uploadAvatar.single('profileImg'), service1Controller.service1Test)
 
 router.post('/user-profile-multiple', uploadDocument.array('imgCollection', 6), service1Controller.service2Test)
+
+
+// Comment route
+
+router.post('/service1/comment', isAuthenticated, ideaController.createComment);
+
+router.put('/service1/comment/:comment_id', ideaController.updateComment);
+
+router.delete('/service1/comment/:comment_id', isAuthenticated, ideaController.deleteComment);
+
+router.get('/service1/comment/:idea_id', isAuthenticated, ideaController.getComment);
+
+// Vote route
+
+router.post('/service1/vote', isAuthenticated, ideaController.vote);
 
 router.get("/", (req, res, next) => {
   User.find().then(data => {
