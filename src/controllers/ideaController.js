@@ -89,6 +89,9 @@ exports.getIdea = async (req, res) => {
           },
           {
             model: Term, as: 'term', attributes: ['term_name']
+          },
+          {
+            model: User, as: 'user', attributes: ['full_name']
           }
         ]
       },
