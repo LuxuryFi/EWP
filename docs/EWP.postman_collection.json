@@ -971,6 +971,184 @@
 			]
 		},
 		{
+			"name": "Aggrement",
+			"item": [
+				{
+					"name": "Get Aggrement",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJkZXBhcnRtZW50X2lkIjoxLCJpYXQiOjE2NDc5NjI3OTYsImV4cCI6MTY0ODAyMjgzMn0.5NKoeJJB3WbBzfwesFq8n8wE1XhhYtUmPQdNjoWmI6g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/aggrement",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"aggrement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Aggrement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJkZXBhcnRtZW50X2lkIjoxLCJpYXQiOjE2NDc5NjI3OTYsImV4cCI6MTY0ODAyMjgzMn0.5NKoeJJB3WbBzfwesFq8n8wE1XhhYtUmPQdNjoWmI6g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aggrement_name\": \"Test\",\r\n    \"description\": \"Test\",\r\n    \"status\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/aggrement",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"aggrement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Aggrement",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJkZXBhcnRtZW50X2lkIjoxLCJpYXQiOjE2NDc5NjI3OTYsImV4cCI6MTY0ODAyMjgzMn0.5NKoeJJB3WbBzfwesFq8n8wE1XhhYtUmPQdNjoWmI6g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/aggrement/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"aggrement",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Aggrement",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJkZXBhcnRtZW50X2lkIjoxLCJpYXQiOjE2NDc5NjI3OTYsImV4cCI6MTY0ODAyMjgzMn0.5NKoeJJB3WbBzfwesFq8n8wE1XhhYtUmPQdNjoWmI6g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aggrement_name\": \"Test\",\r\n    \"description\": \"Test\",\r\n    \"status\": 0,\r\n    \"aggrement_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/aggrement",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"aggrement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Aggrement",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJkZXBhcnRtZW50X2lkIjoxLCJpYXQiOjE2NDc5NjI3OTYsImV4cCI6MTY0ODAyMjgzMn0.5NKoeJJB3WbBzfwesFq8n8wE1XhhYtUmPQdNjoWmI6g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"aggrement_name\": \"Test\",\r\n    \"description\": \"Test\",\r\n    \"status\": 0,\r\n    \"aggrement_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/aggrement/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"aggrement",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "New Request",
 			"request": {
 				"method": "GET",
