@@ -66,7 +66,6 @@ exports.getOneCategory = async (req, res, next) => {
       logger.info('Category found', { category });
       return response.respondOk(res, category);
     };
-    return next(marginInfo);
   } catch (err) {
     logger.error('Failed to get category', category_id);
     return response.respondInternalServerError(err, [customMessages.errors.internalError]);

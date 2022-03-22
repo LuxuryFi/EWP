@@ -9,6 +9,7 @@ const ideaModel = require('./idea');
 const ideaCommentModel = require('./idea_comments');
 const ideaDocumentModel = require('./idea_documents');
 const ideaVoteModel = require('./idea_votes');
+const aggrementModel = require('./aggrement');
 
 const Role = roleModel(sequelize, Sequelize);
 const User = userModel(sequelize, Sequelize);
@@ -19,6 +20,7 @@ const Idea = ideaModel(sequelize, Sequelize);
 const IdeaComment = ideaCommentModel(sequelize, Sequelize);
 const IdeaVote = ideaVoteModel(sequelize, Sequelize);
 const IdeaDocument = ideaDocumentModel(sequelize, Sequelize);
+const Aggrement = aggrementModel(sequelize, Sequelize);
 
 User.hasMany(Department, { as: 'departments', foreignKey: 'manager_id', sourceKey: 'user_id'});
 User.hasMany(Category, { as: 'categories', foreignKey: 'staff_id', sourceKey: 'user_id'});
@@ -47,4 +49,5 @@ module.exports = {
   IdeaComment,
   IdeaDocument,
   IdeaVote,
+  Aggrement,
 }

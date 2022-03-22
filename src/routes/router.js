@@ -5,6 +5,7 @@ const service1Controller = require('../controllers/service1');
 const accountController = require('../controllers/accountController');
 const departmentController = require('../controllers/departmentController');
 const categoryController = require('../controllers/categoryController');
+const aggrementController = require('../controllers/aggrementController');
 const termController = require('../controllers/termController');
 const ideaController = require('../controllers/ideaController');
 const { isAuthenticated } = require('../middlewares/authentication');
@@ -115,6 +116,19 @@ router.get('/service1/comment', isAuthenticated, ideaController.getComment);
 // Vote route
 
 router.post('/service1/vote', isAuthenticated, ideaController.vote);
+
+// aggrement route
+
+router.get('/service1/aggrement',isAuthenticated, aggrementController.getAggrement);
+
+router.get('/service1/aggrement/:aggrement_id',isAuthenticated, aggrementController.getOneAggrement);
+
+router.put('/service1/aggrement', isAuthenticated, aggrementController.updateAggrement);
+
+router.post('/service1/aggrement', isAuthenticated, aggrementController.createAggrement);
+
+router.delete('/service1/aggrement/:aggrement_id', isAuthenticated, aggrementController.deleteAggrement);
+
 
 router.get("/", (req, res, next) => {
   User.find().then(data => {
