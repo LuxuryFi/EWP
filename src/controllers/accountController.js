@@ -53,7 +53,7 @@ exports.login = async (req, res) => {
             username
           }
         });
-        res.send({token, refreshToken});
+        res.send({token, refreshToken, userData});
       }
     }
   } catch (err) {
