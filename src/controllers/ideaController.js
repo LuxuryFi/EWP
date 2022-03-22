@@ -202,7 +202,7 @@ exports.getOneComment = async (req, res) => {
       },
       include: [
         {
-          model: User, attributes: ['full_name', 'avatar']
+          model: User, attributes: ['full_name', 'avatar', 'gender']
         }
       ]
     });
@@ -211,7 +211,11 @@ exports.getOneComment = async (req, res) => {
       comments.forEach( comment => {
         if (comment.anonymous) {
           comment.user.full_name = 'anonymous';
-          comment.user.avatar = 'img/female.jpg'
+          if (comment.gender === 'female') {
+            comment.user.avatar = 'img/female.jpg'
+          } else {
+            comment.user.avatar = 'img/male.jpg'
+          }
         }
       })
       logger.info('Comment found', { comments });
