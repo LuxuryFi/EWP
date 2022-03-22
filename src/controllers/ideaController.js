@@ -103,6 +103,12 @@ exports.getOneIdea = async (req, res) => {
         },  
         include: [{
           model: IdeaDocument, as: 'documents',
+          },
+          {
+            model: IdeaComment, as: 'comments',
+          },
+          {
+            model: IdeaVote, as: 'votes'
           }
         ]
       },
@@ -171,6 +177,7 @@ exports.createComment = async (req, res) => {
     const payload = {
       user_id: req.user.user_id,
       comment: data.comment,
+      idea_id: data.idea_id,
     }
     if (data.anonymous) payload.anonymous = data.anonymous;
 
@@ -186,13 +193,12 @@ exports.createComment = async (req, res) => {
   }
 }
 
-exports.getComment = async (req, res) => {
+exports.getOneComment = async (req, res) => {
   try {
-    const commentId = req.params.comment_id;
-
+    const ideaId = req.params.idea_id;
     const comment = await IdeaComment.findOne({
       where: {
-        comment_id: commentId,
+        idea_id: ideaId,
       }
     })
 
@@ -202,7 +208,23 @@ exports.getComment = async (req, res) => {
     }
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
-    logger.info('Failed to get comment', { comment });
+    logger.info('Failed to get comment', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.getComment = async (req, res) => {
+  try {
+    const ideaId = req.params.idea_id;
+    const comment = await IdeaComment.findAll({});
+
+    if (comment) {
+      logger.info('Comment found', { comment });
+      return response.respondOk(res, comment);
+    }
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  } catch (err) {
+    logger.info('Failed to get comment', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
@@ -218,7 +240,7 @@ exports.updateComment = async (req, res) => {
     }
 
     if (data.anonymous) payload.anonymous = data.anonymous;
-    const comment = await IdeaComment.create(updatePayload, {
+    const comment = await IdeaComment.update(updatePayload, {
       where: {
         comment_id: commentId,
       },
@@ -261,29 +283,29 @@ exports.vote = async (req, res) => {
       vote: data.vote,
       idea_id: data.idea_id,
     }
-
     const checkVoteExisted = await IdeaVote.findOne({
       where: {
         user_id: payload.user_id,
         idea_id: payload.idea_id,
       },
+      raw: true,
     });
 
-    if (checkVoteExisted.vote === payload.vote) {
-      const result = await IdeaVote.destroy({
-        where: {
-          vote_id: checkVoteExisted.vote_id,
-        }
-      })
+    console.log(checkVoteExisted)
 
+    if (checkVoteExisted) {
+      if (checkVoteExisted.vote === payload.vote) {
+        const result = await IdeaVote.destroy({
+          where: {
+            vote_id: checkVoteExisted.vote_id,
+          }
+        })
       if (result) {
         logger.info('Unvoted', result);
         return response.respondOk(res, result);
       }
     }
-
-    if (checkVoteExisted) {
-      const updatedVote = await checkVoteExisted.update({
+      const updatedVote = await IdeaVote.update({
         vote: payload.vote,
         updated_date: new Date(),
       }, {
@@ -300,8 +322,8 @@ exports.vote = async (req, res) => {
 
     const vote = await IdeaVote.create(payload);
     if (vote) {
-      logger.info('Voted', { updatedVote });
-      return response.respondOk(res, updatedVote);
+      logger.info('Voted', { vote });
+      return response.respondOk(res, vote);
     }
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {

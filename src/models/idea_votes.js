@@ -12,7 +12,7 @@ module.exports = (sequelize, type) => sequelize.define('idea_votes', {
 		type: type.INTEGER, allowNull: true,
 	},
 	created_date: { type: type.DATE, allowNull: true, defaultValue: new Date()   },
-  updated_date: { type: type.DATE, allowNull: true,  },
+	updated_date: { type: type.DATE, allowNull: true,  },
 }, {
 	timestamps: false,
 });

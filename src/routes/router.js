@@ -105,7 +105,10 @@ router.put('/service1/comment/:comment_id', ideaController.updateComment);
 
 router.delete('/service1/comment/:comment_id', isAuthenticated, ideaController.deleteComment);
 
-router.get('/service1/comment/:idea_id', isAuthenticated, ideaController.getComment);
+router.get('/service1/comment/:idea_id', isAuthenticated, ideaController.getOneComment);
+
+router.get('/service1/comment', isAuthenticated, ideaController.getComment);
+
 
 // Vote route
 

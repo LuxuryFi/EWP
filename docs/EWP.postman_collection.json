@@ -687,6 +687,290 @@
 			]
 		},
 		{
+			"name": "Idea",
+			"item": [
+				{
+					"name": "Get Idea",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/service1/idea",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"idea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Idea",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"new title\",\r\n    \"description\": \"TEst update\",\r\n    \"status\": 1,\r\n    \"category_id\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/idea/31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"idea",
+								"31"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Idea",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/service1/idea/28",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"idea",
+								"28"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Idea",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/service1/idea/31",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"idea",
+								"31"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJpYXQiOjE2NDc5MTkyNzcsImV4cCI6MTY0Nzk3OTI5NH0.A-wJ6Lcj3lADCpKpVSBDE7Tn9iS52ncOw_5pytQNpwY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idea_id\": 28,\r\n    \"comment\": \"têttetetet123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/comment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJpYXQiOjE2NDc5MTkyNzcsImV4cCI6MTY0Nzk3OTI5NH0.A-wJ6Lcj3lADCpKpVSBDE7Tn9iS52ncOw_5pytQNpwY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\": \"têttetetet123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/comment/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"comment",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJpYXQiOjE2NDc5MTkyNzcsImV4cCI6MTY0Nzk3OTI5NH0.A-wJ6Lcj3lADCpKpVSBDE7Tn9iS52ncOw_5pytQNpwY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\": \"têttetetet123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/comment/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"comment",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Comment",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJpYXQiOjE2NDc5MTkyNzcsImV4cCI6MTY0Nzk3OTI5NH0.A-wJ6Lcj3lADCpKpVSBDE7Tn9iS52ncOw_5pytQNpwY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3002/service1/comment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comment in idea",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJpYXQiOjE2NDc5MTkyNzcsImV4cCI6MTY0Nzk3OTI5NH0.A-wJ6Lcj3lADCpKpVSBDE7Tn9iS52ncOw_5pytQNpwY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3002/service1/comment/28",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"comment",
+								"28"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get comment in idea Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJpYXQiOjE2NDc5MTkyNzcsImV4cCI6MTY0Nzk3OTI5NH0.A-wJ6Lcj3lADCpKpVSBDE7Tn9iS52ncOw_5pytQNpwY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3002/service1/comment/28",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"comment",
+								"28"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "New Request",
 			"request": {
 				"method": "GET",
