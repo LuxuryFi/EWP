@@ -102,7 +102,7 @@ exports.getIdea = async (req, res) => {
     ideas.forEach( idea => {
       finalResult.push({
         idea_id: idea.idea_id,
-        department_name: idea.department.department_id,
+        department_name: idea.department.department_name,
         category_name: idea.category.category_name,
         term_name: idea.term.term_name,
         full_name: idea.user.full_name,
