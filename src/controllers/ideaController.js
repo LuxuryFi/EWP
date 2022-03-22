@@ -306,9 +306,7 @@ exports.vote = async (req, res) => {
       },
       raw: true,
     });
-
-    console.log(checkVoteExisted)
-
+    
     if (checkVoteExisted) {
       if (checkVoteExisted.vote === payload.vote) {
         const result = await IdeaVote.destroy({
