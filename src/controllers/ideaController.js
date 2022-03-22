@@ -196,15 +196,26 @@ exports.createComment = async (req, res) => {
 exports.getOneComment = async (req, res) => {
   try {
     const ideaId = req.params.idea_id;
-    const comment = await IdeaComment.findOne({
+    const comments = await IdeaComment.findAll({
       where: {
         idea_id: ideaId,
-      }
-    })
+      },
+      include: [
+        {
+          model: User, attributes: ['full_name', 'avatar']
+        }
+      ]
+    });
 
-    if (comment) {
-      logger.info('Comment found', { comment });
-      return response.respondOk(res, comment);
+    if (comments) {
+      comments.forEach( comment => {
+        if (comment.anonymous) {
+          comment.user.full_name = 'anonymous';
+          comment.user.avatar = 'img/female.jpg'
+        }
+      })
+      logger.info('Comment found', { comments });
+      return response.respondOk(res, comments);
     }
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {

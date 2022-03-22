@@ -25,6 +25,7 @@ User.hasMany(Category, { as: 'categories', foreignKey: 'staff_id', sourceKey: 'u
 
 Department.hasMany(Category, { as: 'department_categories', foreignKey: 'department_id', sourceKey: 'department_id'});
 Idea.belongsTo(Department, {foreignKey: 'department_id'}); // Adds fk_company to User
+IdeaComment.belongsTo(User, {foreignKey: 'user_id'}); // Adds fk_company to User
 
 Role.hasMany(User, { as: 'users', foreignKey: 'role_id', sourceKey: 'role_id' });
 Idea.hasMany(IdeaComment, { as: 'comments',  foreignKey: 'idea_id', sourceKey: 'idea_id'});
