@@ -82,7 +82,8 @@ exports.getIdea = async (req, res) => {
         where, 
         include: [
           {
-            model: Department, as: 'department'
+            model: Department, as: 'department', attributes: ['department_name']
+            
           }
         ]
       },
