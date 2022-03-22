@@ -1,5 +1,5 @@
 const logger = require('../services/loggerService');
-const { User, Role, Term, Idea, IdeaDocument, IdeaComment, IdeaVote, Department } = require('../models');
+const { User, Role, Term, Idea, IdeaDocument, IdeaComment, IdeaVote, Department, Category } = require('../models');
 const { Op, where } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -83,7 +83,12 @@ exports.getIdea = async (req, res) => {
         include: [
           {
             model: Department, as: 'department', attributes: ['department_name']
-            
+          },
+          {
+            model: Category, as: 'category', attributes: ['category_name']
+          },
+          {
+            model: Term, as: 'term', attributes: ['term_name']
           }
         ]
       },
@@ -306,7 +311,7 @@ exports.vote = async (req, res) => {
       },
       raw: true,
     });
-    
+
     if (checkVoteExisted) {
       if (checkVoteExisted.vote === payload.vote) {
         const result = await IdeaVote.destroy({
