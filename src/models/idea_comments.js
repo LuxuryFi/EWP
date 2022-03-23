@@ -14,6 +14,9 @@ module.exports = (sequelize, type) => sequelize.define('idea_comments', {
 	anonymous: {
 		type: type.BOOLEAN, allowNull: false, defaultValue:  false,
 	},
+	file_type: {
+		type: type.STRING(20), allowNull: false,
+	},
 	created_date: { type: type.DATE, allowNull: true, defaultValue: new Date()   },
   updated_date: { type: type.DATE, allowNull: true,  },
 }, {

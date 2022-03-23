@@ -3,6 +3,7 @@ const { User, Role, Term, Idea, IdeaDocument, IdeaComment, IdeaVote, Department,
 const { Op, where } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const sequelize = require('sequelize');
 const response = require('../services/responseService');
 const customMessages = require('../configs/customMessages');
 const { generatePassword } = require('../services/generatePassword');
@@ -43,8 +44,15 @@ exports.createIdea = async (req, res) => {
     const idea = await Idea.create(payload);
     if (idea) {
       logger.info('Idead added successfully', { idea });
+      // const sendEmail = await emailService.sendEmail({
+        
+      // })
+
       const reqFiles = [];
       for (let i = 0; i < req.files.length; i++) {
+        const ext = path.extname(req.files[i].filename);
+        
+        console.log(req.files[i]);
         reqFiles.push({ document: req.files[i].filename, idea_id: idea.idea_id});
       }
       const documents = await IdeaDocument.bulkCreate(reqFiles);
@@ -122,8 +130,6 @@ exports.getIdea = async (req, res) => {
 
 exports.exportIdea = async (req, res) => {
   try {
-
-    console.log('yes')
     const where = {};
     const pageNumber = req.query.page;
 
@@ -204,19 +210,71 @@ exports.getOneIdea = async (req, res) => {
           model: IdeaDocument, as: 'documents',
           },
           {
-            model: IdeaComment, as: 'comments',
+            model: IdeaComment, as:'comments', include: [{
+              model: User, attributes: ['full_name', 'avatar']
+            }],
           },
           {
-            model: IdeaVote, as: 'votes'
-          }
+            model: User, as: 'user', attributes: ['full_name']
+          },
+          {
+            model: Category, as: 'category', attributes: ['category_name'],
+          }, 
+          {
+            model: Department, as: 'department', attributes: ['department_name'],
+          },
+          {
+            model: Term, as: 'term', attributes: ['term_name']
+          },
         ]
       },
     );
-    if (idea) {
-      logger.info('Idea found', { idea });
-      return response.respondOk(res, idea);
+
+    const finalResult = {
+      idea_id: idea.idea_id,
+      user_id: idea.user_id,
+      full_name: idea.user.full_name,
+      avatar: idea.user.avatar,
+      status: idea.status,
+      department_name: idea.department.department_name,
+      term_name: idea.term.term_name,
+      category_name: idea.category.category_name,
+      category_id: idea.category_id,
+      term_id: idea.term_id,
+      department_id: idea.department_id,
+      documents: idea.documents,
     }
-    return response.respondOk(res, idea);
+
+    const comments = idea.comments.map( comment => {
+      return {
+        full_name: comment.user.full_name,
+        avatar: comment.user.avatar,
+        comment: comment.comment,
+        created_date: comment.created_date,
+        updated_date: comment.updated_date, 
+      }
+    });
+
+    const count = await IdeaVote.findAll({
+      attributes: [
+        'vote',
+        [sequelize.fn('COUNT', sequelize.col('vote')), 'count']
+      ],
+      group: 'vote',
+      raw: true,
+      where: {
+        idea_id: ideaId,
+      }
+    })
+
+    finalResult.count = count;
+    finalResult.comments = comments;
+
+    if (finalResult) {
+      logger.info('Idea found', { finalResult });
+      return response.respondOk(res, finalResult);
+    }
+    return response.respondOk(res, finalResult);
   } catch (err) {
     logger.error('Failed to idea', err)
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);

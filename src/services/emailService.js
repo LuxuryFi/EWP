@@ -47,7 +47,23 @@ exports.sendEmail = async (data) => {
          logger.info('Email sent: ' + info.response);
         }
       });
-    }
+    } else if (data.email_slug === emailSlugConstants.EMAIL_SLUGS.IDEA_CREATED) {
+      const mailOption = {
+        from: config.email.user,
+        to: data.username,
+        subject: `{${data.full_name} added has submitted new idea to your department}`,
+        text: 'Welcome',
+        html: accountCreatedTemplate('Account created', data.username, data.password),
+      }
+
+      email = transporter.sendMail(mailOption, function(error, info){
+        if (error) {
+          logger.error('Email send failed', error);
+        } else {
+         logger.info('Email sent: ' + info.response);
+        }
+      });
+    }   
   } catch (err) {
     logger.error('Email send failed', error);
   }
