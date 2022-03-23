@@ -62,6 +62,28 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.getIdentity = async (req, res) => {
+  try {
+    const userId = req.user.user_id;
+    const user = await User.findOne({
+      where: {
+        user_id: userId
+      },
+      attributes: {
+        exclude: ['password', 'reset_password_token', 'reset_token_expires','refresh_token'],
+      },
+    })
+    if (user) {
+      logger.info('User found', { user });
+      return response.respondOk(res, user);
+    }
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  } catch (err) {
+    logger.error('Cannot get user identity', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
 exports.createRole = async (req ,res) => {
   const { role_name } = req.body;
 

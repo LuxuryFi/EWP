@@ -23,6 +23,8 @@ router.get('/service1/test', isAuthenticated, service1Controller.service1Test);
 
 router.post('/service1/role', isAuthenticated, accountController.createRole);
 
+router.post('/service1/identity', isAuthenticated, accountController.getIdentity);
+
 
 // user routes
 router.get('/service1/user', isAuthenticated, accountController.getUser);
