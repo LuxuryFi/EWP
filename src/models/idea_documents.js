@@ -11,6 +11,9 @@ module.exports = (sequelize, type) => sequelize.define('idea_documents', {
 	idea_id: {
 		type: type.INTEGER, allowNull: true,
 	},
+	file_type: {
+		type: type.STRING(20), allowNull: false,
+	},
 	created_date: { type: type.DATE, allowNull: true, defaultValue: new Date()   },
   updated_date: { type: type.DATE, allowNull: true,  },
 }, {

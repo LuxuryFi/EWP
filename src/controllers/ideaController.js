@@ -51,9 +51,7 @@ exports.createIdea = async (req, res) => {
       const reqFiles = [];
       for (let i = 0; i < req.files.length; i++) {
         const ext = path.extname(req.files[i].filename);
-        
-        console.log(req.files[i]);
-        reqFiles.push({ document: req.files[i].filename, idea_id: idea.idea_id});
+        reqFiles.push({ document: req.files[i].filename, idea_id: idea.idea_id, file_type: ext.substring(1)});
       }
       const documents = await IdeaDocument.bulkCreate(reqFiles);
       logger.info('Documents added successfully', { documents });

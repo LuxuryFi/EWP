@@ -84,7 +84,7 @@ router.get('/service1/idea', ideaController.getIdea);
 
 router.get('/service1/idea/:idea_id', ideaController.getOneIdea);
 
-router.post('/service1/idea', uploadDocument.array('imgCollection', 6), ideaController.createIdea);
+router.post('/service1/idea',isAuthenticated, uploadDocument.array('imgCollection', 6), ideaController.createIdea);
 
 router.delete('/service1/idea/:idea_id', ideaController.deleteIdea);
 
@@ -128,15 +128,5 @@ router.put('/service1/aggrement', isAuthenticated, aggrementController.updateAgg
 router.post('/service1/aggrement', isAuthenticated, aggrementController.createAggrement);
 
 router.delete('/service1/aggrement/:aggrement_id', isAuthenticated, aggrementController.deleteAggrement);
-
-
-// router.get("/", (req, res, next) => {
-//   User.find().then(data => {
-//       res.status(200).json({
-//           message: "User list retrieved successfully!",
-//           users: data
-//       });
-//   });
-// });
 
 module.exports = router;
