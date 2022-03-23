@@ -13,7 +13,7 @@ const { EMAIL_SLUGS } = require('../configs/emailSlugs');
 const config = require('../configs/config');
 const fs = require('fs');
 const path = require('path');
-const { TERM_STATUS } = require('../configs/ms-constants');
+const { TERM_STATUS, ROLES } = require('../configs/ms-constants');
 const { Parser } = require('json2csv');
 
 exports.createIdea = async (req, res) => {
@@ -45,7 +45,7 @@ exports.createIdea = async (req, res) => {
     if (idea) {
       logger.info('Idead added successfully', { idea });
       // const sendEmail = await emailService.sendEmail({
-        
+
       // })
 
       const reqFiles = [];
@@ -217,7 +217,7 @@ exports.getOneIdea = async (req, res) => {
           },
           {
             model: Category, as: 'category', attributes: ['category_name'],
-          }, 
+          },
           {
             model: Department, as: 'department', attributes: ['department_name'],
           },
@@ -249,7 +249,7 @@ exports.getOneIdea = async (req, res) => {
         avatar: comment.user.avatar,
         comment: comment.comment,
         created_date: comment.created_date,
-        updated_date: comment.updated_date, 
+        updated_date: comment.updated_date,
       }
     });
 
@@ -429,16 +429,29 @@ exports.updateComment = async (req, res) => {
 exports.deleteComment = async (req, res) => {
   try {
     const commentId = req.params.comment_id;
-    const result = await IdeaComment.destroy({
+    const userId = req.user.user_id;
+    const userRole = req.user.role_id;
+
+    const comment = await IdeaComment.findOne({
       where: {
         comment_id: commentId,
-      }
+      },
     });
 
-    if (result) {
-      logger.info('Comment deleted', { result });
-      return response.respondOk(res, result);
+    if (comment.user_id === userId || userRole === ROLES.ADMIN) {
+      const result = await IdeaComment.destroy({
+        where: {
+          comment_id: commentId,
+        }
+      });
+
+      if (result) {
+        logger.info('Comment deleted', { result });
+        return response.respondOk(res, result);
+      }
     }
+    logger.error('Cannot delete comment');
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
     logger.error('Faled to delete comment', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
