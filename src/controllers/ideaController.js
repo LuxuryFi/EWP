@@ -351,6 +351,7 @@ exports.createComment = async (req, res) => {
 exports.getOneComment = async (req, res) => {
   try {
     const ideaId = req.params.idea_id;
+    const userId = req.user.user_id;
     const comments = await IdeaComment.findAll({
       where: {
         idea_id: ideaId,
@@ -364,7 +365,7 @@ exports.getOneComment = async (req, res) => {
 
     if (comments) {
       comments.forEach( comment => {
-        if (comment.anonymous) {
+        if (comment.anonymous && comment.user_id !== userId) {
           comment.user.full_name = 'anonymous';
           if (comment.gender === 'female') {
             comment.user.avatar = 'img/female.jpg'
