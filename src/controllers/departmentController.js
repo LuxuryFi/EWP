@@ -67,7 +67,7 @@ exports.getOneDepartment = async (req, res, next) => {
     };
     return next(marginInfo);
   } catch (err) {
-    logger.error('Failed to get department', department_id);
+    logger.error('Failed to get department', err);
     return response.respondInternalServerError(err, [customMessages.errors.internalError]);
   }
 }
