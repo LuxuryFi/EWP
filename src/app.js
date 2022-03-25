@@ -9,6 +9,7 @@ const path = require('path');
 const cors = require('cors');
 //const db = require('./boostraps/mongodbConnection');
 const dir = path.join(__dirname, '../public');
+const { dailyReport } = require('./services/cronjob');
 
 const ns = cls.createNamespace(config.cls.correlationIdNamespace);
 
@@ -23,6 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(routeLogger);
 
 app.use(routes);
+
+dailyReport();
 
 //db();
 app.use(express.static('public'));

@@ -10,6 +10,9 @@ module.exports = (sequelize, type) => sequelize.define('terms', {
     first_closure_date: { type: type.DATE, allowNull: true,  },
     final_closure_date: { type: type.DATE, allowNull: true,  },
     status: { type: type.STRING(20), allowNull: false },
+    closure_status: {
+      type: type.STRING(20), allowNull: true, defaultValue: 'none',
+    },
 },{
   timestamps: false,
   // hooks: {

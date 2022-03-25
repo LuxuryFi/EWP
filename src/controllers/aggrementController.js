@@ -43,7 +43,7 @@ exports.getOneAggrement = async (req, res, next) => {
       logger.info('Aggrement found', { aggrement });
       return response.respondOk(res, aggrement);
     };
-    return response.respondInternalServerError(err, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
     logger.error('Failed to get aggrement', err);
     return response.respondInternalServerError(err, [customMessages.errors.internalError]);
@@ -73,7 +73,7 @@ exports.updateAggrement = async (req, res) => {
     };
     return next(aggrement);
   } catch (err) {
-    logger.error('Failed to update aggrement', aggrement_id);
+    logger.error('Failed to update aggrement', err);
     return response.respondInternalServerError(err, [customMessages.errors.internalError]);
   }
 }

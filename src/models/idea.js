@@ -23,7 +23,7 @@ module.exports = (sequelize, type) => sequelize.define('ideas', {
       type: type.INTEGER, allowNull: true,
     }, 
     status: {
-      type: type.STRING(20), allowNull: false, defaultValue: IDEA_STATUS.FINAL_CLOSURE,
+      type: type.STRING(20), allowNull: false, defaultValue: IDEA_STATUS.FIRST_CLOSURE,
     },
     created_date: { type: type.DATE, allowNull: true, defaultValue: new Date()   },
     updated_date: { type: type.DATE, allowNull: true,  },
