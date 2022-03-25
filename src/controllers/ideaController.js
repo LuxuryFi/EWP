@@ -213,7 +213,7 @@ exports.getOneIdea = async (req, res) => {
             }],
           },
           {
-            model: User, as: 'user', attributes: ['full_name']
+            model: User, as: 'user', attributes: ['full_name','avatar']
           },
           {
             model: Category, as: 'category', attributes: ['category_name'],
