@@ -233,6 +233,7 @@ exports.getOneIdea = async (req, res) => {
       user_id: idea.user_id,
       full_name: idea.user.full_name,
       avatar: idea.user.avatar,
+      title: idea.title,
       status: idea.status,
       department_name: idea.department.department_name,
       term_name: idea.term.term_name,
