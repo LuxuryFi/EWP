@@ -474,3 +474,239 @@ exports.resetPasswordTemplate = (name, username, password) => {
   </body>
 </html>`
 }
+
+exports.ideaCreatedTemplate = (full_name, title, description, id, department_name, created_date) => {
+  return `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+
+      <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+        rel="stylesheet"
+      />
+      <style>
+          * {
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    background-color: #e5e5e5;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    font-family: "Open Sans", sans-serif;
+  }
+
+  .container {
+      width: 614px;
+      height: 800px;
+      background-color: #fff;
+      margin-left: 25%;
+  }
+
+  header {
+      position: absolute;
+    width: 614px;
+    height: 144px;
+    left: 25%;
+    top: 0px;
+    background: rgba(102, 16, 242, 0.39);
+  }
+  .logo {
+    position: absolute;
+    width: 151px;
+    height: 134px;
+    left: 45%;
+    top: 77px;
+    mix-blend-mode: darken;
+  }
+
+  section {
+      position: absolute;
+      width: 548px;
+      height: 506px;
+      left: 27.5%;
+      top: 184px;
+      background: rgba(102, 16, 242, 0.08);
+
+  }
+
+  .content {
+      margin: 5% 5%;
+  }
+  .content .title {
+      margin-top: 10%;
+      margin-bottom: 10%;
+      text-align: center;
+      font-weight: bold;
+      font-style: italic;
+      font-size: 20px;
+      font-family: 'Open Sans';
+  }
+  .btn-content2 {
+      display: block;
+      text-align: center;
+  }
+  .btn-content {
+      background: linear-gradient(180deg, #DA8CFF 0%, #DA8CFF 0.01%, #9A55FF 100%);
+      width: 164px;
+  height: 40px;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+  margin: 20% 35%;
+
+  }
+
+  .btn-content:hover {
+      cursor: pointer;
+      border: 1px solid #9A55FF;
+  }
+
+  footer {
+    position: absolute;
+    width: 615px;
+    height: 80px;
+    left: 25%;
+    top: 720px;
+    background: rgba(102, 16, 242, 0.39);
+    text-align: center;
+  }
+
+  .text-footer {
+      margin-top: 10px;
+  }
+  @media all and (min-width: 768px) {
+      .container {
+          width: 60%;
+          margin-left: 10%;
+      }
+
+      header {
+          left: 10%;
+          width: 60%;
+      }
+
+      .logo {
+          left: 35%;
+      }
+
+      section {
+          left: 15.5%;
+      width: 50%;
+      }
+      .btn-content {
+          margin: 10% 35%;
+      }
+
+      footer {
+
+      left: 10%;
+      width: 60%;
+
+
+          }
+  }
+
+  @media all and (max-width: 768px) {
+      .container {
+          margin-left: 10%;
+      }
+
+      header {
+          left: 10%;
+      }
+
+      .logo {
+          left: 40%;
+      }
+
+      section {
+          left: 14.5%;
+      }
+
+      footer {
+
+      left: 10%;
+
+
+          }
+  }
+
+  @media all and (max-width: 415px) {
+      body {
+          width: 100%;
+      }
+      .container {
+          width: 100%;
+          margin-left: 0;
+      }
+
+      header {
+          width: 100%;
+          left: 0;
+      }
+
+      .logo {
+          left: 25%;
+      }
+
+      section {
+          width: 100%;
+          left: 0;
+      }
+
+      footer {
+          width: 100%;
+      left: 0;
+
+
+          }
+  }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <!--  -->
+        <header></header>
+        <!--  -->
+        <div class="logo">
+          <img
+            src="./picture/pngtree-purple-linear-filled-communication-right-click-message-sending-icon-design-png-image_3455147 1.svg"
+            alt=""
+          />
+        </div>
+        <!--  -->
+        <section>
+          <div class="content">
+            <p class="title">New Idea is coming up!</p>
+            <p>Dear Abc,</p>
+            <p>
+              ${full_name} Department ${department_name} posted a new idea in ${created_date}.
+            </p>
+            <p>Name idea: ${title}</p>
+            <p>Description:  ${description}</p>
+          </div>
+          <div class="content-2">
+          <button class="btn-content">
+            <a href="http://103.107.182.190:3000/ideas/${id}">Open</a>
+          </button>
+      </div>
+        </section>
+        <!--  -->
+        <footer>
+            <div class="text-footer">
+          <p>+84 (0) 456 - 789 - 123</p>
+          <p>  2021 ABC Company. All Rights Reserved</p>
+      </div>
+        </footer>
+        <!--  -->
+      </div>
+    </body>
+  </html>`
+}

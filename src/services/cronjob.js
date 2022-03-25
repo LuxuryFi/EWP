@@ -30,8 +30,8 @@ const autoUpdateTheIdea = async () => {
   logger.info('Final closure date', { finalClosureDate });
   console.log(currentDate)
   if (
-      currentDate > firstClosureDate 
-      && currentDate > finalClosureDate 
+      currentDate > firstClosureDate
+      && currentDate > finalClosureDate
       && term.closure_status === 'first_closure'
     ) {
       console.log('final')
@@ -52,7 +52,7 @@ const autoUpdateTheIdea = async () => {
       })
       logger.info('Idea updated', { ideas });
     } else if (
-      currentDate > firstClosureDate 
+      currentDate > firstClosureDate
       && term.closure_status === 'none'
     ) {
       console.log('first')
@@ -80,7 +80,7 @@ const onComplete = () => {
 };
 exports.dailyReport = async () => {
   const autoUpdateIdea = new CronJob(
-    '56 10 * * 1-6',
+    '30 1 * * 1-6',
     autoUpdateTheIdea,
     onComplete,
     true,

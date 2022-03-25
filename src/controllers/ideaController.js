@@ -44,9 +44,28 @@ exports.createIdea = async (req, res) => {
     const idea = await Idea.create(payload);
     if (idea) {
       logger.info('Idead added successfully', { idea });
-      // const sendEmail = await emailService.sendEmail({
 
-      // })
+      const department = await Department.findOne({
+        where: {
+          department_id: req.user.department_id,
+        },
+        include: [
+          {
+            model: User, as: 'user', attributes: ['username'],
+          },
+        ]
+      })
+
+      const sendEmail = await emailService.sendEmail({
+        email_slug: EMAIL_SLUGS.IDEA_CREATED,
+        id: idea.id,
+        created_date: idea.created_date,
+        department_id: idea.department_id,
+        full_name: req.user.full_name,
+        title: idea.title,
+        description: idea.description,
+        username: department.user.username,
+      })
 
       const reqFiles = [];
       for (let i = 0; i < req.files.length; i++) {
