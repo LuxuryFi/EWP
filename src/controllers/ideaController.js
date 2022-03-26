@@ -49,11 +49,12 @@ exports.createIdea = async (req, res) => {
         where: {
           department_id: req.user.department_id,
         },
-        include: [
-          {
-            model: User, as: 'user', attributes: ['username'],
-          },
-        ]
+      })
+
+      const manager = await User.findOne({
+        where: {
+          user_id: department.manager_id,
+        }
       })
 
       const sendEmail = await emailService.sendEmail({
@@ -64,7 +65,7 @@ exports.createIdea = async (req, res) => {
         full_name: req.user.full_name,
         title: idea.title,
         description: idea.description,
-        username: department.user.username,
+        username: manager.username,
       })
 
       const reqFiles = [];

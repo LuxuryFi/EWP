@@ -33,7 +33,6 @@ Idea.belongsTo(Term, {foreignKey: 'term_id'}); // Adds fk_company to User
 Idea.belongsTo(Category, {foreignKey: 'category_id'}); // Adds fk_company to User
 Idea.belongsTo(User, {foreignKey: 'user_id'}); // Adds fk_company to User
 
-
 IdeaComment.belongsTo(User, {foreignKey: 'user_id'}); // Adds fk_company to User
 
 Role.hasMany(User, { as: 'users', foreignKey: 'role_id', sourceKey: 'role_id' });
