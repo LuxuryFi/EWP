@@ -68,6 +68,7 @@ exports.createIdea = async (req, res) => {
         username: manager.username,
       })
 
+      console.log(req.files.length);
       const reqFiles = [];
       for (let i = 0; i < req.files.length; i++) {
         const ext = path.extname(req.files[i].filename);
