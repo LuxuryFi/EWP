@@ -10,8 +10,8 @@ const { uploadAvatar, uploadDocument } = require('../services/uploadFileService'
 
 // user routes
 
-// router.use(require('./accountRoutes'));
-// router.use(require('./departmentRoutes'));
+router.use(require('./accountRoutes'));
+router.use(require('./departmentRoutes'));
 router.use(require('./categoryRoutes'));
 router.use(require('./academicRoutes'));
 router.use(require('./ideaRoutes'));
