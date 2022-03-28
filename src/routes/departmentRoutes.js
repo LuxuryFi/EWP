@@ -9,8 +9,6 @@ const {
 } = require('../middlewares/schemas/accountSchemas');
 
 // department route
-router.use(require('./departmentRoutes'))
-
 router.get('/service1/department',isAuthenticated, departmentController.getDepartment);
 
 router.get('/service1/department/:department_id',isAuthenticated, departmentController.getOneDepartment);

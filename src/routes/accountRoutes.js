@@ -22,8 +22,6 @@ router.get('/service1/identity', isAuthenticated, accountController.getIdentity)
 
 // user routes
 
-router.use(require('./accountRoutes'))
-
 router.get('/service1/user', isAuthenticated, accountController.getUser);
 
 router.get('/service1/user/:username', isAuthenticated, accountController.getOneUser);

@@ -10,8 +10,6 @@ const {
 
 // category route
 
-router.use(require('./categoryRoutess'))
-
 router.get('/service1/category',isAuthenticated, categoryController.getCategory);
 
 router.get('/service1/category/:category_id',isAuthenticated, categoryController.getOneCategory);
