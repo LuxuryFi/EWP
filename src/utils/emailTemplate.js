@@ -677,7 +677,7 @@ exports.ideaCreatedTemplate = (full_name, title, description, id, department_nam
         <!--  -->
         <div class="logo">
           <img
-            src="./picture/pngtree-purple-linear-filled-communication-right-click-message-sending-icon-design-png-image_3455147 1.svg"
+            src="https://i.imgur.com/IM8jRzq.png"
             alt=""
           />
         </div>

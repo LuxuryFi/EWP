@@ -59,7 +59,7 @@ exports.createIdea = async (req, res) => {
 
       const sendEmail = await emailService.sendEmail({
         email_slug: EMAIL_SLUGS.IDEA_CREATED,
-        id: idea.id,
+        id: idea.idea_id,
         created_date: idea.created_date,
         department_id: idea.department_id,
         full_name: req.user.full_name,
