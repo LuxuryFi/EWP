@@ -18,7 +18,7 @@ router.get('/service1/idea',isAuthenticated, ideaController.getIdea);
 
 router.get('/service1/idea/:idea_id',isAuthenticated, ideaController.getOneIdea);
 
-router.post('/service1/idea',isAuthenticated, uploadDocument.array('imgCollection', 6), ideaController.createIdea);
+router.post('/service1/idea',isAuthenticated, uploadDocument.array('documents', 6), ideaController.createIdea);
 
 router.delete('/service1/idea/:idea_id',isAuthenticated, ideaController.deleteIdea);
 
