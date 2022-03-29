@@ -1,5 +1,5 @@
 const logger = require('../services/loggerService');
-const { User, Role, Term, Idea, IdeaDocument, IdeaComment, IdeaVote, Department, Category } = require('../models');
+const { User, Role, Term, Idea, IdeaDocument, IdeaComment, IdeaVote, Department, Category, View } = require('../models');
 const { Op, where } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -120,26 +120,43 @@ exports.getIdea = async (req, res) => {
           },
           {
             model: User, as: 'user', attributes: ['full_name']
-          }
+          },
         ]
       },
     );
     const finalResult = [];
 
-    ideas.forEach( idea => {
-      finalResult.push({
-        idea_id: idea.idea_id,
-        department_name: idea.department.department_name,
-        category_name: idea.category.category_name,
-        term_name: idea.term.term_name,
-        full_name: idea.user.full_name,
-        title: idea.title,
-        description: idea.description,
-        status: idea.status,
-        created_date: idea.created_date,
-        updated_date: idea.updated_date,
+    for (let i = 0; i < ideas.length; i++) {
+      const countLike = await IdeaVote.count({
+        where: {
+          vote: 1,
+          idea_id: ideas[i].idea_id,
+        }
       });
-    })
+
+      const countDislike = await IdeaVote.count({
+        where: {
+          vote: 0,
+          idea_id: ideas[i].idea_id,
+        }
+      });
+
+      finalResult.push({
+        idea_id: ideas[i].idea_id,
+        department_name: ideas[i].department.department_name,
+        category_name: ideas[i].category.category_name,
+        term_name: ideas[i].term.term_name,
+        full_name: ideas[i].user.full_name,
+        title: ideas[i].title,
+        description: ideas[i].description,
+        status: ideas[i].status,
+        count_like: countLike,
+        count_dislike: countDislike,
+        created_date: ideas[i].created_date,
+        updated_date: ideas[i].updated_date,
+      });
+    }
+
     return response.respondOk(res, finalResult);
   } catch (err) {
     logger.error('Failed to get idea list', err)
@@ -182,36 +199,62 @@ exports.exportIdea = async (req, res) => {
           },
           {
             model: User, as: 'user', attributes: ['full_name']
-          }
+          },
         ]
       },
     );
     const finalResult = [];
 
-    ideas.forEach( idea => {
-      finalResult.push({
-        idea_id: idea.idea_id,
-        department_name: idea.department.department_id,
-        category_name: idea.category.category_name,
-        term_name: idea.term.term_name,
-        full_name: idea.user.full_name,
-        title: idea.title,
-        description: idea.description,
-        status: idea.status,
-        created_date: idea.created_date,
-        updated_date: idea.updated_date,
+    for (let i = 0; i < ideas.length; i++) {
+      // const count = await IdeaVote.findAll({
+      //   attributes: [
+      //     'vote',
+      //     [sequelize.fn('COUNT', sequelize.col('vote')), 'count']
+      //   ],
+      //   group: 'vote',
+      //   raw: true,
+      //   where: {
+      //     idea_id: ideas[i].idea_id,
+      //   }
+      // })
+      const countLike = await IdeaVote.count({
+        where: {
+          vote: 1,
+          idea_id: ideas[i].idea_id,
+        }
       });
-    })
 
-    const opts = {
-      fields: ['idea_id','title','full_name','description','status','department_name','category_name','created_date','updated_date'],
+      const countDislike = await IdeaVote.count({
+        where: {
+          vote: 0,
+          idea_id: ideas[i].idea_id,
+        }
+      });
+
+      finalResult.push({
+        idea_id: ideas[i].idea_id,
+        department_name: ideas[i].department.department_name,
+        category_name: ideas[i].category.category_name,
+        term_name: ideas[i].term.term_name,
+        full_name: ideas[i].user.full_name,
+        title: ideas[i].title,
+        description: ideas[i].description,
+        status: ideas[i].status,
+        count_like: countLike,
+        count_dislike: countDislike,
+        created_date: ideas[i].created_date,
+        updated_date: ideas[i].updated_date,
+      });
     }
-
-    console.log(opts)
+    
+    const fields = ['idea_id','full_name', 'title','description', 'status', 'count_like', 'count_dislike', 'department_name', 'category_name', 'term_name', 'created_date', 'updated_date'];
+    const opts = { fields };
     const parser = new Parser(opts);
     const csv = parser.parse(finalResult);
-
-    console.log(csv)
+    const DIR = './public/csv'
+    const filename = path.join(DIR, + new Date() + 'staff.csv');
+    fs.writeFileSync(filename,"\uFEFF" + csv, 'utf-8');
+    res.download(filename);
   } catch (err) {
     logger.error('Failed to get idea list', err)
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -221,6 +264,24 @@ exports.exportIdea = async (req, res) => {
 exports.getOneIdea = async (req, res) => {
   try {
     const ideaId = req.params.idea_id;
+    const userId = req.user.user_id;
+
+    const view = await View.findOne({
+      where: {
+        user_id: userId,
+        idea_id: ideaId,
+      }
+    });
+
+    if (!view) {
+      const newView = await View.create({
+        user_id: userId,
+        idea_id: ideaId
+      });
+
+      logger.info('User view added', { newView });
+    }
+
     const idea = await Idea.findOne({
         where: {
           idea_id: ideaId,
@@ -288,8 +349,15 @@ exports.getOneIdea = async (req, res) => {
       }
     })
 
+    const views = await View.count({
+      where: {
+        idea_id: ideaId,
+      }
+    })
+
     finalResult.count = count;
     finalResult.comments = comments;
+    finalResult.views = views;
 
     if (finalResult) {
       logger.info('Idea found', { finalResult });
@@ -534,5 +602,47 @@ exports.vote = async (req, res) => {
   } catch (err) {
     logger.error('Failed to vote', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+  }
+}
+
+exports.getTop10View = async (req, res) => {
+  try {
+    const term = await Term.findOne({
+      where: {
+        status: TERM_STATUS.ONGOING
+      }
+    });
+
+    const ideas = await Idea.findAll({
+      where: {
+        term_id: term.term_id,
+      },
+    });
+
+    const ideasId = ideas.map((idea) => {
+      return idea.idea_id;
+    });
+
+    const topView = await View.findAll({
+      where: {
+        idea_id: {
+          [sequelize.Op.in]: ideasId,
+        }
+      },
+      attributes: ["idea_id", [sequelize.fn("COUNT", "1"), "Counted"]],
+      group: ['idea_id'],
+      order: [[sequelize.col('Counted'), 'DESC']],
+      include: [
+        {
+          model: Idea, as: 'idea', attributes: ['title']
+        },
+      ],
+      limit: 5,
+    })
+
+    return response.respondOk(res, topView);
+  } catch (err) {
+    logger.error('Cannot get top 10 view', err)
+    return response.respondInternalServerError(res, [err]);
   }
 }

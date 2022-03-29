@@ -967,6 +967,101 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Export CSV",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/service1/csv",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"csv"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Export CSV",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3002/service1/csv",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3002",
+									"path": [
+										"service1",
+										"csv"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Disposition",
+									"value": "attachment; filename=\"1648526569481staff.csv\""
+								},
+								{
+									"key": "Accept-Ranges",
+									"value": "bytes"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "public, max-age=0"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Tue, 29 Mar 2022 04:02:49 GMT"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"779-17fd3d7300c\""
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/csv; charset=UTF-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1913"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Mar 2022 04:02:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "\"idea_id\",\"full_name\",\"title\",\"description\",\"status\",\"count_like\",\"count_dislike\",\"department_name\",\"category_name\",\"term_name\",\"created_date\",\"updated_date\"\r\n28,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",1,1,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-22T02:03:01.000Z\",\r\n29,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing1\",\"Test Update 1\",\"Test\",\"2022-03-22T02:10:57.000Z\",\r\n30,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-22T02:15:45.000Z\",\r\n31,\"Nguyen Quoc Anh\",\"new title\",\"TEst update\",\"final_closure\",0,0,\"Marketing1\",\"Test Create 1\",\"Test\",\"2022-03-22T02:20:18.000Z\",\r\n32,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-22T02:20:55.000Z\",\r\n33,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:04:14.000Z\",\r\n34,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:06:05.000Z\",\r\n35,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:07:38.000Z\",\r\n36,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:07:52.000Z\",\r\n38,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:08:39.000Z\",\r\n40,\"Nguyen Quoc Anh\",\"Test Create 1\",\"Hello World\",\"first_closure\",0,0,\"Marketing\",\"Sang mom\",\"Test\",\"2022-03-25T17:51:30.000Z\",\r\n53,\"Nguyen Quoc Anh\",\"3123\",\"3123123\",\"first_closure\",0,0,\"Marketing\",\"Test Delete 1\",\"Test\",\"2022-03-26T02:47:37.000Z\",\r\n54,\"Nguyen Quoc Anh\",\"3123\",\"3123123\",\"first_closure\",0,0,\"Marketing\",\"Test Delete 1\",\"Test\",\"2022-03-26T02:47:37.000Z\",\r\n55,\"Nguyen Quoc Anh\",\"3123\",\"123123\",\"first_closure\",0,0,\"Marketing\",\"Test Delete 1\",\"Test\",\"2022-03-28T03:10:57.000Z\","
+						}
+					]
 				}
 			]
 		},

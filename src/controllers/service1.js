@@ -1,9 +1,12 @@
 const logger = require('../services/loggerService');
 var geoip = require('geoip-lite');
 const generateBcrypt = require('../services/generateBcrypt');
+const { User } = require('../models');
+const loggerInstance = require('../services/loggerService');
+const sequelize = require('sequelize')
 
 
-exports.service1Test = (req, res, next) => {
+exports.service1Test = async (req, res, next) => {
   const url = req.protocol + '://' + req.get('host')
   console.log(url);
   console.log(req.body.name);
@@ -26,7 +29,19 @@ exports.service1Test = (req, res, next) => {
   //             error: err
   //         });
   // })
-  res.send('Success');
+  try {
+    const test = await User.findAll({
+        attributes: ["profile_status", [sequelize.fn("COUNT", "1"), "CountedValue"]],
+        group: ['profile_status'],
+        order: [[sequelize.col("CountedValue"), "ASC"]],
+      })
+
+    res.send(test);
+  } catch (err) {
+    loggerInstance.error('Error', err)
+    res.send(err)
+  }
+  
 }
 
 exports.service2Test = (req, res, next) => {

@@ -29,4 +29,4 @@ module.exports = (sequelize, type) => sequelize.define('ideas', {
     updated_date: { type: type.DATE, allowNull: true,  },
 }, {
   timestamps: false,
-})
+});

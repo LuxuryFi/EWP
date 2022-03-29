@@ -14,17 +14,17 @@ const { uploadAvatar, uploadDocument } = require('../services/uploadFileService'
 
 // Idea route
 
-router.get('/service1/idea', ideaController.getIdea);
+router.get('/service1/idea',isAuthenticated, ideaController.getIdea);
 
-router.get('/service1/idea/:idea_id', ideaController.getOneIdea);
+router.get('/service1/idea/:idea_id',isAuthenticated, ideaController.getOneIdea);
 
 router.post('/service1/idea',isAuthenticated, uploadDocument.array('imgCollection', 6), ideaController.createIdea);
 
-router.delete('/service1/idea/:idea_id', ideaController.deleteIdea);
+router.delete('/service1/idea/:idea_id',isAuthenticated, ideaController.deleteIdea);
 
-router.put('/service1/idea/:idea_id', ideaController.updateIdea);
+router.put('/service1/idea/:idea_id',isAuthenticated, ideaController.updateIdea);
 
-router.get('/service/idea/exports', ideaController.exportIdea);
+router.get('/service/idea/exports',isAuthenticated, ideaController.exportIdea);
 
 // Comment route
 
@@ -42,5 +42,13 @@ router.get('/service1/comment', isAuthenticated, ideaController.getComment);
 // Vote route
 
 router.post('/service1/vote', isAuthenticated, ideaController.vote);
+
+// Export and download
+
+router.get('/service1/csv', ideaController.exportIdea);
+
+// Statistic
+
+router.get('/service1/view', isAuthenticated,ideaController.getTop10View);
 
 module.exports = router;

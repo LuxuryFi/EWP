@@ -14,7 +14,7 @@ const { uploadAvatar } = require('../services/uploadFileService');
 
 router.post('/service1/login', accountController.login)
 
-router.get('/service1/test', isAuthenticated, service1Controller.service1Test);
+router.get('/service1/test', service1Controller.service1Test);
 
 router.post('/service1/role', isAuthenticated, accountController.createRole);
 
