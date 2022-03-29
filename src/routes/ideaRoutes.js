@@ -51,4 +51,5 @@ router.get('/service1/csv', ideaController.exportIdea);
 
 router.get('/service1/view', isAuthenticated,ideaController.getTop10View);
 
+
 module.exports = router;

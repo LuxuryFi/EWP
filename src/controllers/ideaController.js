@@ -634,7 +634,11 @@ exports.getTop10View = async (req, res) => {
       order: [[sequelize.col('Counted'), 'DESC']],
       include: [
         {
-          model: Idea, as: 'idea', attributes: ['title']
+          model: Idea, as: 'idea', attributes: ['user_id','title','description'], 
+          include: [{
+              model: User, as: 'user', attributes: ['full_name'],
+            }
+          ]
         },
       ],
       limit: 5,
