@@ -1098,8 +1098,6 @@
 							"body": "\"idea_id\",\"full_name\",\"title\",\"description\",\"status\",\"count_like\",\"count_dislike\",\"department_name\",\"category_name\",\"term_name\",\"created_date\",\"updated_date\"\r\n28,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",1,1,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-22T02:03:01.000Z\",\r\n29,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing1\",\"Test Update 1\",\"Test\",\"2022-03-22T02:10:57.000Z\",\r\n30,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-22T02:15:45.000Z\",\r\n31,\"Nguyen Quoc Anh\",\"new title\",\"TEst update\",\"final_closure\",0,0,\"Marketing1\",\"Test Create 1\",\"Test\",\"2022-03-22T02:20:18.000Z\",\r\n32,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-22T02:20:55.000Z\",\r\n33,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:04:14.000Z\",\r\n34,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:06:05.000Z\",\r\n35,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:07:38.000Z\",\r\n36,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:07:52.000Z\",\r\n38,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:08:39.000Z\",\r\n40,\"Nguyen Quoc Anh\",\"Test Create 1\",\"Hello World\",\"first_closure\",0,0,\"Marketing\",\"Sang mom\",\"Test\",\"2022-03-25T17:51:30.000Z\",\r\n53,\"Nguyen Quoc Anh\",\"3123\",\"3123123\",\"first_closure\",0,0,\"Marketing\",\"Test Delete 1\",\"Test\",\"2022-03-26T02:47:37.000Z\",\r\n54,\"Nguyen Quoc Anh\",\"3123\",\"3123123\",\"first_closure\",0,0,\"Marketing\",\"Test Delete 1\",\"Test\",\"2022-03-26T02:47:37.000Z\",\r\n55,\"Nguyen Quoc Anh\",\"3123\",\"123123\",\"first_closure\",0,0,\"Marketing\",\"Test Delete 1\",\"Test\",\"2022-03-28T03:10:57.000Z\","
 						}
 					]
-<<<<<<< HEAD
-=======
 				},
 				{
 					"name": "Get Top 10",
@@ -1129,7 +1127,6 @@
 						"url": null
 					},
 					"response": []
->>>>>>> ca998a5952817fae2b03186166a7ec89d48075c3
 				}
 			]
 		},
