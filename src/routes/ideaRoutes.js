@@ -48,7 +48,7 @@ router.post('/service1/vote', isAuthenticated, ideaController.vote);
 
 // Export and download
 
-router.get('/service1/service1/csv', ideaController.exportIdea);
+router.get('/service1/service1/idea/csv', ideaController.exportIdea);
 
 // Statistic
 
