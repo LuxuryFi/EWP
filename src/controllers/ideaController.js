@@ -650,3 +650,24 @@ exports.getTop10View = async (req, res) => {
     return response.respondInternalServerError(res, [err]);
   }
 }
+
+exports.deleteDocument = async (req,res) => {
+  try {
+    const documentId = req.params.document_id;
+
+    const result = await IdeaDocument.destroy({
+      where: {
+        document_id: documentId,
+      }
+    })
+
+    if (result) {
+      logger.info('Delete document successfully', { result });
+      return response.respondOk(res, result);
+    }
+    return response.respondInternalServerError(res, [customMessages.errors.cannotDeleteDocument]);
+  } catch (err) {
+    logger.info('Failed to delete document', err);
+    return response.respondInternalServerError(res, [customMessages.errors.cannotDeleteDocument]);
+  }
+}

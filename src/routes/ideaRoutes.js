@@ -38,6 +38,9 @@ router.get('/service1/comment/:idea_id', isAuthenticated, ideaController.getOneC
 
 router.get('/service1/comment', isAuthenticated, ideaController.getComment);
 
+// document route
+
+router.delete('/service1/document/:document_id', isAuthenticated, ideaController.deleteDocument);
 
 // Vote route
 

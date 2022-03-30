@@ -50,6 +50,7 @@ module.exports = {
       userNameExisted: 'Username existed in the system',
       departmentNotExisted: 'Deparment not existed in the system',
       notAnyActiveTerm: 'Not active term found',
+      cannotDeleteDocument: 'Cannot delete document',
     },
     success: {
       forgotPasswordMailSent: 'An email will be sent to your email address',

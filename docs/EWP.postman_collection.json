@@ -889,6 +889,42 @@
 					"response": []
 				},
 				{
+					"name": "Delete Document",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6ImdhY29uYmliZW5oNEBnbWFpbC5jb20iLCJmdWxsX25hbWUiOiJOZ3V5ZW4gUXVvYyBBbmgiLCJhdmF0YXIiOiJpbWcvMTY0NzMxNjU5MS0yNzQxNzg1NTRfMjI3NjIxMjYyODQ5MDIwXzg2MDA1MjY1Njc0NDIxNDU5NjBfbi5qcGciLCJpYXQiOjE2NDc5MTkyNzcsImV4cCI6MTY0Nzk3OTI5NH0.A-wJ6Lcj3lADCpKpVSBDE7Tn9iS52ncOw_5pytQNpwY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\": \"têttetetet123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/service1/document/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"document",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get All Comment",
 					"request": {
 						"method": "GET",
@@ -1062,6 +1098,38 @@
 							"body": "\"idea_id\",\"full_name\",\"title\",\"description\",\"status\",\"count_like\",\"count_dislike\",\"department_name\",\"category_name\",\"term_name\",\"created_date\",\"updated_date\"\r\n28,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",1,1,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-22T02:03:01.000Z\",\r\n29,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing1\",\"Test Update 1\",\"Test\",\"2022-03-22T02:10:57.000Z\",\r\n30,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-22T02:15:45.000Z\",\r\n31,\"Nguyen Quoc Anh\",\"new title\",\"TEst update\",\"final_closure\",0,0,\"Marketing1\",\"Test Create 1\",\"Test\",\"2022-03-22T02:20:18.000Z\",\r\n32,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-22T02:20:55.000Z\",\r\n33,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:04:14.000Z\",\r\n34,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:06:05.000Z\",\r\n35,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:07:38.000Z\",\r\n36,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:07:52.000Z\",\r\n38,\"Nguyen Quoc Anh\",\"title\",\"ababsbabs\",\"final_closure\",0,0,\"Marketing\",\"Test Update 1\",\"Test\",\"2022-03-23T10:08:39.000Z\",\r\n40,\"Nguyen Quoc Anh\",\"Test Create 1\",\"Hello World\",\"first_closure\",0,0,\"Marketing\",\"Sang mom\",\"Test\",\"2022-03-25T17:51:30.000Z\",\r\n53,\"Nguyen Quoc Anh\",\"3123\",\"3123123\",\"first_closure\",0,0,\"Marketing\",\"Test Delete 1\",\"Test\",\"2022-03-26T02:47:37.000Z\",\r\n54,\"Nguyen Quoc Anh\",\"3123\",\"3123123\",\"first_closure\",0,0,\"Marketing\",\"Test Delete 1\",\"Test\",\"2022-03-26T02:47:37.000Z\",\r\n55,\"Nguyen Quoc Anh\",\"3123\",\"123123\",\"first_closure\",0,0,\"Marketing\",\"Test Delete 1\",\"Test\",\"2022-03-28T03:10:57.000Z\","
 						}
 					]
+<<<<<<< HEAD
+=======
+				},
+				{
+					"name": "Get Top 10",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/service1/view",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"service1",
+								"view"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+>>>>>>> ca998a5952817fae2b03186166a7ec89d48075c3
 				}
 			]
 		},
