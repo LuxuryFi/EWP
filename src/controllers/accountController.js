@@ -98,7 +98,32 @@ exports.createRole = async (req ,res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const result = await User.findAndCountAll();
+    const where = {};
+    const pageNumber = req.query.page;
+
+    if (req.query.department_id) {
+      where.department_id = req.query.department_id;
+    }
+
+    if (req.query.user_id) {
+      where.user_id = req.query.user_id;
+    }
+
+    if (req.query.gender) {
+      where.gender = req.query.gender;
+    }
+
+    if (req.query.profile_status) {
+      where.profile_status = req.query.profile_status;
+    }
+
+    if (req.query.role_id) {
+      where.role_id = req.query.role_id;
+    }
+
+    const result = await User.findAndCountAll({
+      where,
+    });
     if (result) {
       logger.info('Account list', {user: result});
       return response.respondOk(res, result);
