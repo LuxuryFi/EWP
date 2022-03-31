@@ -30,18 +30,19 @@ exports.getCategory = async (req, res) => {
 exports.createCategory = async (req, res) => {
   try {
     const data = req.body;
-    const checkUserExist = await User.findOne({
-      where: {
-        user_id: data.staff_id,
-        role_id: ROLES.QA_COORDINATOR
-      }
-    });
+    // const checkUserExist = await User.findOne({
+    //   where: {
+    //     user_id: data.staff_id,
+    //   }
+    // });
 
-    if (!checkUserExist) {
-      logger.error('Staff is not existed', { user: checkUserExist});
-      return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
-    }
+    // if (!checkUserExist) {
+    //   logger.error('Staff is not existed', { user: checkUserExist});
+    //   return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
+    // }
+    const userId = req.user.user_id;
 
+    data.staff_id = userId;
     const category = await Category.create(data);
     if (category) {
       logger.info('Category created success', { category });

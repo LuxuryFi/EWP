@@ -32,7 +32,7 @@ exports.createDepartment = async (req, res) => {
     const checkUserExist = await User.findOne({
       where: {
         user_id: data.manager_id,
-        role_id: ROLES.QA_MANAGER
+        role_id: ROLES.QA_COORDINATOR
       }
     });
 
