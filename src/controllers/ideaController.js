@@ -396,12 +396,11 @@ exports.updateIdea = async (req, res) => {
       }
       const documents = await IdeaDocument.bulkCreate(reqFiles);
       logger.info('Documents added successfully', { documents });
-      return response.respondOk(res, idea);
       return response.respondOk(res, updatedIdea);
     }
   } catch (err) {
     logger.info('Failed to update idea', err);
-    return response.respondOk(res, updatedIdea);
+    return response.respondOk(res, [err]);
   }
 };
 
