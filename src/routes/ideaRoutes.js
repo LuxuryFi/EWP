@@ -22,7 +22,7 @@ router.post('/service1/idea',isAuthenticated, uploadDocument.array('documents', 
 
 router.delete('/service1/idea/:idea_id',isAuthenticated, ideaController.deleteIdea);
 
-router.put('/service1/idea/:idea_id',isAuthenticated, uploadDocument.array('documents', 6, ),ideaController.updateIdea);
+router.put('/service1/idea/:idea_id',isAuthenticated, uploadDocument.array('documents', 6 ),ideaController.updateIdea);
 
 router.get('/service/idea/exports',isAuthenticated, ideaController.exportIdea);
 
