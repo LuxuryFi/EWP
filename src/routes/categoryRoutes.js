@@ -12,7 +12,7 @@ const { isAuthorization } = require("../middlewares/authorization");
 
 // category route
 
-router.get('/service1/category',isAuthenticated,isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]), categoryController.getCategory);
+router.get('/service1/category',isAuthenticated, categoryController.getCategory);
 
 router.get('/service1/category/:category_id',isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]), categoryController.getOneCategory);
 

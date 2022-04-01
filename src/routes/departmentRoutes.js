@@ -11,7 +11,7 @@ const { isAuthorization } = require("../middlewares/authorization");
 const { ROLES } = require("../configs/ms-constants");
 
 // department route
-router.get('/service1/department',isAuthenticated, isAuthorization([ROLES.ADMIN]),  departmentController.getDepartment);
+router.get('/service1/department',isAuthenticated, departmentController.getDepartment);
 
 router.get('/service1/department/:department_id',isAuthenticated, isAuthorization([ROLES.ADMIN]), departmentController.getOneDepartment);
 
