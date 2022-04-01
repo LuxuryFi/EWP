@@ -12,7 +12,7 @@ const { ROLES } = require("../configs/ms-constants");
 
 // aggrement route
 
-router.get('/service1/aggrement',isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]),aggrementController.getAggrement);
+router.get('/service1/aggrement',isAuthenticated, aggrementController.getAggrement);
 
 router.get('/service1/aggrement/:aggrement_id',isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]),aggrementController.getOneAggrement);
 

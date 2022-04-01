@@ -6,7 +6,7 @@ const response = require('../services/responseService');
 exports.isAuthorization = (roles) => {
   return (req, res, next) => {
     const userRole = req.user.role_id;
-    if (ROLES.includes(userRole) || userRole === ROLES.ADMIN) {
+    if (roles.includes(userRole) || userRole === ROLES.ADMIN) {
       loggerInstance.info(`User is granted`);
       next();
     } else {
