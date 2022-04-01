@@ -908,7 +908,7 @@ exports.ideaCommentTemplate = (full_name, avatar, comment, id, created_date) => 
                   <p>${full_name} commented on your idea ${created_date}.</p>
 
                   <img style="margin: 10px 0; width: 20%;"
-                    src="${avatar}"
+                    src="http://103.107.182.190/${avatar}"
                   />
                   <p>Description: ${comment}</p>
                 </div>
