@@ -436,8 +436,23 @@ exports.createComment = async (req, res) => {
 
     const comment = await IdeaComment.create(payload);
 
+
+
     if (comment) {
       logger.info('Commented', { comment });
+      const idea = await Idea.findOne({
+        where: {
+          idea_id: data.idea_id,
+        },
+        attributes: ['user_id'],
+      });
+
+      const author = await User.findOne({
+        where: {
+          user_id: idea.user_id,
+        },
+        attributes: ['username'],
+      });
 
       await emailService.sendEmail({
         email_slug: EMAIL_SLUGS.IDEA_COMMENT,
@@ -446,6 +461,7 @@ exports.createComment = async (req, res) => {
         created_date: comment.created_date,
         id: data.idea_id,
         comment: comment.comment,
+        username: author.username,
       })
 
       return response.respondOk(res, comment);
