@@ -7,19 +7,21 @@ const { validator, paramsValidator, paramsBodyValidator } = require('../middlewa
 const {
   userPasswordSchema, userCreateSchema, userDeleteSchema, userUpdateSchema
 } = require('../middlewares/schemas/accountSchemas');
+const { isAuthorization } = require("../middlewares/authorization");
 
 const { uploadAvatar, uploadDocument } = require('../services/uploadFileService');
+const { ROLES } = require("../configs/ms-constants");
 
 // Academic route
 
-router.get('/service1/term', isAuthenticated, termController.getTerm);
+router.get('/service1/term', isAuthenticated,isAuthorization([ROLES.ADMIN]), termController.getTerm);
 
-router.get('/service1/term/:term_id', isAuthenticated, termController.getOneTerm);
+router.get('/service1/term/:term_id', isAuthenticated, isAuthorization([ROLES.ADMIN]),termController.getOneTerm);
 
-router.put('/service1/term', isAuthenticated, termController.updateTerm);
+router.put('/service1/term', isAuthenticated, isAuthorization([ROLES.ADMIN]),termController.updateTerm);
 
-router.post('/service1/term', isAuthenticated, termController.createTerm);
+router.post('/service1/term', isAuthenticated, isAuthorization([ROLES.ADMIN]),termController.createTerm);
 
-router.delete('/service1/term/:term_id',isAuthenticated, termController.deleteTerm);
+router.delete('/service1/term/:term_id',isAuthenticated, isAuthorization([ROLES.ADMIN]),termController.deleteTerm);
 
 module.exports = router;

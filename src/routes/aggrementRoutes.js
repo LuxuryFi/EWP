@@ -7,17 +7,19 @@ const { validator, paramsValidator, paramsBodyValidator } = require('../middlewa
 const {
   userPasswordSchema, userCreateSchema, userDeleteSchema, userUpdateSchema
 } = require('../middlewares/schemas/accountSchemas');
+const { isAuthorization } = require("../middlewares/authorization");
+const { ROLES } = require("../configs/ms-constants");
 
 // aggrement route
 
-router.get('/service1/aggrement',isAuthenticated, aggrementController.getAggrement);
+router.get('/service1/aggrement',isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]),aggrementController.getAggrement);
 
-router.get('/service1/aggrement/:aggrement_id',isAuthenticated, aggrementController.getOneAggrement);
+router.get('/service1/aggrement/:aggrement_id',isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]),aggrementController.getOneAggrement);
 
-router.put('/service1/aggrement', isAuthenticated, aggrementController.updateAggrement);
+router.put('/service1/aggrement', isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]),aggrementController.updateAggrement);
 
-router.post('/service1/aggrement', isAuthenticated, aggrementController.createAggrement);
+router.post('/service1/aggrement', isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]),aggrementController.createAggrement);
 
-router.delete('/service1/aggrement/:aggrement_id', isAuthenticated, aggrementController.deleteAggrement);
+router.delete('/service1/aggrement/:aggrement_id', isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]), aggrementController.deleteAggrement);
 
 module.exports = router;

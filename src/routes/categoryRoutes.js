@@ -7,17 +7,19 @@ const { validator, paramsValidator, paramsBodyValidator } = require('../middlewa
 const {
   userPasswordSchema, userCreateSchema, userDeleteSchema, userUpdateSchema
 } = require('../middlewares/schemas/accountSchemas');
+const { ROLES } = require("../configs/ms-constants");
+const { isAuthorization } = require("../middlewares/authorization");
 
 // category route
 
-router.get('/service1/category',isAuthenticated, categoryController.getCategory);
+router.get('/service1/category',isAuthenticated,isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]), categoryController.getCategory);
 
-router.get('/service1/category/:category_id',isAuthenticated, categoryController.getOneCategory);
+router.get('/service1/category/:category_id',isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]), categoryController.getOneCategory);
 
-router.put('/service1/category', isAuthenticated, categoryController.updateCategory);
+router.put('/service1/category', isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]), categoryController.updateCategory);
 
-router.post('/service1/category', isAuthenticated, categoryController.createCategory);
+router.post('/service1/category', isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]), categoryController.createCategory);
 
-router.delete('/service1/category/:category_id', isAuthenticated, categoryController.deleteCategory);
+router.delete('/service1/category/:category_id', isAuthenticated, isAuthorization([ROLES.ADMIN, ROLES.QA_MANAGER]), categoryController.deleteCategory);
 
 module.exports = router;

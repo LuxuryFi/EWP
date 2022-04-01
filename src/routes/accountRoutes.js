@@ -10,6 +10,8 @@ const {
 } = require('../middlewares/schemas/accountSchemas');
 
 const { uploadAvatar } = require('../services/uploadFileService');
+const { isAuthorization } = require("../middlewares/authorization");
+const { ROLES } = require("../configs/ms-constants");
 
 
 router.post('/service1/login', accountController.login)
@@ -30,12 +32,12 @@ router.put('/service1/user/:user_id', isAuthenticated, uploadAvatar.single('avat
 
 router.put('/service1/user/password', isAuthenticated, validator(userPasswordSchema), accountController.updateUserPassword);
 
-router.post('/service1/user',  isAuthenticated,uploadAvatar.single('avatar'), accountController.createUser);
+router.post('/service1/user',  isAuthenticated,uploadAvatar.single('avatar'), isAuthorization([ROLES.ADMIN]), accountController.createUser);
 
 router.delete('/service1/user/:user_id', isAuthenticated,accountController.deleteUser);
 
-router.post('/service1/reset-password/:token', isAuthenticated,accountController.resetPassword);
+router.post('/service1/reset-password/:token' ,accountController.resetPassword);
 
-router.post('/service1/forgot-password',isAuthenticated, accountController.forgotPassword);
+router.post('/service1/forgot-password', accountController.forgotPassword);
 
 module.exports = router;

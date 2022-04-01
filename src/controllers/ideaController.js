@@ -67,8 +67,6 @@ exports.createIdea = async (req, res) => {
         description: idea.description,
         username: manager.username,
       })
-
-      console.log(req.files.length);
       const reqFiles = [];
       for (let i = 0; i < req.files.length; i++) {
         const ext = path.extname(req.files[i].filename);
@@ -246,7 +244,7 @@ exports.exportIdea = async (req, res) => {
         updated_date: ideas[i].updated_date,
       });
     }
-    
+
     const fields = ['idea_id','full_name', 'title','description', 'status', 'count_like', 'count_dislike', 'department_name', 'category_name', 'term_name', 'created_date', 'updated_date'];
     const opts = { fields };
     const parser = new Parser(opts);
@@ -390,6 +388,15 @@ exports.updateIdea = async (req, res) => {
 
     if (updatedIdea) {
       logger.info('Idea updated success', updatedIdea);
+
+      const reqFiles = [];
+      for (let i = 0; i < req.files.length; i++) {
+        const ext = path.extname(req.files[i].filename);
+        reqFiles.push({ document: req.files[i].filename, idea_id: idea.idea_id, file_type: ext.substring(1)});
+      }
+      const documents = await IdeaDocument.bulkCreate(reqFiles);
+      logger.info('Documents added successfully', { documents });
+      return response.respondOk(res, idea);
       return response.respondOk(res, updatedIdea);
     }
   } catch (err) {
@@ -634,7 +641,7 @@ exports.getTop10View = async (req, res) => {
       order: [[sequelize.col('Counted'), 'DESC']],
       include: [
         {
-          model: Idea, as: 'idea', attributes: ['user_id','title','description'], 
+          model: Idea, as: 'idea', attributes: ['user_id','title','description'],
           include: [{
               model: User, as: 'user', attributes: ['full_name'],
             }
