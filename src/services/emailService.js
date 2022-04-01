@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const config = require('../configs/config');
-const { accountCreatedTemplate, resetPasswordTemplate, ideaCreatedTemplate } = require('../utils/emailTemplate');
+const { accountCreatedTemplate, resetPasswordTemplate, ideaCreatedTemplate, ideaCommentTemplate } = require('../utils/emailTemplate');
 const emailSlugConstants = require('../configs/emailSlugs');
 const logger = require('./loggerService');
 
@@ -51,9 +51,25 @@ exports.sendEmail = async (data) => {
       const mailOption = {
         from: config.email.user,
         to: data.username,
-        subject: `{${data.full_name} added has submitted new idea to your department}`,
+        subject: `${data.full_name} added has submitted new idea to your department`,
         text: 'Welcome',
         html: ideaCreatedTemplate(data.full_name, data.title, data.description, data.id, data.department_id, data.created_date),
+      }
+
+      email = transporter.sendMail(mailOption, function(error, info){
+        if (error) {
+          logger.error('Email send failed', error);
+        } else {
+         logger.info('Email sent: ' + info.response);
+        }
+      });
+    } else if (data.email_slug === emailSlugConstants.EMAIL_SLUGS.IDEA_COMMENT) {
+      const mailOption = {
+        from: config.email.user,
+        to: data.username,
+        subject: `${data.full_name} added has comment in your idea`,
+        text: 'Comment',
+        html: ideaCommentTemplate(data.full_name, data.avatar, data.comment, data.id, data.created_date),
       }
 
       email = transporter.sendMail(mailOption, function(error, info){

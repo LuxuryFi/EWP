@@ -438,6 +438,16 @@ exports.createComment = async (req, res) => {
 
     if (comment) {
       logger.info('Commented', { comment });
+
+      await emailService.sendEmail({
+        email_slug: EMAIL_SLUGS.IDEA_COMMENT,
+        full_name: req.user.full_name,
+        avatar: req.user.avatar,
+        created_date: comment.created_date,
+        id: data.idea_id,
+        comment: comment.comment,
+      })
+
       return response.respondOk(res, comment);
     }
   } catch (err) {
