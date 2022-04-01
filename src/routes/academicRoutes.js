@@ -14,7 +14,7 @@ const { ROLES } = require("../configs/ms-constants");
 
 // Academic route
 
-router.get('/service1/term', isAuthenticated,isAuthorization([ROLES.ADMIN]), termController.getTerm);
+router.get('/service1/term', isAuthenticated, termController.getTerm);
 
 router.get('/service1/term/:term_id', isAuthenticated, isAuthorization([ROLES.ADMIN]),termController.getOneTerm);
 
