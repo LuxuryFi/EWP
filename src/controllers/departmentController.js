@@ -81,6 +81,10 @@ exports.updateDepartment = async (req, res) => {
       },
     });
 
+    if (!department) {
+      return response.respondInternalServerError(res, [customMessages.errors.departmentNotFound])
+    }
+
     if (department) {
       // console.log('Test')
       const staff = await User.findOne({

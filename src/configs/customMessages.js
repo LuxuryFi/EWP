@@ -51,6 +51,7 @@ module.exports = {
       departmentNotExisted: 'Deparment not existed in the system',
       notAnyActiveTerm: 'Not active term found',
       cannotDeleteDocument: 'Cannot delete document',
+      departmentNotFound: 'Department not found'
     },
     success: {
       forgotPasswordMailSent: 'An email will be sent to your email address',

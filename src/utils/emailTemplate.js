@@ -238,7 +238,7 @@ exports.accountCreatedTemplate = (name, username, password) => {
     </html>`
 }
 
-exports.resetPasswordTemplate = (name, username, password) => {
+exports.resetPasswordTemplate = (name, username, password, token) => {
   return `<html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -446,7 +446,7 @@ exports.resetPasswordTemplate = (name, username, password) => {
                 <p>Simply click on the button below to set your new password. Please note this link is only valid for 24 hours.</p>
             </div>
 
-            <button class="btn-content">Change Password</button>
+            <button class="btn-content"> <a href=""http://103.107.182.190:3000/resetPassword/${token}/></a> Change Password</button>
 
             <div class="ew-f">
 
