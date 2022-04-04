@@ -891,10 +891,18 @@ describe('Test account controller', () => {
     };
     const res = mockResponse();
 
-    jest.spyOn(User, 'update').mockResolvedValueOnce([{
-      "username": "gaconbibenh11@gmail.com",
-      "password": "123456789"
+    jest.spyOn(User, 'findOne').mockResolvedValueOnce([{
+      "username": "Test",
+      "full_name": "Vu Hai Nam",
+      "last_name": "full_name",
+      "first_name": "full_name",
+      "phone": "0966141511",
+      "role_id": 4,
+      "password": "123456789",
+      "avatar": "test"
     }]);
+
+    jest.spyOn(User, 'save')
 
     await accountController.updateUserPassword(req, res);
 
@@ -904,7 +912,7 @@ describe('Test account controller', () => {
         "username": "gaconbibenh11@gmail.com",
         "password": "123456789"
       }],
-    });
+    }); 
    });
 
    it('it should return status code 500 and throw internal error', async () => {
