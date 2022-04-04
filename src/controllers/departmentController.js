@@ -1,16 +1,7 @@
 const logger = require('../services/loggerService');
 const { User, Role, Department } = require('../models');
-const { Op } = require('sequelize');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const response = require('../services/responseService');
 const customMessages = require('../configs/customMessages');
-const { generatePassword } = require('../services/generatePassword');
-const emailService = require('../services/emailService.js');
-const { email } = require('../configs/config');
-const { EMAIL_SLUGS } = require('../configs/emailSlugs');
-const crypto = require('crypto');
-const config = require('../configs/config');
 const { ROLES } = require('../configs/ms-constants');
 
 exports.getDepartment = async (req, res) => {

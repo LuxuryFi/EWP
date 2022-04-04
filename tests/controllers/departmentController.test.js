@@ -1,3 +1,4 @@
+jest.useFakeTimers();
 const {
   Department, User
 } = require('../../src/models/index');
@@ -5,7 +6,7 @@ const deparmentController = require('../../src/controllers/departmentController'
 
 require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 
-
+jest.useFakeTimers()
 const mockResponse = () => {
   const res = {};
   res.send = jest.fn().mockReturnValue(res);
@@ -135,15 +136,13 @@ describe('Test department controller', () => {
           manager_id: 6,
         },
       };
-
+      const res = mockResponse();
       jest.spyOn(Department, 'findOne').mockResolvedValueOnce(undefined);
       await deparmentController.updateDepartment(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith({
-        data: [0]
-      });
+      expect(res.json).toHaveBeenCalledWith({ errors: ["Department not found"] },);
     })
 
     it('should return res status 400 and false, cannot found user', async () => {
@@ -164,20 +163,14 @@ describe('Test department controller', () => {
       });
 
 
-      jest.spyOn(User, 'findOne').mockResolvedValueOnce({
-        user_id: 74,
-      });
+      jest.spyOn(User, 'findOne').mockResolvedValueOnce(undefined);
 
-      jest.spyOn(Department, 'update').mockResolvedValue([1]);
       const res = mockResponse();
 
       await deparmentController.updateDepartment(req, res);
 
-
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({
-        data: [0]
-      });
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ errors: ["User not found"] },);
     })
   })
 })
