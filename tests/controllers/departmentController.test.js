@@ -15,7 +15,6 @@ const mockResponse = () => {
 };
 
 describe('Test department controller', () => {
-
   describe('Test create deparment', () => {
     beforeEach(() => {
       jest.clearAllMocks();
