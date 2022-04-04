@@ -20,6 +20,8 @@ exports.getTerm = async (req, res) => {
       logger.info('Term list', {term: result});
       return response.respondOk(res, result);
     }
+    return response.respondInternalServerError(res, [customMessages.errors.termNotFound]);
+
   } catch (err) {
     logger.error('Cannot get term list', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -54,10 +56,10 @@ exports.getOneTerm = async (req, res, next) => {
       logger.info('Term found', { term });
       return response.respondOk(res, term);
     };
-    return next(marginInfo);
+    return response.respondInternalServerError(res, [customMessages.errors.termNotFound]);
   } catch (err) {
-    logger.error('Failed to get term', term_id);
-    return response.respondInternalServerError(err, [customMessages.errors.internalError]);
+    logger.error('Failed to get term', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
@@ -81,10 +83,10 @@ exports.updateTerm = async (req, res) => {
       logger.info('Term updated', { updateTerm });
       return response.respondOk(res, updateTerm);
     };
-    return next(term);
+    return response.respondInternalServerError(res, [customMessages.errors.termNotFound]);
   } catch (err) {
     logger.error('Failed to update term', err);
-    return response.respondInternalServerError(err, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 

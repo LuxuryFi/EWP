@@ -17,10 +17,12 @@ const { ROLES } = require('../configs/ms-constants');
 exports.getCategory = async (req, res) => {
   try {
     const result = await Category.findAll();
-    if (result) {
-      logger.info('Category list', {category: result});
-      return response.respondOk(res, result);
+    if (!result) {
+      logger.info('Category not found');
+      return response.respondInternalServerError(res, [customMessages.errors.categoryNotFound]);
     }
+    logger.info('Category list', {category: result});
+    return response.respondOk(res, result);
   } catch (err) {
     logger.error('Cannot get category list', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -30,25 +32,25 @@ exports.getCategory = async (req, res) => {
 exports.createCategory = async (req, res) => {
   try {
     const data = req.body;
-    // const checkUserExist = await User.findOne({
-    //   where: {
-    //     user_id: data.staff_id,
-    //   }
-    // });
-
-    // if (!checkUserExist) {
-    //   logger.error('Staff is not existed', { user: checkUserExist});
-    //   return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
-    // }
+    
     const userId = req.user.user_id;
-
+    const checkUserExist = await User.findOne({
+      where: {
+        user_id: userId,
+      }
+    });
+    console.log('Test')
+    if (!checkUserExist) {
+      logger.error('Staff is not existed', { user: checkUserExist});
+      return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
+    }
     data.staff_id = userId;
     const category = await Category.create(data);
-    if (category) {
-      logger.info('Category created success', { category });
-      return response.respondOk(res, category);
+    if (!category) {
+      return response.respondInternalServerError(res, [customMessages.errors.internalError]);
     }
-    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+    logger.info('Category created success', { category });
+    return response.respondOk(res, category);
   } catch (err) {
     logger.error('Categogy create failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -63,13 +65,16 @@ exports.getOneCategory = async (req, res, next) => {
         category_id,
       }
     });
-    if (category) {
-      logger.info('Category found', { category });
-      return response.respondOk(res, category);
-    };
+
+    if (!category) {
+      logger.info('Category not found');
+      return response.respondInternalServerError(res, [customMessages.errors.categoryNotFound]);
+    }; 
+    logger.info('Category found', { category });
+    return response.respondOk(res, category);
   } catch (err) {
-    logger.error('Failed to get category', category_id);
-    return response.respondInternalServerError(err, [customMessages.errors.internalError]);
+    logger.error('Failed to get category', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
@@ -108,8 +113,8 @@ exports.updateCategory = async (req, res) => {
     };
     return next(category);
   } catch (err) {
-    logger.error('Failed to update category', category_id);
-    return response.respondInternalServerError(err, [customMessages.errors.internalError]);
+    logger.error('Failed to update category', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 

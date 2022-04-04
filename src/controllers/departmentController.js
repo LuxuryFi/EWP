@@ -7,10 +7,12 @@ const { ROLES } = require('../configs/ms-constants');
 exports.getDepartment = async (req, res) => {
   try {
     const result = await Department.findAll();
-    if (result) {
-      logger.info('Department list', {department: result});
-      return response.respondOk(res, result);
-    }
+    if (!result) {
+      logger.info('Department not found');
+      return response.respondInternalServerError(res, [customMessages.errors.departmentNotFound]);
+    }  
+    logger.info('Department list', {department: result});
+    return response.respondOk(res, result);
   } catch (err) {
     logger.error('Cannot get department list', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -39,7 +41,7 @@ exports.createDepartment = async (req, res) => {
     }
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
-    logger.error('Categogy create failed', err);
+    logger.error('Department create failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
@@ -52,14 +54,17 @@ exports.getOneDepartment = async (req, res, next) => {
         department_id,
       }
     });
-    if (department) {
-      logger.info('Department found', { department });
-      return response.respondOk(res, department);
+
+    if (!department) {
+      logger.info('Department not found');
+      return response.respondInternalServerError(res, [customMessages.errors.departmentNotFound]);
     };
-    return next(marginInfo);
+
+    logger.info('Department found', { department });
+    return response.respondOk(res, department);
   } catch (err) {
     logger.error('Failed to get department', err);
-    return response.respondInternalServerError(err, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
@@ -100,10 +105,9 @@ exports.updateDepartment = async (req, res) => {
       logger.info('Department found', { updateDepartment });
       return response.respondOk(res, updateDepartment);
     };
-    return next(department);
   } catch (err) {
-    logger.error('Failed to update department', department_id);
-    return response.respondInternalServerError(err, [customMessages.errors.internalError]);
+    logger.error('Failed to update department', err);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 

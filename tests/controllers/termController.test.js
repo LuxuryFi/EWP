@@ -1,8 +1,8 @@
 jest.useFakeTimers();
 const {
-  Department, User
+  Term, User
 } = require('../../src/models/index');
-const departmentController = require('../../src/controllers/departmentController');
+const termController = require('../../src/controllers/termController');
 
 require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 
@@ -15,44 +15,39 @@ const mockResponse = () => {
   return res;
 };
 
-describe('Test department controller', () => {
-  describe('Test create deparment', () => {
+describe('Test term controller', () => {
+  describe('Test create term', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       jest.resetAllMocks();
     });
 
-    it('it should return res status 200 and department data', async () => {
+    it('it should return res status 200 and term data', async () => {
       const req = {
         body: {
-          department_name: "Marketing1",
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 6,
         },
       };
 
-      jest.spyOn(User, 'findOne').mockResolvedValueOnce({
-        user_id: 6,
-      });
-
-      jest.spyOn(Department, 'create').mockResolvedValue({
+      jest.spyOn(Term, 'create').mockResolvedValue({
         created_date: "2022-04-01T18:32:46.217Z",
-        department_id: 6,
-        department_name: "Marketing1",
+        term_id: 6,
+        term_name: "Marketing1",
         description: "Test",
         manager_id: 69
       });
       const res = mockResponse();
 
-      await departmentController.createDepartment(req, res);
-
+      await termController.createTerm(req, res);
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
         data: {
           created_date: "2022-04-01T18:32:46.217Z",
-          department_id: 6,
-          department_name: "Marketing1",
+          term_id: 6,
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 69
         },
@@ -62,35 +57,27 @@ describe('Test department controller', () => {
     it('it should return res status 500 and user not found', async () => {
       const req = {
         body: {
-          department_name: "Marketing1",
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 6,
         },
       };
 
-      jest.spyOn(User, 'findOne').mockResolvedValueOnce(undefined);
-
-      jest.spyOn(Department, 'create').mockResolvedValue({
-        created_date: "2022-04-01T18:32:46.217Z",
-        department_id: 6,
-        department_name: "Marketing1",
-        description: "Test",
-        manager_id: 12312
-      });
+      jest.spyOn(Term, 'create').mockResolvedValue(undefined);
       const res = mockResponse();
 
-      await departmentController.createDepartment(req, res);
+      await termController.createTerm(req, res);
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith(
-        { errors: ["User not found"] },
+        { errors: ["Something went wrong please try again"] },
       );
     })
 
     it('it should return res status 500 and throw internal error', async () => {
       const req = {
         body: {
-          department_name: "Marketing1",
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 6,
         },
@@ -100,10 +87,10 @@ describe('Test department controller', () => {
         user_id: 6,
       });
 
-      jest.spyOn(Department, 'create').mockResolvedValue(undefined);
+      jest.spyOn(Term, 'create').mockResolvedValue(undefined);
       const res = mockResponse();
 
-      await departmentController.createDepartment(req, res);
+      await termController.createTerm(req, res);
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith(
@@ -114,7 +101,7 @@ describe('Test department controller', () => {
     it('it should return res status 500 and throw internal error in catch', async () => {
       const req = {
         body: {
-          department_name: "Marketing1",
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 6,
         },
@@ -124,12 +111,12 @@ describe('Test department controller', () => {
         user_id: 6,
       });
 
-      jest.spyOn(Department, 'create').mockImplementation(() => {
+      jest.spyOn(Term, 'create').mockImplementation(() => {
         throw Error();
       })
       const res = mockResponse();
 
-      await departmentController.createDepartment(req, res);
+      await termController.createTerm(req, res);
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith(
@@ -138,7 +125,7 @@ describe('Test department controller', () => {
     })
   })
 
-  describe('Test update deparment', () => {
+  describe('Test update term', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       jest.resetAllMocks();
@@ -147,16 +134,16 @@ describe('Test department controller', () => {
     it('it should return res status 200 and true', async () => {
       const req = {
         body: {
-          department_name: "Marketing1",
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 6,
         },
       };
 
-      jest.spyOn(Department, 'findOne').mockResolvedValueOnce({
+      jest.spyOn(Term, 'findOne').mockResolvedValueOnce({
         updated_date: "2022-04-01T18:32:46.217Z",
-        department_id: 6,
-        department_name: "Marketing1",
+        term_id: 6,
+        term_name: "Marketing1",
         description: "Test",
         manager_id: 69
       });
@@ -166,10 +153,10 @@ describe('Test department controller', () => {
         user_id: 74,
       });
 
-      jest.spyOn(Department, 'update').mockResolvedValue([1]);
+      jest.spyOn(Term, 'update').mockResolvedValue([1]);
       const res = mockResponse();
 
-      await departmentController.updateDepartment(req, res);
+      await termController.updateTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(200);
@@ -178,64 +165,35 @@ describe('Test department controller', () => {
       });
     })
 
-    it('should return res status 500 and false, cannot found department', async () => {
+    it('should return res status 500 and false, cannot found term', async () => {
       const req = {
         body: {
-          department_name: "Marketing1",
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 6,
         },
       };
       const res = mockResponse();
-      jest.spyOn(Department, 'findOne').mockResolvedValueOnce(undefined);
-      await departmentController.updateDepartment(req, res);
-
-
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith({ errors: ["Department not found"] },);
-    })
-
-    it('it should return res status 500 and false, cannot found user', async () => {
-      const req = {
-        body: {
-          department_name: "Marketing1",
-          description: "Test",
-          manager_id: 6,
-        },
-      };
-
-      jest.spyOn(Department, 'findOne').mockResolvedValueOnce({
-        updated_date: "2022-04-01T18:32:46.217Z",
-        department_id: 6,
-        department_name: "Marketing1",
-        description: "Test",
-        manager_id: 69
-      });
-
-
-      jest.spyOn(User, 'findOne').mockResolvedValueOnce(undefined);
-
-      const res = mockResponse();
-
-      await departmentController.updateDepartment(req, res);
+      jest.spyOn(Term, 'findOne').mockResolvedValueOnce(undefined);
+      await termController.updateTerm(req, res);
 
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith({ errors: ["User not found"] },);
+      expect(res.json).toHaveBeenCalledWith({ errors: ["Term not found"] },);
     })
 
     it('it should return res status 404 and false, throw internal error', async () => {
       const req = {
         body: {
-          department_name: "Marketing1",
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 6,
         },
       };
 
-      jest.spyOn(Department, 'findOne').mockResolvedValueOnce({
+      jest.spyOn(Term, 'findOne').mockResolvedValueOnce({
         updated_date: "2022-04-01T18:32:46.217Z",
-        department_id: 6,
-        department_name: "Marketing1",
+        term_id: 6,
+        term_name: "Marketing1",
         description: "Test",
         manager_id: 69
       });
@@ -245,11 +203,11 @@ describe('Test department controller', () => {
         user_id: 6,
       });
 
-      jest.spyOn(Department, 'update').mockResolvedValue(undefined);
+      jest.spyOn(Term, 'update').mockResolvedValue(undefined);
 
       const res = mockResponse();
 
-      await departmentController.updateDepartment(req, res);
+      await termController.updateTerm(req, res);
 
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith(
@@ -260,16 +218,16 @@ describe('Test department controller', () => {
     it('it should return res status 500 and false, throw internal error', async () => {
       const req = {
         body: {
-          department_name: "Marketing1",
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 6,
         },
       };
 
-      jest.spyOn(Department, 'findOne').mockResolvedValueOnce({
+      jest.spyOn(Term, 'findOne').mockResolvedValueOnce({
         updated_date: "2022-04-01T18:32:46.217Z",
-        department_id: 6,
-        department_name: "Marketing1",
+        term_id: 6,
+        term_name: "Marketing1",
         description: "Test",
         manager_id: 69
       });
@@ -279,13 +237,13 @@ describe('Test department controller', () => {
         user_id: 6,
       });
 
-      jest.spyOn(Department, 'update').mockImplementation(() => {
+      jest.spyOn(Term, 'update').mockImplementation(() => {
         throw new Error();
       });
 
       const res = mockResponse();
 
-      await departmentController.updateDepartment(req, res);
+      await termController.updateTerm(req, res);
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith(
@@ -294,7 +252,7 @@ describe('Test department controller', () => {
     })
   })
 
-  describe('Test get one department', () => {
+  describe('Test get one term', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       jest.resetAllMocks();
@@ -303,52 +261,52 @@ describe('Test department controller', () => {
     it('it should return res status 200 and true', async () => {
       const req = {
         params: {
-          department_id: 6
+          term_id: 6
         },
       };
 
-      jest.spyOn(Department, 'findOne').mockResolvedValueOnce({
+      jest.spyOn(Term, 'findOne').mockResolvedValueOnce({
         updated_date: "2022-04-01T18:32:46.217Z",
-        department_id: 6,
-        department_name: "Marketing1",
+        term_id: 6,
+        term_name: "Marketing1",
         description: "Test",
         manager_id: 69
       });
 
       const res = mockResponse();
 
-      await departmentController.getOneDepartment(req, res);
+      await termController.getOneTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
         data: {
           updated_date: "2022-04-01T18:32:46.217Z",
-          department_id: 6,
-          department_name: "Marketing1",
+          term_id: 6,
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 69
         }
       });
     })
 
-    it('it should return res status 500 and department not found', async () => {
+    it('it should return res status 500 and term not found', async () => {
       const req = {
         params: {
           wrong_test: 6
         },
       };
 
-      jest.spyOn(Department, 'findOne').mockResolvedValueOnce(null);
+      jest.spyOn(Term, 'findOne').mockResolvedValueOnce(null);
 
       const res = mockResponse();
 
-      await departmentController.getOneDepartment(req, res);
+      await termController.getOneTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
-       errors: ["Department not found"],
+       errors: ["Term not found"],
       });
     })
 
@@ -359,13 +317,13 @@ describe('Test department controller', () => {
         },
       };
 
-      jest.spyOn(Department, 'findOne').mockImplementation(() => {
+      jest.spyOn(Term, 'findOne').mockImplementation(() => {
         throw new Error();
       });
 
       const res = mockResponse();
 
-      await departmentController.getOneDepartment(req, res);
+      await termController.getOneTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(500);
@@ -375,7 +333,7 @@ describe('Test department controller', () => {
     })
   })
 
-  describe('Test get all department', () => {
+  describe('Test get all term', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       jest.resetAllMocks();
@@ -386,48 +344,48 @@ describe('Test department controller', () => {
         
       };
 
-      jest.spyOn(Department, 'findAll').mockResolvedValueOnce([{
+      jest.spyOn(Term, 'findAll').mockResolvedValueOnce([{
         updated_date: "2022-04-01T18:32:46.217Z",
-        department_id: 6,
-        department_name: "Marketing1",
+        term_id: 6,
+        term_name: "Marketing1",
         description: "Test",
         manager_id: 69
       }]);
 
       const res = mockResponse();
 
-      await departmentController.getDepartment(req, res);
+      await termController.getTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
         data: [{
           updated_date: "2022-04-01T18:32:46.217Z",
-          department_id: 6,
-          department_name: "Marketing1",
+          term_id: 6,
+          term_name: "Marketing1",
           description: "Test",
           manager_id: 69
         }]
       });
     })
 
-    it('should return res status 500 and department not found', async () => {
+    it('should return res status 500 and term not found', async () => {
       const req = {
         params: {
           wrong_test: 6
         },
       };
 
-      jest.spyOn(Department, 'findAll').mockResolvedValueOnce(null);
+      jest.spyOn(Term, 'findAll').mockResolvedValueOnce(null);
 
       const res = mockResponse();
 
-      await departmentController.getDepartment(req, res);
+      await termController.getTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
-       errors: ["Department not found"],
+       errors: ["Term not found"],
       });
     })
 
@@ -438,13 +396,13 @@ describe('Test department controller', () => {
         },
       };
 
-      jest.spyOn(Department, 'findAll').mockImplementation(() => {
+      jest.spyOn(Term, 'findAll').mockImplementation(() => {
         throw new Error();
       });
 
       const res = mockResponse();
 
-      await departmentController.getDepartment(req, res);
+      await termController.getTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(500);
@@ -454,7 +412,7 @@ describe('Test department controller', () => {
     })
   })
 
-  describe('Test delete department', () => {
+  describe('Test delete term', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       jest.resetAllMocks();
@@ -463,15 +421,15 @@ describe('Test department controller', () => {
     it('it should return res status 200 and true', async () => {
       const req = {
         params: {
-          department_id: 6
+          term_id: 6
         }
       };
 
-      jest.spyOn(Department, 'destroy').mockResolvedValueOnce(true);
+      jest.spyOn(Term, 'destroy').mockResolvedValueOnce(true);
 
       const res = mockResponse();
 
-      await departmentController.deleteDepartment(req, res);
+      await termController.deleteTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(200);
@@ -483,15 +441,15 @@ describe('Test department controller', () => {
     it('it should return res status 500 and throw internal out catch', async () => {
       const req = {
         params: {
-          department_id: 6
+          term_id: 6
         }
       };
 
-      jest.spyOn(Department, 'destroy').mockResolvedValueOnce(false);
+      jest.spyOn(Term, 'destroy').mockResolvedValueOnce(false);
 
       const res = mockResponse();
 
-      await departmentController.deleteDepartment(req, res);
+      await termController.deleteTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(500);
@@ -507,13 +465,13 @@ describe('Test department controller', () => {
         },
       };
 
-      jest.spyOn(Department, 'destroy').mockImplementation(() => {
+      jest.spyOn(Term, 'destroy').mockImplementation(() => {
         throw new Error();
       });
 
       const res = mockResponse();
 
-      await departmentController.deleteDepartment(req, res);
+      await termController.deleteTerm(req, res);
 
 
       expect(res.status).toHaveBeenCalledWith(500);

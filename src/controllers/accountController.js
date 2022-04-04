@@ -16,86 +16,6 @@ const fs = require('fs');
 const path = require('path');
 const e = require('cors');
 
-exports.login = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const userInDB = await User.findOne({
-      where: {
-        username,
-      },
-    });
-
-    logger.info('User found', { userInDB });
-    if (userInDB) {
-      const passwordHash = userInDB.password;
-      const userData = {
-        user_id: userInDB.user_id,
-        username: userInDB.username,
-        full_name: userInDB.full_name,
-        avatar: userInDB.avatar,
-        department_id: userInDB.department_id,
-        role_id: userInDB.role_id
-      }
-      const getTimeNow = new Date();
-      logger.info('User data', { userData });
-      if (bcrypt.compareSync(password,passwordHash)) {
-        console.log(true);
-        const token = jwt.sign(userData ,'test', {
-          expiresIn: getTimeNow.getSeconds() + 60000
-        })
-
-        const refreshToken = jwt.sign(userData ,'test', {
-          expiresIn: getTimeNow.getSeconds() + 600000
-        })
-        const updateToken = await User.update({
-          refreshToken
-        }, {
-          where: {
-            username
-          }
-        });
-        res.send({token, refreshToken, userData});
-      }
-    }
-  } catch (err) {
-    logger.error('Login failed', {err});
-    res.send(err);
-  }
-};
-
-exports.getIdentity = async (req, res) => {
-  try {
-    const userId = req.user.user_id;
-    const user = await User.findOne({
-      where: {
-        user_id: userId
-      },
-      attributes: {
-        exclude: ['password', 'reset_password_token', 'reset_token_expires','refresh_token'],
-      },
-    })
-    if (user) {
-      logger.info('User found', { user });
-      return response.respondOk(res, user);
-    }
-    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
-  } catch (err) {
-    logger.error('Cannot get user identity', err);
-    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
-  }
-}
-
-exports.createRole = async (req ,res) => {
-  const { role_name } = req.body;
-
-  const is_insert = await Role.create({
-    role_name,
-  });
-
-  logger.info('Role created success', { is_insert });
-  res.send(is_insert)
-};
-
 exports.getUser = async (req, res) => {
   try {
     const where = {};
@@ -128,6 +48,7 @@ exports.getUser = async (req, res) => {
       logger.info('Account list', {user: result});
       return response.respondOk(res, result);
     }
+    return response.respondInternalServerError(res, [customMessages.errors.accountNotFound]);
   } catch (err) {
     logger.error('Cannot get account list', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -146,10 +67,10 @@ exports.getOneUser = async (req, res) => {
       logger.info('Account created', {user: result});
       return response.respondOk(res, result);
     }
-    return response.respondInternalServerError(res, [customMessages.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.accountNotFound]);
   } catch (err) {
     logger.error('Account create failed', err);
-    return response.respondInternalServerError(res, [customMessages.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
@@ -167,7 +88,6 @@ exports.createUser = async (req, res) => {
       password: hashedPassword,
       department_id: data.department_id,
       gender: data.gender,
-      // avatar: 'img/' + req.file.filename || ''
     }
 
     if (req.file) {
@@ -199,7 +119,7 @@ exports.createUser = async (req, res) => {
 
     if (!checkDepartmentExist) {
       logger.error('Deparment is not exist in the system', { department_id: data.department_id});
-      return response.respondInternalServerError(res, [customMessages.errors.departmentNotExisted])
+      return response.respondInternalServerError(res, [customMessages.errors.departmentNotFound])
     }
 
     logger.debug('Payload for create', { payload });
@@ -214,6 +134,8 @@ exports.createUser = async (req, res) => {
       logger.info('Account created', {user: result});
       return response.respondOk(res, result);
     }
+    logger.info('Account create failed');
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
     logger.error('Account create failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -248,7 +170,7 @@ exports.updateUser = async (req, res) => {
 
     if (!checkDepartmentExist) {
       logger.error('Deparment is not exist in the system', { department_id: data.department_id});
-      return response.respondInternalServerError(res, [customMessages.errors.departmentNotExisted])
+      return response.respondInternalServerError(res, [customMessages.errors.departmentNotFound])
     }
 
     const result = await User.update(updateData, {
@@ -260,6 +182,8 @@ exports.updateUser = async (req, res) => {
       logger.info('Account updated', {user: data});
       return response.respondOk(res, result);
     }
+    logger.info('Account failed to update');
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
     logger.error('Account update failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -284,6 +208,7 @@ exports.updateUserPassword = async (req, res) => {
       logger.info('Account password updated', {user: data});
       return response.respondOk(res, result);
     }
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
     logger.error('Account update failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -299,6 +224,11 @@ exports.deleteUser = async (req, res) => {
         user_id,
       }
     });
+
+    if (!user) {
+      logger.error('Accout not found');
+      return response.respondInternalServerError(res, [customMessages.errors.accountNotFound]);
+    }
 
     const result = await User.destroy({ where: {
       user_id,
@@ -316,7 +246,7 @@ exports.deleteUser = async (req, res) => {
       logger.info('User deleted', { result });
       return response.respondOk(res, result);
     }
-    return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   } catch (err) {
     logger.error('Account delete failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);

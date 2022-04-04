@@ -24,3 +24,5 @@ npm-debug.log*
 .prettierrc
 
 .werf_secret_key
+
+coverage/

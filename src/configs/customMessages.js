@@ -51,7 +51,14 @@ module.exports = {
       departmentNotExisted: 'Deparment not existed in the system',
       notAnyActiveTerm: 'Not active term found',
       cannotDeleteDocument: 'Cannot delete document',
-      departmentNotFound: 'Department not found'
+      departmentNotFound: 'Department not found',
+      categoryNotFound: 'Category not found',
+      accountNotFound: 'Account not found',
+      termNotFound: 'Term not found',
+      aggrementNotFound: 'Aggrement not found',
+      ideaNotFound: 'Idea not found',
+      commentNotFound: 'Comment not found',
+      documentNotFound: 'Document not found',
     },
     success: {
       forgotPasswordMailSent: 'An email will be sent to your email address',

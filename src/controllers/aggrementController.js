@@ -10,6 +10,7 @@ exports.getAggrement = async (req, res) => {
       logger.info('Aggrement list', {aggrement: result});
       return response.respondOk(res, result);
     }
+    return response.respondInternalServerError(res, [customMessages.errors.aggrementNotFound]);
   } catch (err) {
     logger.error('Cannot get aggrement list', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -43,10 +44,10 @@ exports.getOneAggrement = async (req, res, next) => {
       logger.info('Aggrement found', { aggrement });
       return response.respondOk(res, aggrement);
     };
-    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.aggrementNotFound]);
   } catch (err) {
     logger.error('Failed to get aggrement', err);
-    return response.respondInternalServerError(err, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
@@ -59,22 +60,24 @@ exports.updateAggrement = async (req, res) => {
       },
     });
 
-    if (aggrement) {
-      // console.log('Test')
-      data.updated_date = new Date();
-      const updateAggrement = await Aggrement.update(data, {
-        where: {
-          aggrement_id: data.aggrement_id,
-        }
-      });
+    if (!aggrement) {
+      logger.info('Aggrement found');
+      return response.respondInternalServerError(res, [customMessages.errors.aggrementNotFound]);
+    }
 
-      logger.info('Aggrement found', { updateAggrement });
-      return response.respondOk(res, updateAggrement);
-    };
-    return next(aggrement);
+     // console.log('Test')
+    data.updated_date = new Date();
+    const updateAggrement = await Aggrement.update(data, {
+      where: {
+        aggrement_id: data.aggrement_id,
+      }
+    });
+
+    logger.info('Aggrement found', { updateAggrement });
+    return response.respondOk(res, updateAggrement);
   } catch (err) {
     logger.error('Failed to update aggrement', err);
-    return response.respondInternalServerError(err, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
