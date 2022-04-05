@@ -13,8 +13,6 @@ const { uploadAvatar } = require('../services/uploadFileService');
 const { isAuthorization } = require("../middlewares/authorization");
 const { ROLES } = require("../configs/ms-constants");
 
-router.post('/service1/role', isAuthenticated, accountController.createRole);
-
 // user routes
 
 router.get('/service1/user', isAuthenticated, accountController.getUser);
