@@ -59,6 +59,7 @@ module.exports = {
       ideaNotFound: 'Idea not found',
       commentNotFound: 'Comment not found',
       documentNotFound: 'Document not found',
+      failedToCreateIdea: 'Failed to create idea',
     },
     success: {
       forgotPasswordMailSent: 'An email will be sent to your email address',

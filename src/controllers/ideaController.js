@@ -51,11 +51,20 @@ exports.createIdea = async (req, res) => {
         },
       })
 
+      if (!department) {
+        return response.respondInternalServerError(res, [customMessages.errors.departmentNotFound]);
+      }
+
+
       const manager = await User.findOne({
         where: {
           user_id: department.manager_id,
         }
       })
+
+      if (!manager) {
+        return response.respondInternalServerError(res, [customMessages.errors.accountNotFound]);
+      }
 
       const sendEmail = await emailService.sendEmail({
         email_slug: EMAIL_SLUGS.IDEA_CREATED,
@@ -73,13 +82,17 @@ exports.createIdea = async (req, res) => {
         reqFiles.push({ document: req.files[i].filename, idea_id: idea.idea_id, file_type: ext.substring(1)});
       }
       const documents = await IdeaDocument.bulkCreate(reqFiles);
+      if (documents.length < 0 || documents.length == 0) {
+        return response.respondInternalServerError(res, [customMessages.errors.documentNotFound]);
+      }
+      
       logger.info('Documents added successfully', { documents });
       return response.respondOk(res, idea);
     }
-    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.failedToCreateIdea]);
   } catch (err) {
     logger.error('Failed to add idea', err);
-    return response.respondInternalServerError(res, [err]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 

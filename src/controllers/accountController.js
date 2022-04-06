@@ -316,7 +316,7 @@ exports.forgotPassword = async (req, res) => {
         });
         return response.respondOk(res, {savedUser});
       }
-
+      return response.respondInternalServerError(res, [customMessages.errors.accountNotFound]);
     } catch (err) {
       logger.info('User reset password failed.', err);
       return response.respondInternalServerError(res, [customMessages.errors.internalError]);

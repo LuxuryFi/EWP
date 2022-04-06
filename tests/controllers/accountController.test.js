@@ -121,7 +121,7 @@ describe('Test account controller', () => {
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
       errors: ["Username existed in the system"],
-     });
+    });
    });
 
    it('it should return status code 500 and department not found', async () => {
@@ -887,11 +887,13 @@ describe('Test account controller', () => {
         "new_password": "123456789",
         "confirm_password": "123456789",
       },
-      params: "token",
+      params: {
+        token: "Test"
+      },
     };
     const res = mockResponse();
 
-    jest.spyOn(User, 'findOne').mockResolvedValueOnce([{
+    jest.spyOn(User, 'findOne').mockResolvedValueOnce({
       "username": "Test",
       "full_name": "Vu Hai Nam",
       "last_name": "full_name",
@@ -899,64 +901,168 @@ describe('Test account controller', () => {
       "phone": "0966141511",
       "role_id": 4,
       "password": "123456789",
-      "avatar": "test"
-    }]);
+      "avatar": "test", 
+      save: () => ({
+      "username": "Test",
+      "full_name": "Vu Hai Nam",
+      "last_name": "full_name",
+      "first_name": "full_name",
+      "phone": "0966141511",
+      "role_id": 4,
+      "password": "123456789",
+      "avatar": "test", 
+      }),
+    });
 
-    jest.spyOn(User, 'save')
 
-    await accountController.updateUserPassword(req, res);
+    await accountController.resetPassword(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
-      data: [{
-        "username": "gaconbibenh11@gmail.com",
-        "password": "123456789"
-      }],
+      data: ["Your password has been successfully reset"],
+    }); 
+   });
+
+   it('it should return status code 400 and no token in param', async () => {
+    const req = {
+      body: {
+        "new_password": "123456789",
+        "confirm_password": "123456789",
+      },
+      params: {
+      
+      },
+    };
+    const res = mockResponse();
+
+    jest.spyOn(User, 'findOne').mockResolvedValueOnce({
+      "username": "Test",
+      "full_name": "Vu Hai Nam",
+      "last_name": "full_name",
+      "first_name": "full_name",
+      "phone": "0966141511",
+      "role_id": 4,
+      "password": "123456789",
+      "avatar": "test", 
+    });
+
+    await accountController.resetPassword(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      errors: ["The provided token is missing or it has expired"],
+    }); 
+   });
+
+   it('it should return status code 400 and no user found, token missing', async () => {
+    const req = {
+      body: {
+        "new_password": "123456789",
+        "confirm_password": "123456789",
+      },
+      params: {
+      
+      },
+    };
+    const res = mockResponse();
+
+    jest.spyOn(User, 'findOne').mockResolvedValueOnce(undefined);
+
+    await accountController.resetPassword(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      errors: ["The provided token is missing or it has expired"],
     }); 
    });
 
    it('it should return status code 500 and throw internal error', async () => {
     const req = {
       body: {
-        "username": "Test",
-        "password": "123456789",
-      },
-    };
-    const res = mockResponse();
-
-    jest.spyOn(User, 'update').mockResolvedValueOnce(null);
-
-    await accountController.updateUserPassword(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({
-      errors: ["Something went wrong please try again"]
-    });
-   });
-
-   it('it should return status code 500 and throw internal error', async () => {
-    const req = {
-      body: {
-        "username": "Test",
-        "password": "123456789",
+        "new_password": "123456789",
+        "confirm_password": "123456789",
       },
       params: {
-        "user_id": 1,
-      }
+        token: "Test"
+      },
     };
     const res = mockResponse();
 
-    jest.spyOn(User, 'update').mockImplementation(() => {
+    jest.spyOn(User, 'findOne').mockImplementation(() => {
       throw Error();
     })
 
-    await accountController.updateUserPassword(req, res);
-
+    await accountController.resetPassword(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
-      errors: ["Something went wrong please try again"]
-    });
+      errors: ["Something went wrong please try again"],
+    }); 
    });
  });
 
+ describe('Test forgot password', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+  it('it should return status code 200 and saved User', async () => {
+     const req = {
+       body: {
+         username: "test@gmail.com",
+       }
+     }
+     const res = mockResponse();
+
+     jest.spyOn(User, 'findOne').mockResolvedValueOnce({
+      "user_id": 6,
+      save: () => ({
+        "user_id": 6,
+      }),
+     });
+     await accountController.forgotPassword(req, res);
+
+     expect(res.status).toHaveBeenCalledWith(200);
+     expect(res.json).toHaveBeenCalledWith({
+       data: {
+        savedUser: {
+          user_id: 6
+        }
+       }
+     }); 
+  })
+
+  it('it should return status code 500 and user not found', async () => {  
+    const req = {
+      body: {
+        username: "test@gmail.com",
+      }
+    }
+    const res = mockResponse();
+
+    jest.spyOn(User, 'findOne').mockResolvedValueOnce(undefined);
+    await accountController.forgotPassword(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      errors: ['Account not found']
+    }); 
+  })
+
+  it('it should return status code 500 and throw internal error', async () => {  
+    const req = {
+      body: {
+        username: "test@gmail.com",
+      }
+    }
+    const res = mockResponse();
+
+    jest.spyOn(User, 'findOne').mockImplementation(() => {
+      throw Error();
+    })
+    await accountController.forgotPassword(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      errors: ['Something went wrong please try again']
+    }); 
+  })
+ })
 });
