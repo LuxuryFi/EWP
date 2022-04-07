@@ -99,7 +99,6 @@ exports.createIdea = async (req, res) => {
 exports.getIdea = async (req, res) => {
   try {
     const where = {};
-    const pageNumber = req.query.page;
 
     if (req.query.department_id) {
       where.department_id = req.query.department_id;
@@ -139,6 +138,10 @@ exports.getIdea = async (req, res) => {
         ]
       },
     );
+
+    if (!ideas) {
+      return response.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
+    }
     const finalResult = [];
 
     for (let i = 0; i < ideas.length; i++) {
@@ -182,7 +185,6 @@ exports.getIdea = async (req, res) => {
 exports.exportIdea = async (req, res) => {
   try {
     const where = {};
-    const pageNumber = req.query.page;
 
     if (req.query.department_id) {
       where.department_id = req.query.department_id;
@@ -218,6 +220,10 @@ exports.exportIdea = async (req, res) => {
         ]
       },
     );
+
+    if (!ideas) {
+      return response.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
+    }
     const finalResult = [];
 
     for (let i = 0; i < ideas.length; i++) {
@@ -269,7 +275,7 @@ exports.exportIdea = async (req, res) => {
     const DIR = './public/csv'
     const filename = path.join(DIR, + new Date() + 'staff.csv');
     fs.writeFileSync(filename,"\uFEFF" + csv, 'utf-8');
-    res.download(filename);
+    res.status(200).download(filename);
   } catch (err) {
     logger.error('Failed to get idea list', err)
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -325,6 +331,10 @@ exports.getOneIdea = async (req, res) => {
       },
     );
 
+    if (!idea) {
+      return response.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
+    }
+
     const finalResult = {
       idea_id: idea.idea_id,
       user_id: idea.user_id,
@@ -374,10 +384,7 @@ exports.getOneIdea = async (req, res) => {
     finalResult.comments = comments;
     finalResult.views = views;
 
-    if (finalResult) {
-      logger.info('Idea found', { finalResult });
-      return response.respondOk(res, finalResult);
-    }
+    logger.info('Idea found', { finalResult });
     return response.respondOk(res, finalResult);
   } catch (err) {
     logger.error('Failed to idea', err)
@@ -415,9 +422,10 @@ exports.updateIdea = async (req, res) => {
       logger.info('Documents added successfully', { documents });
       return response.respondOk(res, updatedIdea);
     }
+    return response.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
   } catch (err) {
     logger.info('Failed to update idea', err);
-    return response.respondOk(res, [err]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 };
 
@@ -432,7 +440,7 @@ exports.deleteIdea = async (req, res) => {
       logger.info('Idea deleted success', { result });
       return response.respondOk(res, result);
     }
-    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
   } catch (err) {
     logger.error('Failed to delete idea', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -452,8 +460,6 @@ exports.createComment = async (req, res) => {
 
     const comment = await IdeaComment.create(payload);
 
-
-
     if (comment) {
       logger.info('Commented', { comment });
       const idea = await Idea.findOne({
@@ -463,6 +469,10 @@ exports.createComment = async (req, res) => {
         attributes: ['user_id'],
       });
 
+      if (!idea) {
+        return response.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
+      }
+
       const author = await User.findOne({
         where: {
           user_id: idea.user_id,
@@ -470,6 +480,9 @@ exports.createComment = async (req, res) => {
         attributes: ['username'],
       });
 
+      if (!author) {
+        return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
+      }
       await emailService.sendEmail({
         email_slug: EMAIL_SLUGS.IDEA_COMMENT,
         full_name: req.user.full_name,
@@ -482,6 +495,7 @@ exports.createComment = async (req, res) => {
 
       return response.respondOk(res, comment);
     }
+    return response.respondInternalServerError(res, [customMessages.errors.commentNotFound])
   } catch (err) {
     logger.info('Failed to comment', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -507,7 +521,7 @@ exports.getOneComment = async (req, res) => {
       comments.forEach( comment => {
         if (comment.anonymous && comment.user_id !== userId) {
           comment.user.full_name = 'anonymous';
-          if (comment.gender === 'female') {
+          if (comment.user.gender === 'female') {
             comment.user.avatar = 'img/female.jpg'
           } else {
             comment.user.avatar = 'img/male.jpg'
@@ -517,7 +531,7 @@ exports.getOneComment = async (req, res) => {
       logger.info('Comment found', { comments });
       return response.respondOk(res, comments);
     }
-    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.commentNotFound]);
   } catch (err) {
     logger.info('Failed to get comment', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -533,7 +547,7 @@ exports.getComment = async (req, res) => {
       logger.info('Comment found', { comment });
       return response.respondOk(res, comment);
     }
-    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
+    return response.respondInternalServerError(res, [customMessages.errors.commentNotFound]);
   } catch (err) {
     logger.info('Failed to get comment', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -550,7 +564,7 @@ exports.updateComment = async (req, res) => {
       updated_date: new Date(),
     }
 
-    if (data.anonymous) payload.anonymous = data.anonymous;
+    if (data.anonymous) updatePayload.anonymous = data.anonymous;
     const comment = await IdeaComment.update(updatePayload, {
       where: {
         comment_id: commentId,
@@ -561,6 +575,7 @@ exports.updateComment = async (req, res) => {
       logger.info('Comment updated', { comment });
       return response.respondOk(res, comment);
     }
+    return response.respondInternalServerError(res, [customMessages.errors.commentNotFound]);
   } catch (err) {
     logger.info('Failed to updated comment', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -578,6 +593,10 @@ exports.deleteComment = async (req, res) => {
         comment_id: commentId,
       },
     });
+    
+    if (!comment) {
+      return response.respondInternalServerError(res, [customMessages.errors.commentNotFound]);
+    }
 
     if (comment.user_id === userId || userRole === ROLES.ADMIN) {
       const result = await IdeaComment.destroy({
@@ -590,6 +609,7 @@ exports.deleteComment = async (req, res) => {
         logger.info('Comment deleted', { result });
         return response.respondOk(res, result);
       }
+      return response.respondInternalServerError(res, [customMessages.errors.internalError])
     }
     logger.error('Cannot delete comment');
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -622,11 +642,11 @@ exports.vote = async (req, res) => {
             vote_id: checkVoteExisted.vote_id,
           }
         })
-      if (result) {
-        logger.info('Unvoted', result);
-        return response.respondOk(res, result);
+        if (result) {
+          logger.info('Unvoted', result);
+          return response.respondOk(res, result);
+        }
       }
-    }
       const updatedVote = await IdeaVote.update({
         vote: payload.vote,
         updated_date: new Date(),
@@ -662,11 +682,19 @@ exports.getTop10View = async (req, res) => {
       }
     });
 
+    if (!term) {
+      return response.respondInternalServerError(res, [customMessages.errors.termNotFound]);
+    }
+
     const ideas = await Idea.findAll({
       where: {
         term_id: term.term_id,
       },
     });
+
+    if (!ideas) {
+      return response.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
+    }
 
     const ideasId = ideas.map((idea) => {
       return idea.idea_id;
@@ -690,13 +718,17 @@ exports.getTop10View = async (req, res) => {
           ]
         },
       ],
-      limit: 5,
+      limit: 10,
     })
+
+    if (!topView) {
+      return response.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
+    }
 
     return response.respondOk(res, topView);
   } catch (err) {
     logger.error('Cannot get top 10 view', err)
-    return response.respondInternalServerError(res, [err]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }
 
@@ -717,6 +749,6 @@ exports.deleteDocument = async (req,res) => {
     return response.respondInternalServerError(res, [customMessages.errors.cannotDeleteDocument]);
   } catch (err) {
     logger.info('Failed to delete document', err);
-    return response.respondInternalServerError(res, [customMessages.errors.cannotDeleteDocument]);
+    return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
 }

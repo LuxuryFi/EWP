@@ -218,7 +218,6 @@ exports.updateUserPassword = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const user_id = req.params.user_id;
-
     const user = await User.findOne({
       where: {
         user_id,
@@ -259,7 +258,7 @@ exports.resetPassword = async (req, res) => {
     if (!newPassword || !confirmPassword || newPassword !== confirmPassword) {
       // if the password is missing or new and confirm passwords are not matching, return an error
       logger.debug(customMessages.errors.passwordMissingOrNotMatching);
-      return response.respondBadRequest({ errors: [customMessages.errors.passwordMissingOrNotMatching] });
+      return response.respondBadRequest(res, [customMessages.errors.passwordMissingOrNotMatching]);
     }
     const token = req.params.token;
     if (!token) {
@@ -285,8 +284,6 @@ exports.resetPassword = async (req, res) => {
       logger.info(`Password reset for user: ${user.username}`);
       return response.respondOk(res, [customMessages.success.passwordHasBeenReset])
     }
-    logger.debug(customMessages.errors.noTokenInParam);
-    return res.status(400).json({ errors: [customMessages.errors.tokenMissingOrExpired] });
   } catch (err) {
     logger.error('Account password reset failed', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);

@@ -5,6 +5,7 @@ const {
 const accountController = require('../../src/controllers/accountController');
 const emailService = require('../../src/services/emailService');
 const fs = require('fs');
+const customMessages = require('../../src/configs/customMessages');
 
 require('mysql2/node_modules/iconv-lite').encodingExists('foo');
 
@@ -34,7 +35,7 @@ describe('Test account controller', () => {
         "phone": "0966141511",
         "role_id": 4,
         "password": "123456789",
-        "avatar": "test"
+        "avatar": "test",
       },
       file: {
         filename: 'Test',
@@ -76,6 +77,62 @@ describe('Test account controller', () => {
         "role_id": 4,
         "password": "123456789",
         "avatar": "test"
+      },
+    });
+   });
+
+   it('it should return status code 200 and account2', async () => {
+    const req = {
+      body: {
+        "username": "annthgch190232@fpt.edu.vn",
+        "full_name": "Vu Hai Nam",
+        "last_name": "full_name",
+        "first_name": "full_name",
+        "phone": "0966141511",
+        "role_id": 4,
+        "password": "123456789",
+        "avatar": "test",
+        "gender": "female"
+      },
+    };
+    const res = mockResponse();
+
+    emailService.sendEmail = jest.fn();
+    
+    jest.spyOn(User, 'findOne').mockResolvedValueOnce(null);
+
+    jest.spyOn(Department, 'findOne').mockResolvedValueOnce({
+      department_id: 6,
+    });
+
+    jest.spyOn(User, 'create').mockResolvedValueOnce({
+      "username": "annthgch190232@fpt.edu.vn",
+      "full_name": "Vu Hai Nam",
+      "last_name": "full_name",
+      "first_name": "full_name",
+      "phone": "0966141511",
+      "role_id": 4,
+      "password": "123456789",
+      "avatar": "test",
+      "gender": "female"
+    });
+
+    emailService.sendEmail.mockResolvedValueOnce(true);
+
+    await accountController.createUser(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({
+      data: {
+        "username": "annthgch190232@fpt.edu.vn",
+        "full_name": "Vu Hai Nam",
+        "last_name": "full_name",
+        "first_name": "full_name",
+        "phone": "0966141511",
+        "role_id": 4,
+        "password": "123456789",
+        "avatar": "test",
+        "gender": "female"
       },
     });
    });
@@ -291,6 +348,9 @@ describe('Test account controller', () => {
       },
       params: {
         "user_id": "Test",
+      },
+      file: {
+        filename: 'Test'
       }
     };
     const res = mockResponse();
@@ -657,7 +717,37 @@ describe('Test account controller', () => {
     fs.unlinkSync = jest.fn();
     fs.unlinkSync.mockResolvedValueOnce(true);
 
-    await accountController.getOneUser(req, res);
+    await accountController.deleteUser(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      errors: ["Something went wrong please try again"],
+     });
+   });
+
+   it('it should return status code 500 and throw internal error2', async () => {
+    const req = {
+      body: {
+        "username": "annthgch190232@fpt.edu.vn",
+        "full_name": "Vu Hai Nam",
+        "last_name": "full_name",
+        "first_name": "full_name",
+        "phone": "0966141511",
+        "role_id": 4,
+        "password": "123456789",
+        "avatar": "test"
+      },
+    };
+    const res = mockResponse();
+
+    jest.spyOn(User, 'findOne').mockImplementation(() => {
+      throw Error();
+    });
+
+    fs.unlinkSync = jest.fn();
+    fs.unlinkSync.mockResolvedValueOnce(true);
+
+    await accountController.deleteUser(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
@@ -674,7 +764,15 @@ describe('Test account controller', () => {
    it('it should return status code 200 and account data', async () => {
     const req = {
       query: {
+        department_id: 1,
+        user_id:1,
+        term_id: 1,
+        idea_id: 1,
+        category_id: 1,
         page: 1,
+        gender: 1,
+        profile_status: 1,
+        role_id: 1
       }
     };
     const res = mockResponse();
@@ -994,6 +1092,25 @@ describe('Test account controller', () => {
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
       errors: ["Something went wrong please try again"],
+    }); 
+   });
+
+   it('it should return status code 500 and the passwords are not matching', async () => {
+    const req = {
+      body: {
+        "new_password": "1231a3456789",
+        "confirm_password": "12323",
+      },
+      params: {
+        token: "Te22st"
+      },
+    };
+    const res = mockResponse();
+
+    await accountController.resetPassword(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      errors: [customMessages.errors.passwordMissingOrNotMatching],
     }); 
    });
  });
