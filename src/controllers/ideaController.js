@@ -117,6 +117,10 @@ exports.getIdea = async (req, res) => {
       where.idea_id = req.query.idea_id;
     }
 
+    if (req.query.category_id) {
+      where.category_id = req.query.category_id;
+    }
+
     const ideas = await Idea.findAll({
         where,
         include: [
