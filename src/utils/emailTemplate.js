@@ -445,7 +445,7 @@ exports.resetPasswordTemplate = (title, name, reset_password_token) => {
 
                 <p>Simply click on the button below to set your new password. Please note this link is only valid for 24 hours.</p>
             </div>
-            <button class="btn-content"> <a href="http://103.107.182.190:3000/resetPassword/${token}">Change Password</a> </button>
+            <button class="btn-content"> <a href="http://103.107.182.190:3000/resetPassword/${reset_password_token}">Change Password</a> </button>
 
             <div class="ew-f">
 
