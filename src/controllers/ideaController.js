@@ -690,6 +690,8 @@ exports.getTop10View = async (req, res) => {
       where: {
         term_id: term.term_id,
       },
+      attributes: ['idea_id'],
+      raw: true,
     });
 
     if (!ideas) {
@@ -721,11 +723,41 @@ exports.getTop10View = async (req, res) => {
       limit: 10,
     })
 
+    const finalResult = [];
+
+    for (let i = 0; i < topView.length; i++) {
+    //   const countLike = await IdeaVote.count({
+    //     where: {
+    //       vote: 1,
+    //       idea_id: topView[i].idea_id,
+    //     }
+    //   });
+
+    //   const countDislike = await IdeaVote.count({
+    //     where: {
+    //       vote: 0,
+    //       idea_id: topView[i].idea_id,
+    //     }
+    //   });
+
+      finalResult.push({
+        idea_id: topView[i].idea_id,
+        views: topView[i].Counted,
+        user_id: topView[i].idea.user_id,
+        title: topView[i].idea.title,
+        description: topView[i].idea.description,
+        full_name: topView[i].idea.user.full_name,
+        // like: countLike,
+        // dislike: countDislike,
+      })
+    }
+
+
     if (!topView) {
       return response.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
     }
 
-    return response.respondOk(res, topView);
+    return response.respondOk(res, finalResult );
   } catch (err) {
     logger.error('Cannot get top 10 view', err)
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
