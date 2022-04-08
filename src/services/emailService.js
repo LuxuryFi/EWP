@@ -81,6 +81,6 @@ exports.sendEmail = async (data) => {
       });
     }
   } catch (err) {
-    logger.error('Email send failed', error);
+    logger.error('Email send failed', err);
   }
 }
