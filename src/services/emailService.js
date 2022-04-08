@@ -37,7 +37,7 @@ exports.sendEmail = async (data) => {
         to: data.username,
         subject: 'Your Account password reset link',
         text: 'Welcome',
-        html: resetPasswordTemplate('Your Account password reset lin', data.username, data.reset_password_token),
+        html: resetPasswordTemplate('Your Account password reset link', data.full_name, data.reset_password_token),
       }
 
       email = transporter.sendMail(mailOption, function(error, info){

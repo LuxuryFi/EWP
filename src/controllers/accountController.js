@@ -310,6 +310,7 @@ exports.forgotPassword = async (req, res) => {
           username: savedUser.username,
           reset_password_token: savedUser.reset_password_token,
           email_slug: EMAIL_SLUGS.PASSWORD_RESET,
+          full_name: user.full_name,
         });
         return response.respondOk(res, {savedUser});
       }

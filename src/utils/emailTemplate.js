@@ -238,7 +238,7 @@ exports.accountCreatedTemplate = (name, username, password) => {
     </html>`
 }
 
-exports.resetPasswordTemplate = (name, username, password, token) => {
+exports.resetPasswordTemplate = (title, name, reset_password_token) => {
   return `<html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -434,7 +434,7 @@ exports.resetPasswordTemplate = (name, username, password, token) => {
 
     <section class="content">
       <div class="welcome">
-        <p>Hello!</p>
+        <p>Hello! ${name}</p>
       </div>
       <div class="container-content">
         <div class="first-text-content">
