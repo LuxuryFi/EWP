@@ -85,7 +85,7 @@ exports.createIdea = async (req, res) => {
       if (documents.length < 0 || documents.length == 0) {
         return response.respondInternalServerError(res, [customMessages.errors.documentNotFound]);
       }
-      
+
       logger.info('Documents added successfully', { documents });
       return response.respondOk(res, idea);
     }
@@ -593,7 +593,7 @@ exports.deleteComment = async (req, res) => {
         comment_id: commentId,
       },
     });
-    
+
     if (!comment) {
       return response.respondInternalServerError(res, [customMessages.errors.commentNotFound]);
     }
@@ -783,4 +783,48 @@ exports.deleteDocument = async (req,res) => {
     logger.info('Failed to delete document', err);
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
   }
+}
+
+exports.getCount = async (req, res) => {
+
+  const departmentId = req.user.department_id;
+
+  const ideaCount = await Idea.count({
+    where: {
+      department_id: departmentId,
+    }
+  });
+  const userCount = await User.count({
+    where: {
+      department_id: departmentId,
+    }
+  });
+
+  const finalResult = {
+    user: userCount,
+    idea: ideaCount,
+
+  }
+
+  return response.respondOk(res, finalResult)
+}
+
+exports.getCountAdmin = async (req, res) => {
+
+
+  const ideaCount = await Idea.count({
+  });
+  const userCount = await User.count({
+  });
+
+  const departmentCount = await Department.count({
+  });
+
+  const finalResult = {
+    user: userCount,
+    idea: ideaCount,
+    department: departmentCount
+  }
+
+  return response.respondOk(res,finalResult);
 }
