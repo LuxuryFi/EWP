@@ -2156,7 +2156,7 @@ describe('Test idea controller', () => {
       const req = {
 
       }
-      
+
       const res = mockResponse();
 
       jest.spyOn(Term, 'findOne').mockResolvedValueOnce({
@@ -2217,7 +2217,7 @@ describe('Test idea controller', () => {
       const req = {
 
       }
-      
+
       const res = mockResponse();
 
       jest.spyOn(Term, 'findOne').mockResolvedValueOnce({
@@ -2252,7 +2252,7 @@ describe('Test idea controller', () => {
       const req = {
 
       }
-      
+
       const res = mockResponse();
 
       jest.spyOn(Term, 'findOne').mockResolvedValueOnce({
@@ -2272,7 +2272,7 @@ describe('Test idea controller', () => {
       const req = {
 
       }
-      
+
       const res = mockResponse();
 
       jest.spyOn(Term, 'findOne').mockResolvedValueOnce(undefined);
@@ -2288,7 +2288,7 @@ describe('Test idea controller', () => {
       const req = {
 
       }
-      
+
       const res = mockResponse();
 
       jest.spyOn(Term, 'findOne').mockImplementation(() => {
@@ -2383,6 +2383,81 @@ describe('Test idea controller', () => {
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
         "errors": [customMessages.errors.internalError],
+      });
+    });
+  })
+
+  describe('Test count for dashboard', () => {
+    beforeEach(() => {
+      jest.resetAllMocks();
+      jest.clearAllMocks();
+    })
+    it('it should return status code 200 and idea data', async () => {
+      const req = {
+        params: {
+          comment_id: 1,
+        },
+        user: {
+          user_id: 5
+        },
+        body: {
+          comment: "Test",
+          anonymous: 0,
+        },
+      }
+      const res = mockResponse();
+
+
+
+      jest.spyOn(Idea, 'count').mockResolvedValueOnce(1);
+
+      jest.spyOn(User, 'count').mockResolvedValueOnce(1);
+
+
+      await ideaController.getCount(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        "data": {
+          user: 1,
+          idea: 1
+        }
+      });
+    });
+
+    it('it should return status code 200 and admin dashboard', async () => {
+      const req = {
+        params: {
+          comment_id: 1,
+        },
+        user: {
+          user_id: 5
+        },
+        body: {
+          comment: "Test",
+          anonymous: 0,
+        },
+      }
+      const res = mockResponse();
+
+
+      jest.spyOn(Idea, 'count').mockResolvedValueOnce(1);
+
+      jest.spyOn(User, 'count').mockResolvedValueOnce(1);
+
+      jest.spyOn(Department, 'count').mockResolvedValueOnce(1);
+
+
+
+      await ideaController.getCountAdmin(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        "data": {
+          user: 1,
+          idea: 1,
+          department: 1
+        }
       });
     });
   })
