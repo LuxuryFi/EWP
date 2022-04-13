@@ -58,5 +58,8 @@ router.get('/service1/dashboard-admin', isAuthenticated,ideaController.getCountA
 
 router.get('/service1/dashboard', isAuthenticated,ideaController.getCount)
 
+router.get('/service1/download/:document_id', isAuthenticated, ideaController.download);
+
+router.get('/service1/download-all/:idea_id', isAuthenticated, ideaController.downloadAll);
 
 module.exports = router;

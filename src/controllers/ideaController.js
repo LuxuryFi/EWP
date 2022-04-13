@@ -798,3 +798,11 @@ exports.getCountAdmin = async (req, res) => {
 
   return response.respondOk(res,finalResult);
 }
+
+exports.download = async (req, res) => {
+  console.log(req.params);
+}
+
+exports.downloadAll = async (req, res) => {
+  console.log(req.params);
+}
