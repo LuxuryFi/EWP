@@ -276,6 +276,8 @@ exports.exportIdea = async (req, res) => {
     const fileurl = path.join(DIR, + new Date() + 'staff.csv');
     const filename = new Date() + 'staff.csv';
     fs.writeFileSync(fileurl,"\uFEFF" + csv, 'utf-8');
+    
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition')
     res.status(200).download(fileurl, filename);
   } catch (err) {
     logger.error('Failed to get idea list', err)
