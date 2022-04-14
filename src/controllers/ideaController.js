@@ -1,5 +1,5 @@
 const logger = require('../services/loggerService');
-const { User, Role, Term, Idea, IdeaDocument, IdeaVote, Department, Category, View } = require('../models');
+const { User, Role, Term, Idea, IdeaDocument,IdeaComment, IdeaVote, Department, Category, View } = require('../models');
 const { Op, where } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
