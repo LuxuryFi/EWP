@@ -273,9 +273,10 @@ exports.exportIdea = async (req, res) => {
     const parser = new Parser(opts);
     const csv = parser.parse(finalResult);
     const DIR = './public/csv'
-    const filename = path.join(DIR, + new Date() + 'staff.csv');
-    fs.writeFileSync(filename,"\uFEFF" + csv, 'utf-8');
-    res.status(200).download(filename);
+    const fileurl = path.join(DIR, + new Date() + 'staff.csv');
+    const filename = new Date() + 'staff.csv';
+    fs.writeFileSync(fileurl,"\uFEFF" + csv, 'utf-8');
+    res.status(200).download(fileurl, filename);
   } catch (err) {
     logger.error('Failed to get idea list', err)
     return response.respondInternalServerError(res, [customMessages.errors.internalError]);
