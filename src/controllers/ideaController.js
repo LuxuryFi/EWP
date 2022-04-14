@@ -1,5 +1,5 @@
 const logger = require('../services/loggerService');
-const { User, Role, Term, Idea, IdeaDocument, IdeaComment, IdeaVote, Department, Category, View } = require('../models');
+const { User, Role, Term, Idea, IdeaDocument, IdeaVote, Department, Category, View } = require('../models');
 const { Op, where } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { TERM_STATUS, ROLES } = require('../configs/ms-constants');
 const { Parser } = require('json2csv');
+const JSZip = require('jszip');
 
 exports.createIdea = async (req, res) => {
   try {
@@ -803,9 +804,72 @@ exports.getCountAdmin = async (req, res) => {
 }
 
 exports.download = async (req, res) => {
-  console.log(req.params);
+  const documentId = req.params.document_id;
+  const zip = new JSZip();
+
+  const document = await IdeaDocument.findOne({
+    where: {
+      document_id: documentId,
+    }
+  });
+
+  
+
+  if (!document) {
+    return res.respondInternalServerError(res, [customMessages.errors.documentNotFound]);
+  }
+  const fileurl = path.join(__dirname, '../../public/documents', '1647915598-tải-xuống.jpg')
+  const filename = document.document;
+  const file = fs.readFileSync(fileurl);
+
+  console.log(file);
+
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition')
+  res.status(200).download(fileurl, filename);
 }
 
 exports.downloadAll = async (req, res) => {
-  console.log(req.params);
+  const ideaId = req.params.idea_id;
+  const zip = new JSZip();
+
+  const idea = await Idea.findOne({
+    where: {
+      idea_id: ideaId,
+    }
+  });
+
+  if (!idea) {
+    return res.respondInternalServerError(res, [customMessages.errors.ideaNotFound]);
+  }
+
+  const ideaDocument = await IdeaDocument.findAll({
+    where: {
+      idea_id: ideaId,
+    }
+  })
+
+  for (let i = 0; i < ideaDocument.length; i++) {
+    const fileurl = path.join(__dirname, '../../public/documents', ideaDocument[i].document)
+    const file = fs.readFileSync(fileurl);
+    const filename = ideaDocument[i].document;
+    zip.file(filename, file, {base64: true});
+  }
+
+  zip.generateAsync({type:"nodebuffer"})
+
+  const content = await zip.generateAsync({type: 'nodebuffer'});
+
+  console.log(content)
+  fs.writeFileSync("document.zip", content);
+  const DIR = './public/csv'
+  const url = path.join(DIR, 'document.zip');
+  // const name = new Date() + 'staff.csv';
+  fs.writeFileSync(url, content);
+
+  res.download(url, 'document.zip', function(err) {
+    if (err) {
+      console.log(err)
+    }
+    fs.unlinkSync(url)
+  });
 }
