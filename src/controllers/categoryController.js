@@ -32,7 +32,7 @@ exports.getCategory = async (req, res) => {
 exports.createCategory = async (req, res) => {
   try {
     const data = req.body;
-    
+
     const userId = req.user.user_id;
     const checkUserExist = await User.findOne({
       where: {
@@ -45,6 +45,7 @@ exports.createCategory = async (req, res) => {
       return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
     }
     data.staff_id = userId;
+    data.department_id = req.user.department_id;
     const category = await Category.create(data);
     if (!category) {
       return response.respondInternalServerError(res, [customMessages.errors.internalError]);
@@ -69,7 +70,7 @@ exports.getOneCategory = async (req, res, next) => {
     if (!category) {
       logger.info('Category not found');
       return response.respondInternalServerError(res, [customMessages.errors.categoryNotFound]);
-    }; 
+    };
     logger.info('Category found', { category });
     return response.respondOk(res, category);
   } catch (err) {
