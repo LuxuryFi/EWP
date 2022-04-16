@@ -126,6 +126,7 @@ exports.deleteCategory = async (req, res) => {
       category_id,
     } });
 
+    console.log(result)
     if (result) {
       logger.info('Category deleted', { result });
       return response.respondOk(res, result);
