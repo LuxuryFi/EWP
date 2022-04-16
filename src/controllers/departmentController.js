@@ -24,10 +24,13 @@ exports.createDepartment = async (req, res) => {
     const data = req.body;
     const checkUserExist = await User.findOne({
       where: {
-        user_id: data.manager_id,
+        user_id: 1,
       }
     });
 
+    console.log("test");
+
+    data.user_id = 2;
     if (!checkUserExist) {
       logger.error('Staff is not existed', { user: checkUserExist});
       return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
