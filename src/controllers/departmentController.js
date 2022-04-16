@@ -10,7 +10,7 @@ exports.getDepartment = async (req, res) => {
     if (!result) {
       logger.info('Department not found');
       return response.respondInternalServerError(res, [customMessages.errors.departmentNotFound]);
-    }  
+    }
     logger.info('Department list', {department: result});
     return response.respondOk(res, result);
   } catch (err) {
