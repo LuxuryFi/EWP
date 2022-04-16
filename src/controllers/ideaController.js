@@ -818,7 +818,7 @@ exports.download = async (req, res) => {
   if (!document) {
     return res.respondInternalServerError(res, [customMessages.errors.documentNotFound]);
   }
-  const fileurl = path.join(__dirname, '../../public/documents', '1647915598-tải-xuống.jpg')
+  const fileurl = path.join(__dirname, '../../public/documents', document.document)
   const filename = document.document;
   const file = fs.readFileSync(fileurl);
 
