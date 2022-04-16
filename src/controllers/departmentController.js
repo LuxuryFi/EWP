@@ -85,7 +85,6 @@ exports.updateDepartment = async (req, res) => {
       const staff = await User.findOne({
         where: {
           user_id: data.manager_id,
-          role_id: ROLES.QA_MANAGER
         },
       });
 
