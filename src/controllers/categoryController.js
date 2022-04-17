@@ -90,18 +90,6 @@ exports.updateCategory = async (req, res) => {
 
     if (category) {
       // console.log('Test')
-      const staff = await User.findOne({
-        where: {
-          user_id: data.staff_id,
-          role_id: ROLES.QA_COORDINATOR
-        },
-      });
-
-      if (!staff) {
-        logger.error('Staff is not existed', data.staff_id);
-        return response.respondInternalServerError(res, [customMessages.errors.userNotFound]);
-      }
-
       data.updated_date = new Date();
       const updateCategory = await Category.update(data, {
         where: {
