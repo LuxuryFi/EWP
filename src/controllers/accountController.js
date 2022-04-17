@@ -86,7 +86,7 @@ exports.createUser = async (req, res) => {
       phone: data.phone,
       role_id: data.role_id,
       password: hashedPassword,
-      department_id: user.req.department_id,
+      department_id: req.user.department_id,
       gender: data.gender,
     }
 
