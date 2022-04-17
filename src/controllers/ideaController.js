@@ -52,6 +52,8 @@ exports.createIdea = async (req, res) => {
         },
       })
 
+      logger.info('Department found', department);
+
       if (!department) {
         return response.respondInternalServerError(res, [customMessages.errors.departmentNotFound]);
       }
@@ -61,6 +63,8 @@ exports.createIdea = async (req, res) => {
           user_id: department.manager_id,
         }
       })
+
+      logger.info('Manager found', manager);
 
       if (!manager) {
         return response.respondInternalServerError(res, [customMessages.errors.accountNotFound]);
@@ -76,6 +80,7 @@ exports.createIdea = async (req, res) => {
         description: idea.description,
         username: manager.username,
       })
+
       const reqFiles = [];
       for (let i = 0; i < req.files.length; i++) {
         const ext = path.extname(req.files[i].filename);
