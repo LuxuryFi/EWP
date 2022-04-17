@@ -44,7 +44,7 @@ exports.createIdea = async (req, res) => {
 
     const idea = await Idea.create(payload);
     if (idea) {
-      logger.info('Idead added successfully', idea);
+      logger.info('Idead added successfully', {idea});
 
       const department = await Department.findOne({
         where: {
@@ -52,7 +52,7 @@ exports.createIdea = async (req, res) => {
         },
       })
 
-      logger.info('Department found', department);
+      logger.info('Department found',{department});
 
       if (!department) {
         return response.respondInternalServerError(res, [customMessages.errors.departmentNotFound]);
@@ -64,7 +64,7 @@ exports.createIdea = async (req, res) => {
         }
       })
 
-      logger.info('Manager found', manager);
+      logger.info('Manager found', {manager});
 
       if (!manager) {
         return response.respondInternalServerError(res, [customMessages.errors.accountNotFound]);
