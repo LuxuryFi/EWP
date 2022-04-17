@@ -44,7 +44,7 @@ exports.createIdea = async (req, res) => {
 
     const idea = await Idea.create(payload);
     if (idea) {
-      logger.info('Idead added successfully', { idea });
+      logger.info('Idead added successfully', idea);
 
       const department = await Department.findOne({
         where: {
